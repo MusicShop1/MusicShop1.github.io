@@ -71,20 +71,16 @@
     display:flex;align-items:center;gap:10px;
     padding:10px 0;min-height:64px;
   }
-
-  /* Логотип с картинкой */
   .logo{
     font-size:20px;font-weight:700;color:var(--text);text-decoration:none;
     flex-shrink:0;display:inline-flex;align-items:center;gap:10px;
   }
   .logo__img{
-    height:36px;width:auto;max-width:160px;display:block;
-    object-fit:contain;
+    height:36px;width:auto;max-width:160px;display:block;object-fit:contain;
   }
   .logo__fallback{display:none;align-items:center;gap:8px}
   .logo__fallback .ic{width:24px;height:24px;color:var(--accent)}
   .logo__text span{color:var(--accent)}
-  /* Когда картинка не загрузилась — показываем fallback */
   .logo--fallback .logo__img{display:none}
   .logo--fallback .logo__fallback{display:inline-flex}
 
@@ -218,12 +214,8 @@
     padding:12px;
   }
   .gallery__main img{
-    max-width:100%;
-    max-height:100%;
-    width:auto;
-    height:auto;
-    object-fit:contain;
-    display:block;
+    max-width:100%;max-height:100%;
+    width:auto;height:auto;object-fit:contain;display:block;
   }
   .gallery__main .media-placeholder{color:#c7cbd2}
   .gallery__main .media-placeholder .ic{width:110px;height:110px}
@@ -258,8 +250,7 @@
   }
   .gallery__thumb img{
     max-width:100%;max-height:100%;width:auto;height:auto;
-    object-fit:contain;
-    display:block;
+    object-fit:contain;display:block;
   }
   .gallery__thumb:hover{border-color:var(--border-strong);transform:translateY(-2px)}
   .gallery__thumb.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -359,11 +350,37 @@
     color:var(--text);font-size:14px;font-family:inherit;outline:none;
     transition:.15s;
   }
-  .field textarea{resize:vertical;min-height:70px}
+  /* Textarea автоматически растёт по мере ввода */
+  .field textarea{
+    resize:none;                  /* убираем уголок для ручного изменения */
+    min-height:70px;
+    overflow:hidden;              /* убираем скроллбар, пока растёт */
+    line-height:1.5;
+  }
   .field input:focus,.field select:focus,.field textarea:focus{
     border-color:var(--accent);background:#fff;
   }
   .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+
+  /* Поле с инпутом и чекбоксом «Скрыть» */
+  .qty-field-row{
+    display:flex;gap:8px;align-items:stretch;
+  }
+  .qty-field-row input{flex:1;min-width:0}
+  .hide-qty-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    padding:0 12px;border-radius:9px;cursor:pointer;
+    background:var(--surface-2);border:1px solid var(--border);
+    color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;
+    white-space:nowrap;transition:.15s;user-select:none;
+  }
+  .hide-qty-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .hide-qty-btn input{
+    width:15px;height:15px;margin:0;accent-color:var(--accent);cursor:pointer;
+  }
+  .hide-qty-btn.on{
+    background:var(--accent-soft);border-color:var(--accent);color:var(--accent);
+  }
 
   .cat-checkboxes{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
@@ -501,6 +518,8 @@
   .qty-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600}
   .qty-badge--ok{background:var(--ok-soft);color:var(--ok)}
   .qty-badge--out{background:var(--danger-soft);color:var(--danger)}
+  .qty-badge--hidden{background:var(--info-soft);color:var(--info);display:inline-flex;align-items:center;gap:4px}
+  .qty-badge--hidden .ic{width:11px;height:11px}
   .row-actions{display:flex;gap:6px}
 
   /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
@@ -620,7 +639,6 @@
   .footer__bottom{border-top:1px solid var(--border);padding:18px 0;
     text-align:center;color:var(--muted);font-size:13px}
 
-  /* Логотип в футере */
   .footer__logo{
     font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;
     display:flex;align-items:center;gap:10px;
@@ -633,6 +651,56 @@
   .footer__logo .logo__text span{color:var(--accent)}
   .footer__logo.logo--fallback img{display:none}
   .footer__logo.logo--fallback .logo__fallback{display:inline-flex}
+
+  /* ==================== ФУТЕР: КОНТАКТЫ ==================== */
+  .footer__contacts{
+    background:var(--surface-2);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:36px 0;
+    margin-top:8px;
+  }
+  .footer__contacts-title{
+    margin:0 0 22px;font-size:16px;font-weight:700;color:var(--text);
+    text-transform:uppercase;letter-spacing:.08em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .footer__contacts-title .ic{width:20px;height:20px;color:var(--accent)}
+
+  .footer__contacts-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:14px;
+  }
+  .contact-card{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 18px;border-radius:12px;
+    background:var(--surface);border:1px solid var(--border);
+    text-decoration:none;color:var(--text);
+    transition:.15s;
+    box-shadow:var(--shadow-sm);
+  }
+  .contact-card:hover{
+    border-color:var(--accent);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
+  }
+  .contact-card__icon{
+    width:46px;height:46px;border-radius:50%;flex-shrink:0;
+    background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .contact-card__icon .ic{width:22px;height:22px}
+  .contact-card__body{min-width:0}
+  .contact-card__label{
+    font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);font-weight:600;margin-bottom:3px;
+  }
+  .contact-card__value{
+    font-size:15px;font-weight:600;color:var(--text);
+    margin-bottom:2px;word-break:break-word;
+  }
+  .contact-card__hint{font-size:12.5px;color:var(--muted)}
 
   /* ==================== ЗАКАЗЫ ==================== */
   .orders-list{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
@@ -822,6 +890,8 @@
     .card .btn{padding:7px 9px;font-size:12px}
     .btn{padding:9px 12px;font-size:13px}
     .form-grid{grid-template-columns:1fr}
+    .qty-field-row{flex-wrap:wrap}
+    .hide-qty-btn{padding:8px 12px;width:100%;justify-content:center}
     .pd__price{font-size:24px}
     .pd__actions .btn{min-width:0;flex-basis:100%}
     .cart-item{padding:12px;grid-template-columns:60px 1fr;gap:10px}
@@ -829,6 +899,12 @@
     .cart-total{flex-direction:column;align-items:stretch}
     .cart-total__actions .btn{flex:1}
     .footer__grid{gap:24px}
+    .footer__contacts{padding:26px 0}
+    .footer__contacts-title{font-size:14px;margin-bottom:16px}
+    .contact-card{padding:14px 16px}
+    .contact-card__icon{width:40px;height:40px}
+    .contact-card__icon .ic{width:20px;height:20px}
+    .contact-card__value{font-size:14px}
     .photos-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
     .photo-tile__actions{flex-direction:row}
     .modal__box{padding:22px}
@@ -869,6 +945,12 @@
   </symbol>
   <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/>
   </symbol>
   <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="m6 9 6 6 6-6"/>
@@ -1099,10 +1181,23 @@
               </div>
             </div>
             <div class="field"><label>Цена, ₽ *</label><input name="price" type="number" min="0" step="1" required></div>
-            <div class="field"><label>Количество *</label><input name="qty" type="number" min="0" step="1" required></div>
+
+            <!-- Количество + кнопка «Скрыть точное количество» -->
+            <div class="field">
+              <label>Количество *</label>
+              <div class="qty-field-row">
+                <input name="qty" type="number" min="0" step="1" required>
+                <label class="hide-qty-btn" id="hideQtyLabel" title="Показывать покупателям «несколько» вместо точного числа">
+                  <input type="checkbox" id="hideQtyChk">
+                  <svg class="ic" style="width:14px;height:14px"><use href="#i-eye-off"/></svg>
+                  <span>Скрыть</span>
+                </label>
+              </div>
+            </div>
+
             <div class="field full">
               <label>Описание</label>
-              <textarea name="desc" placeholder="Краткое описание товара"></textarea>
+              <textarea name="desc" id="descInput" placeholder="Краткое описание товара"></textarea>
             </div>
 
             <div class="field full">
@@ -1247,26 +1342,54 @@
       <p>Более 5000 товаров, официальная гарантия, доставка по всей России.</p>
     </div>
     <div>
-      <h4>Контакты</h4>
-      <p><svg class="ic"><use href="#i-phone"/></svg> <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
-      <p><svg class="ic"><use href="#i-mail"/></svg> <a href="mailto:info@soundleader.ru">info@soundleader.ru</a></p>
-      <p><svg class="ic"><use href="#i-pin"/></svg> Москва, ул. Музыкальная, 15, стр. 2</p>
-      <p><svg class="ic"><use href="#i-chat"/></svg> Telegram: <a href="#">@soundleader_ru</a></p>
-    </div>
-    <div>
-      <h4>Режим работы</h4>
-      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Пн – Пт:</b> 10:00 – 20:00</p>
-      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Сб:</b> 11:00 – 19:00</p>
-      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Вс:</b> выходной</p>
-    </div>
-    <div>
       <h4>Покупателям</h4>
       <p><svg class="ic"><use href="#i-truck"/></svg> <a href="#">Доставка и оплата</a></p>
-      <p><svg class="ic"><use href="#i-shield"/></svg> <a href="#">Гарантия и возврат</a></p>
-      <p><svg class="ic"><use href="#i-scale"/></svg> <a href="#">О компании</a></p>
-      <p><svg class="ic"><use href="#i-info"/></svg> <a href="#">Контакты</a></p>
     </div>
   </div>
+
+  <div class="footer__contacts">
+    <div class="container">
+      <h3 class="footer__contacts-title">
+        <svg class="ic"><use href="#i-chat"/></svg>
+        Свяжитесь с нами
+      </h3>
+      <div class="footer__contacts-grid">
+        <a href="tel:+79991234567" class="contact-card">
+          <div class="contact-card__icon"><svg class="ic"><use href="#i-phone"/></svg></div>
+          <div class="contact-card__body">
+            <div class="contact-card__label">Телефон</div>
+            <div class="contact-card__value">+7 (999) 123-45-67</div>
+            <div class="contact-card__hint">Пн – Вс, 9:00 – 21:00</div>
+          </div>
+        </a>
+        <a href="mailto:info@soundleader.ru" class="contact-card">
+          <div class="contact-card__icon"><svg class="ic"><use href="#i-mail"/></svg></div>
+          <div class="contact-card__body">
+            <div class="contact-card__label">Email</div>
+            <div class="contact-card__value">info@soundleader.ru</div>
+            <div class="contact-card__hint">Отвечаем в течение дня</div>
+          </div>
+        </a>
+        <a href="#" class="contact-card">
+          <div class="contact-card__icon"><svg class="ic"><use href="#i-pin"/></svg></div>
+          <div class="contact-card__body">
+            <div class="contact-card__label">Магазин</div>
+            <div class="contact-card__value">Москва, ул. Музыкальная, 15, стр. 2</div>
+            <div class="contact-card__hint">Ежедневно, 10:00 – 20:00</div>
+          </div>
+        </a>
+        <a href="#" class="contact-card">
+          <div class="contact-card__icon"><svg class="ic"><use href="#i-chat"/></svg></div>
+          <div class="contact-card__body">
+            <div class="contact-card__label">Telegram</div>
+            <div class="contact-card__value">@soundleader_ru</div>
+            <div class="contact-card__hint">Онлайн-консультации</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="footer__bottom container">© 2025 Sound Leader. Все права защищены.</div>
 </footer>
 
@@ -1430,7 +1553,7 @@
 /* ============================================================
    КОНФИГ
 ============================================================ */
-const STORAGE_PREFIX = 'sl_';   // Sound Leader
+const STORAGE_PREFIX = 'sl_';
 const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
 const KEY_CART       = STORAGE_PREFIX + 'cart';
 const KEY_LIKES      = STORAGE_PREFIX + 'likes';
@@ -1441,9 +1564,8 @@ const KEY_USERS      = STORAGE_PREFIX + 'users';
 const KEY_SESSION    = STORAGE_PREFIX + 'user_session';
 const KEY_ORDERS     = STORAGE_PREFIX + 'orders';
 
-const CURRENT_SCHEMA = 1;
+const CURRENT_SCHEMA = 2;  // подняли версию из-за поля hideQty
 
-// Старые ключи (MusicShop) — мигрируем данные, чтобы ничего не потерялось
 const LEGACY_PRODUCT_KEYS  = ['ms_products','ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
 const LEGACY_CATEGORY_KEYS = ['ms_categories','ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
 const LEGACY_CART_KEYS     = ['ms_cart','ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
@@ -1572,6 +1694,11 @@ const addUrlBtn      = $('#addUrlBtn');
 const photosGrid     = $('#photosGrid');
 const photoCounter   = $('#photoCounter');
 
+// Описание с автоувеличением + скрытие количества
+const descInput      = $('#descInput');
+const hideQtyChk     = $('#hideQtyChk');
+const hideQtyLabel   = $('#hideQtyLabel');
+
 const catCheckboxes  = $('#catCheckboxes');
 const quickAddCategory = $('#quickAddCategory');
 
@@ -1645,6 +1772,18 @@ function syncBodyLock(){
                || loginModal.classList.contains('open')
                || roleModal.classList.contains('open');
   document.body.classList.toggle('modal-open', anyOpen);
+}
+
+// Публичный текст о наличии: если hideQty — пишем «несколько»
+function stockTextPublic(p){
+  if(p.qty <= 0) return 'Нет в наличии';
+  if(p.hideQty) return 'Осталось: несколько';
+  return 'Осталось: ' + p.qty;
+}
+function stockTextDetail(p){
+  if(p.qty <= 0) return { cls:'out', html: icon('x') + ' Нет в наличии' };
+  if(p.hideQty)  return { cls:'ok',  html: icon('check') + ' В наличии' };
+  return { cls:'ok', html: icon('check') + ' В наличии: ' + p.qty + ' шт.' };
 }
 
 /* ============================================================
@@ -1832,7 +1971,6 @@ function migrateFromLegacy(){
   migrateKey(KEY_ORDERS, LEGACY_ORDERS_KEYS);
   migrateKey(KEY_USERS, LEGACY_USERS_KEYS);
 
-  // сессия пользователя — переносим если есть
   if(!sessionStorage.getItem(KEY_SESSION)){
     for(const key of LEGACY_SESSION_KEYS){
       const raw = sessionStorage.getItem(key);
@@ -1847,6 +1985,7 @@ function normalizeProduct(p){
   delete p.image;
   if(!Array.isArray(p.categories)) p.categories = p.category ? [p.category] : [];
   delete p.category;
+  if(typeof p.hideQty !== 'boolean') p.hideQty = false;
   return p;
 }
 function productHasCategory(p, cat){
@@ -2059,7 +2198,7 @@ function cardHTML(p){
         <div class="card__meta">
           <span class="price">${fmt(p.price)}</span>
           <span class="stock ${out ? 'stock--out' : ''}">
-            ${out ? 'Нет в наличии' : 'Осталось: ' + p.qty}
+            ${stockTextPublic(p)}
           </span>
         </div>
         <button class="btn btn--primary" data-buy="${p.id}" ${out ? 'disabled' : ''}>
@@ -2129,6 +2268,7 @@ function renderProductDetail(){
   const inCart = cart[p.id] || 0;
   const images = p.images || [];
   const cats   = p.categories || [];
+  const stock  = stockTextDetail(p);
 
   if(galleryIndex >= images.length) galleryIndex = 0;
   if(galleryIndex < 0) galleryIndex = 0;
@@ -2169,9 +2309,7 @@ function renderProductDetail(){
         <h1 class="pd__name">${esc(p.name)}</h1>
         ${catTags}
         <div class="pd__price">${fmt(p.price)}</div>
-        <div class="pd__stock ${out ? 'out' : 'ok'}">
-          ${out ? icon('x') + ' Нет в наличии' : icon('check') + ' В наличии: ' + p.qty + ' шт.'}
-        </div>
+        <div class="pd__stock ${stock.cls}">${stock.html}</div>
         <p class="pd__desc">${esc(p.desc || 'Описание товара отсутствует.')}</p>
         <div class="pd__actions">
           <button class="btn btn--primary" id="pdAddToCart" ${out ? 'disabled' : ''}>
@@ -2186,7 +2324,7 @@ function renderProductDetail(){
           <div class="spec-row"><span>Бренд</span><span>${esc(p.brand)}</span></div>
           <div class="spec-row"><span>Категории</span><span>${cats.length ? esc(cats.join(', ')) : '—'}</span></div>
           <div class="spec-row"><span>Артикул</span><span>SL-${String(p.id).padStart(5,'0')}</span></div>
-          <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : p.qty + ' шт.'}</span></div>
+          <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : (p.hideQty ? 'Есть' : p.qty + ' шт.')}</span></div>
           <div class="spec-row"><span>Гарантия</span><span>12 месяцев</span></div>
         </div>
       </div>
@@ -2774,6 +2912,13 @@ function renderAdmin(){
   adminTable.innerHTML = products.map(p => {
     const out = p.qty <= 0;
     const cats = (p.categories || []).map(c => `<span class="table-cat">${esc(c)}</span>`).join('');
+    const qtyCell = out
+      ? `<span class="qty-badge qty-badge--out">Нет</span>`
+      : (p.hideQty
+          ? `<span class="qty-badge qty-badge--hidden" title="Точное количество скрыто от покупателей">
+               ${icon('eye-off')} ${p.qty}
+             </span>`
+          : `<span class="qty-badge qty-badge--ok">${p.qty}</span>`);
     return `
       <tr>
         <td>${thumbHTML(p)}</td>
@@ -2781,9 +2926,7 @@ function renderAdmin(){
         <td>${esc(p.brand)}</td>
         <td><div class="table-cats">${cats || '<span class="muted">—</span>'}</div></td>
         <td>${fmt(p.price)}</td>
-        <td><span class="qty-badge ${out ? 'qty-badge--out' : 'qty-badge--ok'}">
-          ${out ? 'Нет' : p.qty}
-        </span></td>
+        <td>${qtyCell}</td>
         <td>
           <div class="row-actions">
             <button class="btn btn--ghost btn--sm" data-edit="${p.id}" title="Редактировать">${icon('edit')}</button>
@@ -2850,6 +2993,33 @@ adminOrdersList && adminOrdersList.addEventListener('click', async e => {
   renderAdmin();
 });
 
+/* ============================================================
+   АВТО-РАСШИРЕНИЕ ОПИСАНИЯ
+============================================================ */
+function autoGrowTextarea(el){
+  if(!el) return;
+  const grow = () => {
+    el.style.height = 'auto';
+    el.style.height = Math.max(el.scrollHeight, 70) + 'px';
+  };
+  el.addEventListener('input', grow);
+  // первичный вызов после загрузки
+  grow();
+  return grow;
+}
+const growDesc = autoGrowTextarea(descInput);
+
+/* ============================================================
+   СКРЫТИЕ КОЛИЧЕСТВА — переключатель
+============================================================ */
+function updateHideQtyLabel(){
+  hideQtyLabel.classList.toggle('on', hideQtyChk.checked);
+}
+hideQtyChk.addEventListener('change', updateHideQtyLabel);
+
+/* ============================================================
+   ФОРМА — СБРОС
+============================================================ */
 function resetForm(){
   productForm.reset();
   editingId = null;
@@ -2859,8 +3029,11 @@ function resetForm(){
   submitBtn.innerHTML = `${icon('plus')} Добавить товар`;
   cancelEdit.hidden = true;
   imageUrl.value = '';
+  hideQtyChk.checked = false;
+  updateHideQtyLabel();
   renderPhotosGrid();
   renderCatCheckboxes();
+  if(growDesc) growDesc();
 }
 
 /* ============================================================
@@ -3350,6 +3523,7 @@ productForm.addEventListener('submit', async e => {
     categories: [...currentCategories],
     price: Math.max(0, Number(data.price) || 0),
     qty:   Math.max(0, Number(data.qty)   || 0),
+    hideQty: hideQtyChk.checked,
     desc:  (data.desc || '').trim(),
     images: [...currentImages],
   };
@@ -3420,9 +3594,12 @@ adminTable.addEventListener('click', async e => {
     productForm.desc.value  = p.desc || '';
     currentImages = Array.isArray(p.images) ? [...p.images] : [];
     currentCategories = Array.isArray(p.categories) ? [...p.categories] : [];
+    hideQtyChk.checked = !!p.hideQty;
+    updateHideQtyLabel();
     imageUrl.value = '';
     renderPhotosGrid();
     renderCatCheckboxes();
+    if(growDesc) growDesc();
     formTitle.innerHTML = `${icon('edit')} Редактировать товар`;
     submitBtn.innerHTML = `${icon('check')} Сохранить изменения`;
     cancelEdit.hidden = false;
@@ -3495,9 +3672,11 @@ loadAll();
 refreshCategories();
 updateBadges();
 updateAuthUI();
+updateHideQtyLabel();
 renderPhotosGrid();
 renderGrid();
 updateBackupStats();
+if(growDesc) growDesc();
 if(isAdmin()){ show('admin'); switchAdminTab('products'); }
 else show('shop');
 </script>
