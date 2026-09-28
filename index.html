@@ -37,7 +37,6 @@
   .container{max-width:1200px;margin:0 auto;padding:0 16px;width:100%}
   .muted{color:var(--muted);font-size:13px}
 
-  /* Иконки */
   .ic{width:1em;height:1em;display:inline-block;vertical-align:-.15em;flex-shrink:0}
 
   /* ==================== КНОПКИ ==================== */
@@ -54,6 +53,8 @@
   .btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
   .btn--danger{background:transparent;border-color:var(--danger);color:var(--danger)}
   .btn--danger:hover{background:var(--danger);color:#fff}
+  .btn--ok{background:transparent;border-color:var(--ok);color:var(--ok)}
+  .btn--ok:hover{background:var(--ok);color:#fff}
   .btn--sm{padding:7px 12px;font-size:13px}
   .btn--icon{padding:9px 11px;position:relative}
 
@@ -157,7 +158,6 @@
   .card__like.active{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
   .card__like.active .ic{fill:currentColor}
 
-  /* ===== КВАДРАТНОЕ ФОТО ===== */
   .card__media{
     position:relative;
     width:100%;
@@ -166,14 +166,8 @@
     background:linear-gradient(135deg,#f9fafb,#eef0f3);
     overflow:hidden;
   }
-  .card__media img{
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .card__media .media-placeholder{
-    color:#c7cbd2;
-  }
+  .card__media img{width:100%;height:100%;object-fit:cover;display:block}
+  .card__media .media-placeholder{color:#c7cbd2}
   .card__media .media-placeholder .ic{width:64px;height:64px}
   .card__photo-count{
     position:absolute;bottom:6px;left:6px;padding:3px 8px;
@@ -203,7 +197,6 @@
   .back-btn{margin:24px 0 16px}
   .pd{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-bottom:60px}
 
-  /* Галерея */
   .gallery{display:flex;flex-direction:column;gap:12px}
   .gallery__main{
     width:100%;
@@ -317,7 +310,7 @@
     gap:12px;margin:28px 0 20px;flex-wrap:wrap}
   .admin-head h2{margin:0;font-size:22px}
 
-  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap}
   .tab{
     padding:11px 18px;background:transparent;border:none;
     border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;
@@ -398,10 +391,7 @@
   .photo-tile:active{cursor:grabbing}
   .photo-tile.dragging{opacity:.4;transform:scale(.96)}
   .photo-tile.drag-over{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-  .photo-tile img{
-    width:100%;height:100%;object-fit:cover;display:block;
-    pointer-events:none;
-  }
+  .photo-tile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
   .photo-tile__main{
     position:absolute;top:6px;left:6px;padding:3px 8px;border-radius:20px;
     background:var(--accent);color:#fff;font-size:10px;font-weight:700;
@@ -450,6 +440,18 @@
     background:#fff;font-size:14px;font-family:inherit;outline:none;color:var(--text);
   }
 
+  /* Резервные копии */
+  .backup-block{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    padding:14px;background:var(--surface-2);border-radius:10px;
+    border:1px solid var(--border);
+  }
+  .backup-block .info{
+    flex:1;min-width:200px;font-size:13px;color:var(--muted);
+    display:flex;align-items:center;gap:8px;
+  }
+  .backup-block .info .ic{width:15px;height:15px;color:var(--ok);flex-shrink:0}
+
   /* Таблица */
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
@@ -491,7 +493,7 @@
   .modal[hidden]{display:none}
   .modal__box{
     background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--radius);padding:26px;width:100%;max-width:380px;
+    border-radius:var(--radius);padding:26px;width:100%;max-width:420px;
     box-shadow:var(--shadow-lg);
   }
   .modal__box h3{margin:0 0 16px;font-size:19px}
@@ -570,7 +572,7 @@
 </head>
 <body>
 
-<!-- ============ SVG-СПРАЙТ УНИВЕРСАЛЬНЫХ ИКОНОК ============ -->
+<!-- ============ SVG-СПРАЙТ ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-guitar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M20.5 3.5 15 9M14 4l6 6"/><path d="M13 8 7 14"/><path d="M7 14c-2 0-4 2-4 4 0 1.66 1.34 3 3 3 2 0 4-2 4-4l3-3"/><circle cx="6" cy="17" r="1"/>
@@ -608,6 +610,9 @@
   </symbol>
   <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
   </symbol>
   <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 5v14M5 12h14"/>
@@ -669,6 +674,9 @@
   </symbol>
   <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 3v18M7 21h10M3 8h18M6 8l-3 7a3 3 0 0 0 6 0zM18 8l-3 7a3 3 0 0 0 6 0z"/>
+  </symbol>
+  <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>
   </symbol>
 </svg>
 
@@ -774,6 +782,9 @@
       <button class="tab" data-tab="categories">
         <svg class="ic"><use href="#i-tag"/></svg> Категории
       </button>
+      <button class="tab" data-tab="backup">
+        <svg class="ic"><use href="#i-save"/></svg> Резервные копии
+      </button>
     </div>
 
     <!-- ВКЛАДКА: ТОВАРЫ -->
@@ -800,7 +811,6 @@
               <textarea name="desc" placeholder="Краткое описание товара"></textarea>
             </div>
 
-            <!-- ======== ФОТОГРАФИИ ======== -->
             <div class="field full">
               <label>Фотографии товара <span id="photoCounter" class="muted"></span></label>
               <div class="photos-block">
@@ -824,7 +834,6 @@
                 <div class="photos-grid" id="photosGrid"></div>
               </div>
             </div>
-            <!-- ======== /ФОТОГРАФИИ ======== -->
           </div>
           <div class="form-actions">
             <button type="submit" class="btn btn--primary" id="submitBtn">
@@ -856,7 +865,7 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-plus"/></svg> Добавить категорию</h3>
         <form id="categoryForm">
-          <div class="input-with-btn">
+          <div class="input-with-btn" style="display:flex;gap:8px;align-items:stretch">
             <input name="name" placeholder="Например: Гитары" required maxlength="60" style="flex:1;padding:10px 12px;border-radius:9px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-size:14px;font-family:inherit;outline:none">
             <button type="submit" class="btn btn--primary">
               <svg class="ic"><use href="#i-plus"/></svg> Добавить
@@ -868,6 +877,56 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-tag"/></svg> Все категории (<span id="countCategories">0</span>)</h3>
         <ul class="cat-manage" id="categoriesList"></ul>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА: РЕЗЕРВНЫЕ КОПИИ -->
+    <div id="tabBackup" hidden>
+      <div class="panel">
+        <h3><svg class="ic"><use href="#i-download"/></svg> Скачать резервную копию</h3>
+        <p class="muted" style="margin:0 0 14px">
+          Сохраняет все товары, категории, корзину и избранное в один JSON-файл.
+          Храните его в надёжном месте — с его помощью можно восстановить данные
+          на любом устройстве или после обновления сайта.
+        </p>
+        <div class="backup-block">
+          <div class="info">
+            <svg class="ic"><use href="#i-info"/></svg>
+            <span id="backupStats">—</span>
+          </div>
+          <button class="btn btn--primary" id="downloadBackupBtn">
+            <svg class="ic"><use href="#i-download"/></svg> Скачать .json
+          </button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><svg class="ic"><use href="#i-upload"/></svg> Загрузить резервную копию</h3>
+        <p class="muted" style="margin:0 0 14px">
+          Выберите ранее сохранённый JSON-файл. <b>Внимание:</b> текущие товары,
+          категории, корзина и избранное будут полностью заменены содержимым файла.
+        </p>
+        <div class="backup-block">
+          <div class="info">
+            <svg class="ic"><use href="#i-alert"/></svg>
+            <span>Действие нельзя отменить. Рекомендуем сначала скачать текущую копию.</span>
+          </div>
+          <input type="file" id="backupFileInput" accept="application/json,.json" hidden>
+          <button class="btn btn--ghost" id="uploadBackupBtn">
+            <svg class="ic"><use href="#i-upload"/></svg> Выбрать файл…
+          </button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><svg class="ic"><use href="#i-alert"/></svg> Полный сброс</h3>
+        <p class="muted" style="margin:0 0 14px">
+          Удаляет все товары, категории, корзину и избранное и возвращает
+          первоначальный демонстрационный набор товаров.
+        </p>
+        <button class="btn btn--danger" id="resetAllBtn">
+          <svg class="ic"><use href="#i-trash"/></svg> Сбросить всё к демо-набору
+        </button>
       </div>
     </div>
   </section>
@@ -929,12 +988,25 @@
 <script>
 /* ============================================================
    КОНФИГ
+   ВАЖНО: ключи НЕ МЕНЯЮТСЯ между версиями!
+   Это гарантирует, что ваши товары и категории сохранятся
+   при обновлении index.html.
 ============================================================ */
-const KEY_PRODUCTS   = 'ms_products_v5';
-const KEY_CART       = 'ms_cart_v5';
-const KEY_LIKES      = 'ms_likes_v5';
-const KEY_CATEGORIES = 'ms_categories_v5';
-const KEY_AUTH       = 'ms_admin_auth';
+const STORAGE_PREFIX = 'ms_';        // Префикс одинаковый для всех версий
+const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
+const KEY_CART       = STORAGE_PREFIX + 'cart';
+const KEY_LIKES      = STORAGE_PREFIX + 'likes';
+const KEY_CATEGORIES = STORAGE_PREFIX + 'categories';
+const KEY_AUTH       = STORAGE_PREFIX + 'admin_auth';
+const KEY_SCHEMA     = STORAGE_PREFIX + 'schema_version';
+
+const CURRENT_SCHEMA = 5;            // Растёт при структурных изменениях
+
+// Старые ключи, из которых нужно мигрировать данные (v1..v5)
+const LEGACY_PRODUCT_KEYS    = ['ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
+const LEGACY_CATEGORY_KEYS   = ['ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
+const LEGACY_CART_KEYS       = ['ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
+const LEGACY_LIKES_KEYS      = ['ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
 
 const ADMIN_LOGIN    = 'admin';
 const ADMIN_PASSWORD = 'admin123';
@@ -962,7 +1034,7 @@ let likes      = [];
 let editingId  = null;
 let currentProductId = null;
 let currentImages = [];
-let currentCategories = [];    // выбранные в форме категории
+let currentCategories = [];
 let galleryIndex = 0;
 let dragPhotoIndex = null;
 
@@ -1028,9 +1100,15 @@ const quickAddCategory = $('#quickAddCategory');
 
 const tabProducts    = $('#tabProducts');
 const tabCategories  = $('#tabCategories');
+const tabBackup      = $('#tabBackup');
 const categoryForm   = $('#categoryForm');
 const categoriesList = $('#categoriesList');
 const countCategories = $('#countCategories');
+const backupStats    = $('#backupStats');
+const downloadBackupBtn = $('#downloadBackupBtn');
+const uploadBackupBtn   = $('#uploadBackupBtn');
+const backupFileInput   = $('#backupFileInput');
+const resetAllBtn       = $('#resetAllBtn');
 
 /* ============================================================
    УТИЛИТЫ
@@ -1062,9 +1140,71 @@ function toast(msg, type){
 function icon(name, cls){
   return `<svg class="ic${cls ? ' '+cls : ''}"><use href="#i-${name}"/></svg>`;
 }
+function formatBytes(b){
+  if(b < 1024) return b + ' Б';
+  if(b < 1024*1024) return (b/1024).toFixed(1) + ' КБ';
+  return (b/1024/1024).toFixed(2) + ' МБ';
+}
 
 /* ============================================================
-   СОВМЕСТИМОСТЬ
+   МИГРАЦИЯ ДАННЫХ
+   Копирует данные из старых ключей (v1..v5) в новый стабильный ключ.
+   Запускается один раз, если в новом ключе ещё пусто.
+============================================================ */
+function tryReadKey(key){
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+function migrateFromLegacy(){
+  // Товары
+  if(!tryReadKey(KEY_PRODUCTS)){
+    for(const key of LEGACY_PRODUCT_KEYS){
+      const raw = tryReadKey(key);
+      if(raw){
+        try {
+          const arr = JSON.parse(raw);
+          if(Array.isArray(arr) && arr.length){
+            localStorage.setItem(KEY_PRODUCTS, raw);
+            break;
+          }
+        } catch(_) {}
+      }
+    }
+  }
+  // Категории
+  if(!tryReadKey(KEY_CATEGORIES)){
+    for(const key of LEGACY_CATEGORY_KEYS){
+      const raw = tryReadKey(key);
+      if(raw){
+        try {
+          const arr = JSON.parse(raw);
+          if(Array.isArray(arr) && arr.length){
+            localStorage.setItem(KEY_CATEGORIES, raw);
+            break;
+          }
+        } catch(_) {}
+      }
+    }
+  }
+  // Корзина
+  if(!tryReadKey(KEY_CART)){
+    for(const key of LEGACY_CART_KEYS){
+      const raw = tryReadKey(key);
+      if(raw){ localStorage.setItem(KEY_CART, raw); break; }
+    }
+  }
+  // Лайки
+  if(!tryReadKey(KEY_LIKES)){
+    for(const key of LEGACY_LIKES_KEYS){
+      const raw = tryReadKey(key);
+      if(raw){ localStorage.setItem(KEY_LIKES, raw); break; }
+    }
+  }
+  // Проставляем версию схемы
+  try { localStorage.setItem(KEY_SCHEMA, String(CURRENT_SCHEMA)); } catch(_) {}
+}
+
+/* ============================================================
+   СОВМЕСТИМОСТЬ СТРУКТУРЫ ТОВАРА
 ============================================================ */
 function normalizeProduct(p){
   if(!Array.isArray(p.images)){
@@ -1072,7 +1212,6 @@ function normalizeProduct(p){
   }
   delete p.image;
 
-  // Мультикатегории: старая схема p.category (строка) → p.categories (массив)
   if(!Array.isArray(p.categories)){
     p.categories = p.category ? [p.category] : [];
   }
@@ -1088,6 +1227,8 @@ function productHasCategory(p, cat){
    ХРАНИЛИЩЕ
 ============================================================ */
 function loadAll(){
+  migrateFromLegacy();
+
   try { products = JSON.parse(localStorage.getItem(KEY_PRODUCTS)) || null; } catch { products = null; }
   if(!Array.isArray(products) || !products.length){
     products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
@@ -1281,16 +1422,13 @@ function renderGrid(){
 }
 
 function refreshCategories(){
-  // Фильтр витрины
   const cur = categorySel.value;
   categorySel.innerHTML = '<option value="">Все категории</option>' +
     categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
   if(categories.includes(cur)) categorySel.value = cur;
 
-  // Чекбоксы в форме товара
   renderCatCheckboxes();
 
-  // Каталог в шапке
   catalogList.innerHTML = categories.map(c => {
     const count = products.filter(p => productHasCategory(p, c)).length;
     return `<li><button data-cat="${esc(c)}">
@@ -1827,6 +1965,93 @@ function addCategory(name, {silent = false} = {}){
 }
 
 /* ============================================================
+   АДМИНКА — РЕЗЕРВНЫЕ КОПИИ
+============================================================ */
+function updateBackupStats(){
+  const size = (() => {
+    try { return (localStorage.getItem(KEY_PRODUCTS) || '').length
+             + (localStorage.getItem(KEY_CATEGORIES) || '').length
+             + (localStorage.getItem(KEY_CART) || '').length
+             + (localStorage.getItem(KEY_LIKES) || '').length;
+    } catch { return 0; }
+  })();
+  backupStats.textContent = `Товаров: ${products.length} · Категорий: ${categories.length} · Объём данных: ${formatBytes(size)}`;
+}
+
+function downloadBackup(){
+  const data = {
+    app: 'MusicShop',
+    schema: CURRENT_SCHEMA,
+    exportedAt: new Date().toISOString(),
+    products,
+    categories,
+    cart,
+    likes,
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = `musicshop-backup-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Резервная копия сохранена');
+}
+
+function uploadBackup(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(!data || typeof data !== 'object') throw new Error('Формат файла неверный');
+
+      const newProducts = Array.isArray(data.products) ? data.products.map(normalizeProduct) : null;
+      if(!newProducts) throw new Error('В файле нет товаров');
+
+      if(!confirm('Текущие данные будут заменены содержимым файла. Продолжить?')) return;
+
+      products = newProducts;
+      categories = Array.isArray(data.categories) ? data.categories.slice() : 
+        [...new Set(products.flatMap(p => p.categories || []).filter(Boolean))];
+      cart = (data.cart && typeof data.cart === 'object') ? data.cart : {};
+      likes = Array.isArray(data.likes) ? data.likes : [];
+
+      saveProducts(); saveCategories(); saveCart(); saveLikes();
+      refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
+      updateBackupStats();
+      toast(`Импортировано: ${products.length} товаров, ${categories.length} категорий`);
+    } catch(err){
+      console.error(err);
+      toast('Не удалось загрузить файл: ' + err.message, 'warn');
+    } finally {
+      backupFileInput.value = '';
+    }
+  };
+  reader.onerror = () => toast('Ошибка чтения файла', 'warn');
+  reader.readAsText(file, 'utf-8');
+}
+
+function resetAll(){
+  if(!confirm('Сбросить все данные к демонстрационному набору? Это действие нельзя отменить.')) return;
+  if(!confirm('Точно сбросить? Все ваши товары, категории, корзина и избранное будут удалены.')) return;
+
+  products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
+  categories = [...new Set(products.flatMap(p => p.categories || []))].sort();
+  cart = {};
+  likes = [];
+
+  saveProducts(); saveCategories(); saveCart(); saveLikes();
+  refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
+  updateBackupStats();
+  toast('Данные сброшены к демо-набору', 'warn');
+}
+
+/* ============================================================
    АВТОРИЗАЦИЯ — UI
 ============================================================ */
 function updateAuthBtn(){
@@ -1843,9 +2068,11 @@ function updateAuthBtn(){
 
 function switchAdminTab(tab){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  tabProducts.hidden = tab !== 'products';
+  tabProducts.hidden  = tab !== 'products';
   tabCategories.hidden = tab !== 'categories';
+  tabBackup.hidden     = tab !== 'backup';
   if(tab === 'categories') renderCategoriesTab();
+  if(tab === 'backup')     updateBackupStats();
 }
 
 /* ============================================================
@@ -2068,11 +2295,9 @@ quickAddCategory.addEventListener('click', () => {
   if(!n) return;
   const wasAdded = addCategory(n, {silent: false});
   if(wasAdded){
-    // Автоматически отметить категорию в форме
     if(!currentCategories.includes(n)) currentCategories.push(n);
     renderCatCheckboxes();
   } else {
-    // Если уже есть — просто отметить
     if(categories.includes(n) && !currentCategories.includes(n)){
       currentCategories.push(n);
       renderCatCheckboxes();
@@ -2142,6 +2367,16 @@ categoriesList.addEventListener('click', e => {
 });
 
 /* ============================================================
+   СОБЫТИЯ — РЕЗЕРВНЫЕ КОПИИ
+============================================================ */
+downloadBackupBtn.addEventListener('click', downloadBackup);
+
+uploadBackupBtn.addEventListener('click', () => backupFileInput.click());
+backupFileInput.addEventListener('change', e => uploadBackup(e.target.files[0]));
+
+resetAllBtn.addEventListener('click', resetAll);
+
+/* ============================================================
    СТАРТ
 ============================================================ */
 loadAll();
@@ -2150,6 +2385,7 @@ updateBadges();
 updateAuthBtn();
 renderPhotosGrid();
 renderGrid();
+updateBackupStats();
 if(isAdmin()){ show('admin'); switchAdminTab('products'); }
 else show('shop');
 </script>
