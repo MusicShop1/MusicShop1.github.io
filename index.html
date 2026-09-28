@@ -37,6 +37,9 @@
   .container{max-width:1200px;margin:0 auto;padding:0 16px;width:100%}
   .muted{color:var(--muted);font-size:13px}
 
+  /* Иконки */
+  .ic{width:1em;height:1em;display:inline-block;vertical-align:-.15em;flex-shrink:0}
+
   /* ==================== КНОПКИ ==================== */
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
@@ -69,8 +72,9 @@
     border-bottom:1px solid var(--border);
   }
   .header__inner{display:flex;align-items:center;gap:10px;padding:10px 0;min-height:64px}
-  .logo{font-size:20px;font-weight:700;color:var(--text);text-decoration:none;flex-shrink:0}
-  .logo span{color:var(--accent)}
+  .logo{font-size:20px;font-weight:700;color:var(--text);text-decoration:none;flex-shrink:0;
+    display:inline-flex;align-items:center;gap:8px}
+  .logo .ic{width:22px;height:22px;color:var(--accent)}
   .catalog-btn{flex-shrink:0;position:relative}
   .catalog-btn.open{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
   .search-wrap{flex:1;min-width:0;position:relative}
@@ -80,9 +84,9 @@
     color:var(--text);font-size:14px;font-family:inherit;outline:none;
   }
   .search-wrap input:focus{border-color:var(--accent);background:#fff}
-  .search-wrap::before{
-    content:'🔍';position:absolute;left:13px;top:50%;transform:translateY(-50%);
-    font-size:13px;opacity:.55;pointer-events:none;
+  .search-wrap .ic{
+    position:absolute;left:13px;top:50%;transform:translateY(-50%);
+    width:15px;height:15px;color:var(--muted);pointer-events:none;
   }
   .header-actions{display:flex;gap:8px;flex-shrink:0}
 
@@ -143,13 +147,15 @@
   .card__like{
     position:absolute;top:6px;right:6px;width:32px;height:32px;
     border-radius:50%;background:rgba(255,255,255,.95);backdrop-filter:blur(4px);
-    border:1px solid var(--border);cursor:pointer;font-size:14px;
+    border:1px solid var(--border);cursor:pointer;
     display:flex;align-items:center;justify-content:center;z-index:2;
     color:var(--muted);transition:.15s;font-family:inherit;
     box-shadow:var(--shadow-sm);
   }
+  .card__like .ic{width:15px;height:15px}
   .card__like:hover{transform:scale(1.08);border-color:var(--danger);color:var(--danger)}
   .card__like.active{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+  .card__like.active .ic{fill:currentColor}
 
   /* ===== КВАДРАТНОЕ ФОТО ===== */
   .card__media{
@@ -157,7 +163,6 @@
     width:100%;
     aspect-ratio:1 / 1;
     display:flex;align-items:center;justify-content:center;
-    font-size:56px;
     background:linear-gradient(135deg,#f9fafb,#eef0f3);
     overflow:hidden;
   }
@@ -166,14 +171,21 @@
     object-fit:cover;
     display:block;
   }
-  .card__photo-count{
-    position:absolute;bottom:6px;left:6px;padding:2px 7px;
-    background:rgba(17,24,39,.7);color:#fff;border-radius:20px;
-    font-size:10px;font-weight:600;backdrop-filter:blur(4px);
+  .card__media .media-placeholder{
+    color:#c7cbd2;
   }
+  .card__media .media-placeholder .ic{width:64px;height:64px}
+  .card__photo-count{
+    position:absolute;bottom:6px;left:6px;padding:3px 8px;
+    background:rgba(17,24,39,.75);color:#fff;border-radius:20px;
+    font-size:11px;font-weight:600;backdrop-filter:blur(4px);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .card__photo-count .ic{width:11px;height:11px}
 
   .card__body{padding:11px;display:flex;flex-direction:column;gap:6px;flex:1}
-  .card__brand{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .card__brand{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
   .card__name{margin:0;font-size:14px;font-weight:600;line-height:1.3;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .card__meta{display:flex;justify-content:space-between;align-items:center;gap:6px;
@@ -184,7 +196,8 @@
   .card .btn{padding:8px 10px;font-size:13px}
 
   .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:15px}
-  .empty__icon{font-size:44px;display:block;margin-bottom:12px;opacity:.5}
+  .empty__icon{color:#d1d5db;display:block;margin-bottom:12px}
+  .empty__icon .ic{width:48px;height:48px}
 
   /* ==================== КАРТОЧКА ТОВАРА ==================== */
   .back-btn{margin:24px 0 16px}
@@ -196,19 +209,22 @@
     width:100%;
     aspect-ratio:1 / 1;
     border-radius:var(--radius);border:1px solid var(--border);
-    display:flex;align-items:center;justify-content:center;font-size:160px;
+    display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#f9fafb,#eef0f3);overflow:hidden;
     box-shadow:var(--shadow-sm);position:relative;
   }
   .gallery__main img{width:100%;height:100%;object-fit:cover;display:block}
+  .gallery__main .media-placeholder{color:#c7cbd2}
+  .gallery__main .media-placeholder .ic{width:140px;height:140px}
   .gallery__nav{
     position:absolute;top:50%;transform:translateY(-50%);
     width:42px;height:42px;border-radius:50%;border:1px solid var(--border);
     background:rgba(255,255,255,.92);backdrop-filter:blur(4px);
-    cursor:pointer;font-size:18px;color:var(--text);
+    cursor:pointer;color:var(--text);
     display:flex;align-items:center;justify-content:center;
     box-shadow:var(--shadow-sm);transition:.15s;font-family:inherit;
   }
+  .gallery__nav .ic{width:18px;height:18px}
   .gallery__nav:hover{background:#fff;border-color:var(--accent);color:var(--accent)}
   .gallery__nav--prev{left:12px}
   .gallery__nav--next{right:12px}
@@ -225,18 +241,24 @@
   .gallery__thumb{
     aspect-ratio:1 / 1;border-radius:10px;border:2px solid var(--border);
     background:var(--surface-2);overflow:hidden;cursor:pointer;
-    padding:0;transition:.15s;display:flex;align-items:center;justify-content:center;
-    font-size:26px;color:var(--muted);
+    padding:0;transition:.15s;
   }
   .gallery__thumb img{width:100%;height:100%;object-fit:cover;display:block}
   .gallery__thumb:hover{border-color:var(--border-strong);transform:translateY(-2px)}
   .gallery__thumb.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 
-  .pd__brand{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
-    color:var(--muted);margin-bottom:8px}
+  .pd__brands{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .cat-tag{
+    display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:600;
+  }
   .pd__name{margin:0 0 16px;font-size:clamp(24px,3vw,32px);line-height:1.2}
   .pd__price{font-size:32px;font-weight:700;color:var(--accent);margin-bottom:8px}
-  .pd__stock{font-size:14px;margin-bottom:20px}
+  .pd__stock{font-size:14px;margin-bottom:20px;display:flex;align-items:center;gap:6px}
+  .pd__stock .ic{width:16px;height:16px}
+  .pd__stock.ok{color:var(--ok)}
+  .pd__stock.out{color:var(--danger)}
   .pd__desc{color:var(--muted);margin:0 0 24px;font-size:15px;line-height:1.6}
   .pd__actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
   .pd__actions .btn{flex:1;min-width:180px;padding:14px 20px;font-size:15px}
@@ -249,7 +271,8 @@
   .spec-row span:first-child{color:var(--muted)}
 
   /* ==================== КОРЗИНА ==================== */
-  .page-title{margin:28px 0 20px;font-size:24px}
+  .page-title{margin:28px 0 20px;font-size:24px;display:flex;align-items:center;gap:10px}
+  .page-title .ic{width:24px;height:24px;color:var(--accent)}
   .cart-list{display:flex;flex-direction:column;gap:12px;padding-bottom:24px}
   .cart-item{
     display:grid;grid-template-columns:80px 1fr auto auto auto;
@@ -259,10 +282,11 @@
   }
   .cart-item__media{
     width:80px;height:80px;border-radius:10px;background:var(--surface-2);
-    display:flex;align-items:center;justify-content:center;font-size:40px;
-    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;color:#c7cbd2;
   }
   .cart-item__media img{width:100%;height:100%;object-fit:cover}
+  .cart-item__media .ic{width:34px;height:34px}
   .cart-item__name{font-weight:600;font-size:15px;margin:0 0 4px}
   .cart-item__brand{font-size:12px;color:var(--muted);margin:0}
   .cart-item__price{font-size:13px;color:var(--muted);margin:4px 0 0}
@@ -270,9 +294,10 @@
     border:1px solid var(--border);border-radius:9px;padding:4px}
   .qty-ctrl button{
     width:30px;height:30px;border-radius:7px;border:none;background:transparent;
-    color:var(--text);font-size:16px;cursor:pointer;font-family:inherit;
+    color:var(--text);cursor:pointer;font-family:inherit;
     display:flex;align-items:center;justify-content:center;
   }
+  .qty-ctrl button .ic{width:14px;height:14px}
   .qty-ctrl button:hover{background:#fff}
   .qty-ctrl button:disabled{opacity:.3;cursor:not-allowed}
   .qty-ctrl span{min-width:28px;text-align:center;font-weight:600;font-size:14px}
@@ -298,14 +323,16 @@
     border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;
     font-size:14px;font-weight:600;font-family:inherit;margin-bottom:-1px;
     transition:.15s;border-radius:8px 8px 0 0;
+    display:inline-flex;align-items:center;gap:8px;
   }
+  .tab .ic{width:16px;height:16px}
   .tab:hover{color:var(--text);background:var(--surface-2)}
   .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
   .panel{background:var(--surface);border:1px solid var(--border);
     border-radius:var(--radius);padding:20px;margin-bottom:20px;
     box-shadow:var(--shadow-sm)}
-  .panel h3{margin:0 0 14px;font-size:16px}
+  .panel h3{margin:0 0 14px;font-size:16px;display:flex;align-items:center;gap:8px}
   .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   .form-grid .full{grid-column:1/-1}
   .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:600}
@@ -321,9 +348,24 @@
   }
   .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
-  .input-with-btn{display:flex;gap:8px;align-items:stretch}
-  .input-with-btn select{flex:1}
-  .input-with-btn .btn{flex-shrink:0}
+  /* ===== Чекбоксы категорий ===== */
+  .cat-checkboxes{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+    gap:8px;padding:12px;border:1px solid var(--border);border-radius:10px;
+    background:var(--surface-2);min-height:50px;
+  }
+  .cat-checkboxes:empty::before{
+    content:'Нет категорий. Добавьте через вкладку «Категории».';
+    color:var(--muted);font-size:13px;
+  }
+  .cat-check{
+    display:flex;align-items:center;gap:8px;padding:8px 12px;
+    background:#fff;border:1px solid var(--border);border-radius:8px;
+    cursor:pointer;font-size:13px;transition:.15s;
+  }
+  .cat-check:hover{border-color:var(--accent);color:var(--accent)}
+  .cat-check input{accent-color:var(--accent);width:15px;height:15px;margin:0}
+  .cat-check.checked{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
 
   /* ============ МУЛЬТИ-ЗАГРУЗКА ФОТО ============ */
   .photos-block{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface-2)}
@@ -337,40 +379,60 @@
     background:#fff;color:var(--text);outline:none;
   }
   .photos-url-row input:focus{border-color:var(--accent)}
+  .photos-hint{
+    font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4;
+    display:flex;align-items:center;gap:6px;
+  }
+  .photos-hint .ic{width:13px;height:13px;flex-shrink:0}
 
   .photos-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
     gap:10px;margin-top:14px;
   }
   .photo-tile{
     position:relative;aspect-ratio:1/1;border-radius:10px;
     border:1px solid var(--border);overflow:hidden;background:#fff;
-    box-shadow:var(--shadow-sm);
+    box-shadow:var(--shadow-sm);cursor:grab;
+    transition:.15s;
   }
-  .photo-tile img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo-tile:active{cursor:grabbing}
+  .photo-tile.dragging{opacity:.4;transform:scale(.96)}
+  .photo-tile.drag-over{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .photo-tile img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    pointer-events:none;
+  }
   .photo-tile__main{
     position:absolute;top:6px;left:6px;padding:3px 8px;border-radius:20px;
     background:var(--accent);color:#fff;font-size:10px;font-weight:700;
-    letter-spacing:.04em;text-transform:uppercase;
+    letter-spacing:.04em;text-transform:uppercase;pointer-events:none;
+  }
+  .photo-tile__order{
+    position:absolute;bottom:6px;left:6px;
+    padding:2px 8px;border-radius:20px;
+    background:rgba(17,24,39,.75);color:#fff;
+    font-size:11px;font-weight:600;pointer-events:none;
   }
   .photo-tile__actions{
-    position:absolute;top:6px;right:6px;display:flex;gap:4px;
+    position:absolute;top:6px;right:6px;display:flex;flex-direction:column;gap:4px;
   }
   .photo-tile__btn{
     width:26px;height:26px;border-radius:50%;border:1px solid var(--border);
-    background:rgba(255,255,255,.95);cursor:pointer;font-size:12px;
+    background:rgba(255,255,255,.95);cursor:pointer;
     display:flex;align-items:center;justify-content:center;
     font-family:inherit;color:var(--text);transition:.15s;padding:0;
     box-shadow:var(--shadow-sm);
   }
+  .photo-tile__btn .ic{width:13px;height:13px}
   .photo-tile__btn:hover{background:#fff;transform:scale(1.08)}
   .photo-tile__btn--del:hover{border-color:var(--danger);color:var(--danger)}
-  .photo-tile__btn--star:hover{border-color:var(--accent);color:var(--accent)}
-  .photo-tile__btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .photo-tile__btn--left:hover,.photo-tile__btn--right:hover{border-color:var(--accent);color:var(--accent)}
+  .photo-tile__btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
   .photos-empty{
-    text-align:center;color:var(--muted);font-size:13px;padding:20px 10px;
+    text-align:center;color:var(--muted);font-size:13px;padding:24px 10px;
     border:1.5px dashed var(--border-strong);border-radius:10px;background:#fff;
   }
+  .photos-empty .ic{width:26px;height:26px;color:#c7cbd2;display:block;margin:0 auto 8px}
 
   /* Категории (список) */
   .cat-manage{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
@@ -398,15 +460,23 @@
     width:44px;height:44px;border-radius:8px;object-fit:cover;
     border:1px solid var(--border);vertical-align:middle;margin-right:8px;
   }
-  .table-emoji{
+  .table-placeholder{
     display:inline-flex;width:44px;height:44px;border-radius:8px;
     background:var(--surface-2);align-items:center;justify-content:center;
-    font-size:22px;margin-right:8px;vertical-align:middle;
+    color:#c7cbd2;margin-right:8px;vertical-align:middle;
   }
+  .table-placeholder .ic{width:20px;height:20px}
   .table-photos-badge{
-    display:inline-block;padding:2px 7px;border-radius:20px;
+    display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;
     background:var(--accent-soft);color:var(--accent);
     font-size:11px;font-weight:600;vertical-align:middle;margin-left:6px;
+  }
+  .table-photos-badge .ic{width:11px;height:11px}
+  .table-cats{display:flex;flex-wrap:wrap;gap:4px;max-width:260px}
+  .table-cat{
+    display:inline-block;padding:2px 8px;border-radius:20px;
+    background:var(--surface-2);color:var(--muted);
+    font-size:11px;font-weight:600;
   }
   .qty-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600}
   .qty-badge--ok{background:var(--ok-soft);color:var(--ok)}
@@ -435,14 +505,17 @@
     gap:32px;padding-bottom:32px}
   .footer h4{margin:0 0 14px;font-size:14px;color:var(--text);
     text-transform:uppercase;letter-spacing:.06em}
-  .footer p{margin:0 0 8px;color:var(--muted);font-size:14px;line-height:1.6}
+  .footer p{margin:0 0 8px;color:var(--muted);font-size:14px;line-height:1.6;
+    display:flex;align-items:center;gap:8px}
   .footer p b{color:var(--text);font-weight:600}
   .footer a{color:var(--muted);text-decoration:none;transition:.15s}
   .footer a:hover{color:var(--accent)}
+  .footer .ic{width:14px;height:14px;color:var(--muted);flex-shrink:0}
   .footer__bottom{border-top:1px solid var(--border);padding:18px 0;
     text-align:center;color:var(--muted);font-size:13px}
-  .footer__logo{font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px}
-  .footer__logo span{color:var(--accent)}
+  .footer__logo{font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;
+    display:flex;align-items:center;gap:8px}
+  .footer__logo .ic{width:20px;height:20px;color:var(--accent)}
 
   /* ==================== TOAST ==================== */
   .toast{
@@ -451,6 +524,7 @@
     border-left:4px solid var(--ok);padding:13px 20px;border-radius:10px;
     font-size:14px;z-index:100;transition:.3s;max-width:90vw;
     box-shadow:var(--shadow-lg);color:var(--text);
+    display:flex;align-items:center;gap:10px;
   }
   .toast.show{transform:translate(-50%,0)}
   .toast--warn{border-left-color:var(--danger)}
@@ -459,7 +533,7 @@
   @media (max-width:820px){
     .pd{grid-template-columns:1fr;gap:24px}
     .cart-item{grid-template-columns:70px 1fr auto;gap:12px}
-    .cart-item__media{width:70px;height:70px;font-size:34px}
+    .cart-item__media{width:70px;height:70px}
     .cart-item__sum{grid-column:2/3;text-align:left;min-width:auto}
     .qty-ctrl{grid-column:1/3}
   }
@@ -485,34 +559,148 @@
     .pd__price{font-size:24px}
     .pd__actions .btn{min-width:0;flex-basis:100%}
     .cart-item{padding:12px;grid-template-columns:60px 1fr;gap:10px}
-    .cart-item__media{width:60px;height:60px;font-size:28px}
+    .cart-item__media{width:60px;height:60px}
     .cart-total{flex-direction:column;align-items:stretch}
     .cart-total__actions .btn{flex:1}
     .footer__grid{gap:24px}
-    .photos-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+    .photos-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+    .photo-tile__actions{flex-direction:row}
   }
 </style>
 </head>
 <body>
 
+<!-- ============ SVG-СПРАЙТ УНИВЕРСАЛЬНЫХ ИКОНОК ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-guitar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.5 3.5 15 9M14 4l6 6"/><path d="M13 8 7 14"/><path d="M7 14c-2 0-4 2-4 4 0 1.66 1.34 3 3 3 2 0 4-2 4-4l3-3"/><circle cx="6" cy="17" r="1"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+  </symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+  </symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5C19 15.5 12 20 12 20z"/>
+  </symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>
+    <path d="M3 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>
+  </symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m15 6-6 6 6 6"/>
+  </symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m9 6 6 6-6 6"/>
+  </symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5m7-7-7 7 7 7"/>
+  </symbol>
+  <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>
+  </symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 6 6 18M6 6l12 12"/>
+  </symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M6 6v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"/><path d="M10 11v6M14 11v6"/>
+  </symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m20 6-11 11L4 12"/>
+  </symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>
+  </symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 21V13"/>
+  </symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-8.2-8.2V3h9.4l8.2 8.2a2 2 0 0 1 0 2.8z"/>
+    <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>
+  </symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8 10.1a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c1 .4 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/>
+  </symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>
+  </symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12a8 8 0 0 1-12 7l-5 2 1.5-5A8 8 0 1 1 21 12z"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/>
+  </symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/>
+  </symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v18M7 21h10M3 8h18M6 8l-3 7a3 3 0 0 0 6 0zM18 8l-3 7a3 3 0 0 0 6 0z"/>
+  </symbol>
+</svg>
+
 <!-- ==================== ШАПКА ==================== -->
 <header class="header">
   <div class="container header__inner">
-    <a href="#" class="logo" id="logoLink">🎸 Music<span>Shop</span></a>
+    <a href="#" class="logo" id="logoLink">
+      <svg class="ic"><use href="#i-guitar"/></svg>
+      Music<span>Shop</span>
+    </a>
     <button class="btn btn--ghost btn--sm catalog-btn" id="catalogBtn">
-      <span>📂</span><span class="label">Каталог</span><span>▾</span>
+      <svg class="ic"><use href="#i-folder"/></svg>
+      <span class="label">Каталог</span>
+      <svg class="ic"><use href="#i-chevron-down"/></svg>
     </button>
     <div class="search-wrap">
+      <svg class="ic"><use href="#i-search"/></svg>
       <input id="search" type="search" placeholder="Поиск по названию или бренду...">
     </div>
     <div class="header-actions">
       <button class="btn btn--ghost btn--sm btn--icon" id="likesBtn" title="Избранное">
-        ❤️<span class="badge badge--empty" id="likesBadge">0</span>
+        <svg class="ic"><use href="#i-heart"/></svg>
+        <span class="badge badge--empty" id="likesBadge">0</span>
       </button>
       <button class="btn btn--ghost btn--sm btn--icon" id="cartBtn" title="Корзина">
-        🛒<span class="badge badge--empty" id="cartBadge">0</span>
+        <svg class="ic"><use href="#i-cart"/></svg>
+        <span class="badge badge--empty" id="cartBadge">0</span>
       </button>
-      <button class="btn btn--ghost btn--sm" id="loginBtn">Войти</button>
+      <button class="btn btn--ghost btn--sm" id="loginBtn">
+        <svg class="ic"><use href="#i-user"/></svg>
+        <span>Войти</span>
+      </button>
     </div>
   </div>
   <div class="catalog-menu" id="catalogMenu" hidden>
@@ -539,28 +727,34 @@
     </div>
     <div id="grid" class="grid"></div>
     <div id="empty" class="empty" hidden>
-      <span class="empty__icon">🎵</span>
+      <span class="empty__icon"><svg class="ic"><use href="#i-search"/></svg></span>
       Ничего не найдено. Попробуйте изменить фильтры.
     </div>
   </section>
 
   <!-- КАРТОЧКА ТОВАРА -->
   <section id="productView" hidden>
-    <button class="btn btn--ghost btn--sm back-btn" id="backFromProduct">← Вернуться в каталог</button>
+    <button class="btn btn--ghost btn--sm back-btn" id="backFromProduct">
+      <svg class="ic"><use href="#i-arrow-left"/></svg> Вернуться в каталог
+    </button>
     <div id="productDetail"></div>
   </section>
 
   <!-- КОРЗИНА -->
   <section id="cartView" hidden>
-    <button class="btn btn--ghost btn--sm back-btn" id="backFromCart">← Вернуться в каталог</button>
-    <h2 class="page-title">🛒 Корзина</h2>
+    <button class="btn btn--ghost btn--sm back-btn" id="backFromCart">
+      <svg class="ic"><use href="#i-arrow-left"/></svg> Вернуться в каталог
+    </button>
+    <h2 class="page-title"><svg class="ic"><use href="#i-cart"/></svg> Корзина</h2>
     <div id="cartContent"></div>
   </section>
 
   <!-- ИЗБРАННОЕ -->
   <section id="likesView" hidden>
-    <button class="btn btn--ghost btn--sm back-btn" id="backFromLikes">← Вернуться в каталог</button>
-    <h2 class="page-title">❤️ Избранное</h2>
+    <button class="btn btn--ghost btn--sm back-btn" id="backFromLikes">
+      <svg class="ic"><use href="#i-arrow-left"/></svg> Вернуться в каталог
+    </button>
+    <h2 class="page-title"><svg class="ic"><use href="#i-heart"/></svg> Избранное</h2>
     <div id="likesContent"></div>
   </section>
 
@@ -568,27 +762,35 @@
   <section id="adminView" hidden>
     <div class="admin-head">
       <h2>Панель администратора</h2>
-      <button class="btn btn--ghost btn--sm" id="logoutBtn">Выйти</button>
+      <button class="btn btn--ghost btn--sm" id="logoutBtn">
+        <svg class="ic"><use href="#i-logout"/></svg> Выйти
+      </button>
     </div>
 
     <div class="tabs">
-      <button class="tab active" data-tab="products">📦 Товары</button>
-      <button class="tab" data-tab="categories">🏷️ Категории</button>
+      <button class="tab active" data-tab="products">
+        <svg class="ic"><use href="#i-box"/></svg> Товары
+      </button>
+      <button class="tab" data-tab="categories">
+        <svg class="ic"><use href="#i-tag"/></svg> Категории
+      </button>
     </div>
 
     <!-- ВКЛАДКА: ТОВАРЫ -->
     <div id="tabProducts">
       <div class="panel">
-        <h3 id="formTitle">Добавить товар</h3>
+        <h3 id="formTitle"><svg class="ic"><use href="#i-plus"/></svg> Добавить товар</h3>
         <form id="productForm">
           <div class="form-grid">
             <div class="field"><label>Название *</label><input name="name" required></div>
             <div class="field"><label>Бренд *</label><input name="brand" required></div>
-            <div class="field">
-              <label>Категория *</label>
-              <div class="input-with-btn">
-                <select name="category" id="productCategory" required></select>
-                <button type="button" class="btn btn--ghost btn--sm" id="quickAddCategory" title="Добавить категорию">➕</button>
+            <div class="field full">
+              <label>Категории товара * <span class="muted">(можно несколько)</span></label>
+              <div class="cat-checkboxes" id="catCheckboxes"></div>
+              <div class="form-actions" style="margin-top:8px">
+                <button type="button" class="btn btn--ghost btn--sm" id="quickAddCategory">
+                  <svg class="ic"><use href="#i-plus"/></svg> Добавить новую категорию
+                </button>
               </div>
             </div>
             <div class="field"><label>Цена, ₽ *</label><input name="price" type="number" min="0" step="1" required></div>
@@ -604,12 +806,20 @@
               <div class="photos-block">
                 <div class="photos-toolbar">
                   <input type="file" id="imageFiles" accept="image/*" multiple hidden>
-                  <button type="button" class="btn btn--primary btn--sm" id="uploadPhotosBtn">📁 Загрузить фото (можно несколько)</button>
+                  <button type="button" class="btn btn--primary btn--sm" id="uploadPhotosBtn">
+                    <svg class="ic"><use href="#i-upload"/></svg> Загрузить фото (можно несколько)
+                  </button>
                 </div>
                 <div class="photos-or">или добавьте по ссылке</div>
                 <div class="photos-url-row">
                   <input type="url" id="imageUrl" placeholder="https://example.com/photo.jpg">
-                  <button type="button" class="btn btn--ghost btn--sm" id="addUrlBtn">➕ Добавить</button>
+                  <button type="button" class="btn btn--ghost btn--sm" id="addUrlBtn">
+                    <svg class="ic"><use href="#i-plus"/></svg> Добавить
+                  </button>
+                </div>
+                <div class="photos-hint">
+                  <svg class="ic"><use href="#i-info"/></svg>
+                  Перетаскивайте плитки мышью или используйте стрелки ←/→, чтобы менять порядок. Первое фото — главное.
                 </div>
                 <div class="photos-grid" id="photosGrid"></div>
               </div>
@@ -617,7 +827,9 @@
             <!-- ======== /ФОТОГРАФИИ ======== -->
           </div>
           <div class="form-actions">
-            <button type="submit" class="btn btn--primary" id="submitBtn">Добавить товар</button>
+            <button type="submit" class="btn btn--primary" id="submitBtn">
+              <svg class="ic"><use href="#i-plus"/></svg> Добавить товар
+            </button>
             <button type="button" class="btn btn--ghost" id="cancelEdit" hidden>Отмена</button>
           </div>
         </form>
@@ -629,7 +841,7 @@
           <table>
             <thead>
               <tr>
-                <th>Фото</th><th>Название</th><th>Бренд</th><th>Категория</th>
+                <th>Фото</th><th>Название</th><th>Бренд</th><th>Категории</th>
                 <th>Цена</th><th>Кол-во</th><th>Действия</th>
               </tr>
             </thead>
@@ -642,17 +854,19 @@
     <!-- ВКЛАДКА: КАТЕГОРИИ -->
     <div id="tabCategories" hidden>
       <div class="panel">
-        <h3>Добавить категорию</h3>
+        <h3><svg class="ic"><use href="#i-plus"/></svg> Добавить категорию</h3>
         <form id="categoryForm">
           <div class="input-with-btn">
             <input name="name" placeholder="Например: Гитары" required maxlength="60" style="flex:1;padding:10px 12px;border-radius:9px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-size:14px;font-family:inherit;outline:none">
-            <button type="submit" class="btn btn--primary">➕ Добавить</button>
+            <button type="submit" class="btn btn--primary">
+              <svg class="ic"><use href="#i-plus"/></svg> Добавить
+            </button>
           </div>
         </form>
       </div>
 
       <div class="panel">
-        <h3>Все категории (<span id="countCategories">0</span>)</h3>
+        <h3><svg class="ic"><use href="#i-tag"/></svg> Все категории (<span id="countCategories">0</span>)</h3>
         <ul class="cat-manage" id="categoriesList"></ul>
       </div>
     </div>
@@ -663,29 +877,32 @@
 <footer class="footer">
   <div class="container footer__grid">
     <div>
-      <div class="footer__logo">🎸 Music<span>Shop</span></div>
+      <div class="footer__logo">
+        <svg class="ic"><use href="#i-guitar"/></svg>
+        Music<span>Shop</span>
+      </div>
       <p>Магазин музыкального оборудования с 2010 года. Работаем с музыкантами любого уровня — от новичка до профессионала.</p>
       <p>Более 5000 товаров, официальная гарантия, доставка по всей России.</p>
     </div>
     <div>
       <h4>Контакты</h4>
-      <p>📞 <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
-      <p>✉️ <a href="mailto:info@musicshop.ru">info@musicshop.ru</a></p>
-      <p>📍 Москва, ул. Музыкальная, 15, стр. 2</p>
-      <p>💬 Telegram: <a href="#">@musicshop_ru</a></p>
+      <p><svg class="ic"><use href="#i-phone"/></svg> <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
+      <p><svg class="ic"><use href="#i-mail"/></svg> <a href="mailto:info@musicshop.ru">info@musicshop.ru</a></p>
+      <p><svg class="ic"><use href="#i-pin"/></svg> Москва, ул. Музыкальная, 15, стр. 2</p>
+      <p><svg class="ic"><use href="#i-chat"/></svg> Telegram: <a href="#">@musicshop_ru</a></p>
     </div>
     <div>
       <h4>Режим работы</h4>
-      <p><b>Пн – Пт:</b> 10:00 – 20:00</p>
-      <p><b>Сб:</b> 11:00 – 19:00</p>
-      <p><b>Вс:</b> выходной</p>
+      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Пн – Пт:</b> 10:00 – 20:00</p>
+      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Сб:</b> 11:00 – 19:00</p>
+      <p><svg class="ic"><use href="#i-clock"/></svg> <b>Вс:</b> выходной</p>
     </div>
     <div>
       <h4>Покупателям</h4>
-      <p><a href="#">Доставка и оплата</a></p>
-      <p><a href="#">Гарантия и возврат</a></p>
-      <p><a href="#">О компании</a></p>
-      <p><a href="#">Контакты</a></p>
+      <p><svg class="ic"><use href="#i-truck"/></svg> <a href="#">Доставка и оплата</a></p>
+      <p><svg class="ic"><use href="#i-shield"/></svg> <a href="#">Гарантия и возврат</a></p>
+      <p><svg class="ic"><use href="#i-scale"/></svg> <a href="#">О компании</a></p>
+      <p><svg class="ic"><use href="#i-info"/></svg> <a href="#">Контакты</a></p>
     </div>
   </div>
   <div class="footer__bottom container">© 2025 MusicShop. Все права защищены.</div>
@@ -713,10 +930,10 @@
 /* ============================================================
    КОНФИГ
 ============================================================ */
-const KEY_PRODUCTS   = 'ms_products_v4';
-const KEY_CART       = 'ms_cart_v4';
-const KEY_LIKES      = 'ms_likes_v4';
-const KEY_CATEGORIES = 'ms_categories_v4';
+const KEY_PRODUCTS   = 'ms_products_v5';
+const KEY_CART       = 'ms_cart_v5';
+const KEY_LIKES      = 'ms_likes_v5';
+const KEY_CATEGORIES = 'ms_categories_v5';
 const KEY_AUTH       = 'ms_admin_auth';
 
 const ADMIN_LOGIN    = 'admin';
@@ -727,12 +944,12 @@ const MAX_SIDE   = 900;
 const JPEG_QUALITY = 0.82;
 
 const SEED_PRODUCTS = [
-  {id:1, name:'Fender Stratocaster', brand:'Fender',   category:'Гитары',      price:85000, qty:5,  emoji:'🎸', images:[], desc:'Легендарная электрогитара с корпусом из ольхи, кленовой накладкой и тремя звукоснимателями. Идеальна для рока, блюза и поп-музыки.'},
-  {id:2, name:'Yamaha P-125',        brand:'Yamaha',   category:'Синтезаторы', price:52000, qty:3,  emoji:'🎹', images:[], desc:'Цифровое пианино с 88 взвешенными клавишами и потрясающим звуком концертного рояля. Подходит для дома и сцены.'},
-  {id:3, name:'Shure SM58',          brand:'Shure',    category:'Микрофоны',   price:12000, qty:10, emoji:'🎤', images:[], desc:'Легендарный динамический вокальный микрофон. Прочная конструкция и чистейший звук — стандарт сцены уже 50 лет.'},
-  {id:4, name:'Marshall DSL40',      brand:'Marshall', category:'Усилители',   price:78000, qty:2,  emoji:'🔊', images:[], desc:'Ламповый комбоусилитель мощностью 40 Вт. Классический британский звук, два канала, ревербератор.'},
-  {id:5, name:'Roland TD-1K',        brand:'Roland',   category:'Ударные',     price:45000, qty:0,  emoji:'🥁', images:[], desc:'Электронная барабанная установка для начинающих. Компактная, тихая, с встроенными тренировочными функциями.'},
-  {id:6, name:'Korg Minilogue',      brand:'Korg',     category:'Синтезаторы', price:62000, qty:4,  emoji:'🎛️', images:[], desc:'Аналоговый полифонический синтезатор с 4 голосами, осциллографом и широкими возможностями модуляции.'},
+  {id:1, name:'Fender Stratocaster', brand:'Fender',   categories:['Гитары'],                price:85000, qty:5,  images:[], desc:'Легендарная электрогитара с корпусом из ольхи, кленовой накладкой и тремя звукоснимателями. Идеальна для рока, блюза и поп-музыки.'},
+  {id:2, name:'Yamaha P-125',        brand:'Yamaha',   categories:['Синтезаторы','Цифровые пианино'], price:52000, qty:3,  images:[], desc:'Цифровое пианино с 88 взвешенными клавишами и потрясающим звуком концертного рояля. Подходит для дома и сцены.'},
+  {id:3, name:'Shure SM58',          brand:'Shure',    categories:['Микрофоны'],             price:12000, qty:10, images:[], desc:'Легендарный динамический вокальный микрофон. Прочная конструкция и чистейший звук — стандарт сцены уже 50 лет.'},
+  {id:4, name:'Marshall DSL40',      brand:'Marshall', categories:['Усилители','Гитарное оборудование'], price:78000, qty:2,  images:[], desc:'Ламповый комбоусилитель мощностью 40 Вт. Классический британский звук, два канала, ревербератор.'},
+  {id:5, name:'Roland TD-1K',        brand:'Roland',   categories:['Ударные'],               price:45000, qty:0,  images:[], desc:'Электронная барабанная установка для начинающих. Компактная, тихая, с встроенными тренировочными функциями.'},
+  {id:6, name:'Korg Minilogue',      brand:'Korg',     categories:['Синтезаторы'],           price:62000, qty:4,  images:[], desc:'Аналоговый полифонический синтезатор с 4 голосами, осциллографом и широкими возможностями модуляции.'},
 ];
 
 /* ============================================================
@@ -745,7 +962,9 @@ let likes      = [];
 let editingId  = null;
 let currentProductId = null;
 let currentImages = [];
+let currentCategories = [];    // выбранные в форме категории
 let galleryIndex = 0;
+let dragPhotoIndex = null;
 
 /* ============================================================
    DOM
@@ -804,8 +1023,8 @@ const addUrlBtn      = $('#addUrlBtn');
 const photosGrid     = $('#photosGrid');
 const photoCounter   = $('#photoCounter');
 
-const productCategory   = $('#productCategory');
-const quickAddCategory  = $('#quickAddCategory');
+const catCheckboxes  = $('#catCheckboxes');
+const quickAddCategory = $('#quickAddCategory');
 
 const tabProducts    = $('#tabProducts');
 const tabCategories  = $('#tabCategories');
@@ -832,10 +1051,16 @@ function plural(n, one, few, many){
 }
 let toastTimer;
 function toast(msg, type){
-  toastEl.textContent = msg;
+  toastEl.innerHTML = (type === 'warn'
+    ? '<svg class="ic" style="color:var(--danger)"><use href="#i-alert"/></svg>'
+    : '<svg class="ic" style="color:var(--ok)"><use href="#i-check"/></svg>')
+    + '<span>' + esc(msg) + '</span>';
   toastEl.className = 'toast show' + (type === 'warn' ? ' toast--warn' : '');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+function icon(name, cls){
+  return `<svg class="ic${cls ? ' '+cls : ''}"><use href="#i-${name}"/></svg>`;
 }
 
 /* ============================================================
@@ -846,7 +1071,17 @@ function normalizeProduct(p){
     p.images = p.image ? [p.image] : [];
   }
   delete p.image;
+
+  // Мультикатегории: старая схема p.category (строка) → p.categories (массив)
+  if(!Array.isArray(p.categories)){
+    p.categories = p.category ? [p.category] : [];
+  }
+  delete p.category;
+
   return p;
+}
+function productHasCategory(p, cat){
+  return Array.isArray(p.categories) && p.categories.includes(cat);
 }
 
 /* ============================================================
@@ -855,7 +1090,7 @@ function normalizeProduct(p){
 function loadAll(){
   try { products = JSON.parse(localStorage.getItem(KEY_PRODUCTS)) || null; } catch { products = null; }
   if(!Array.isArray(products) || !products.length){
-    products = SEED_PRODUCTS.map(p => ({...p, images: []}));
+    products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
     saveProducts();
   } else {
     products = products.map(normalizeProduct);
@@ -863,7 +1098,8 @@ function loadAll(){
 
   try { categories = JSON.parse(localStorage.getItem(KEY_CATEGORIES)) || null; } catch { categories = null; }
   if(!Array.isArray(categories) || !categories.length){
-    categories = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+    const fromProducts = products.flatMap(p => p.categories || []);
+    categories = [...new Set(fromProducts.filter(Boolean))].sort();
     saveCategories();
   }
 
@@ -957,7 +1193,7 @@ function clearCart(){ cart = {}; saveCart(); updateBadges(); }
 function toggleLike(id){
   const i = likes.indexOf(id);
   if(i >= 0){ likes.splice(i, 1); toast('Удалено из избранного'); }
-  else      { likes.push(id);     toast('Добавлено в избранное ❤️'); }
+  else      { likes.push(id);     toast('Добавлено в избранное'); }
   saveLikes();
   updateBadges();
   if(!views.shop.hidden) renderGrid();
@@ -976,19 +1212,19 @@ function mediaHTML(p){
   if(img){
     return `<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy">`;
   }
-  return `<span class="media-emoji">${esc(p.emoji || '🎵')}</span>`;
+  return `<span class="media-placeholder">${icon('image')}</span>`;
 }
 function thumbHTML(p){
   const img = firstImage(p);
   const count = (p.images || []).length;
   let badge = '';
   if(count > 1){
-    badge = `<span class="table-photos-badge">${count} фото</span>`;
+    badge = `<span class="table-photos-badge">${icon('image')}${count}</span>`;
   }
   if(img){
     return `<img class="table-thumb" src="${esc(img)}" alt="">${badge}`;
   }
-  return `<span class="table-emoji">${esc(p.emoji || '🎵')}</span>${badge}`;
+  return `<span class="table-placeholder">${icon('image')}</span>${badge}`;
 }
 
 /* ============================================================
@@ -998,17 +1234,18 @@ function cardHTML(p){
   const out   = p.qty <= 0;
   const liked = likes.includes(p.id);
   const photosCount = (p.images || []).length;
+  const cats = (p.categories || []).join(' · ');
   return `
     <article class="card ${out ? 'card--out' : ''}" data-open="${p.id}">
       <button class="card__like ${liked ? 'active' : ''}" data-like="${p.id}" title="${liked ? 'Убрать из избранного' : 'В избранное'}">
-        ${liked ? '❤' : '♡'}
+        ${icon('heart')}
       </button>
       <div class="card__media">
         ${mediaHTML(p)}
-        ${photosCount > 1 ? `<span class="card__photo-count">📷 ${photosCount}</span>` : ''}
+        ${photosCount > 1 ? `<span class="card__photo-count">${icon('image')}${photosCount}</span>` : ''}
       </div>
       <div class="card__body">
-        <div class="card__brand">${esc(p.brand)} · ${esc(p.category)}</div>
+        <div class="card__brand">${esc(p.brand)}${cats ? ' · ' + esc(cats) : ''}</div>
         <h3 class="card__name">${esc(p.name)}</h3>
         <div class="card__meta">
           <span class="price">${fmt(p.price)}</span>
@@ -1030,9 +1267,9 @@ function renderGrid(){
 
   const list = products.filter(p => {
     if(onlyStock && p.qty <= 0) return false;
-    if(cat && p.category !== cat) return false;
+    if(cat && !productHasCategory(p, cat)) return false;
     if(q){
-      const hay = (p.name + ' ' + p.brand + ' ' + (p.desc||'')).toLowerCase();
+      const hay = (p.name + ' ' + p.brand + ' ' + (p.desc||'') + ' ' + (p.categories||[]).join(' ')).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -1044,24 +1281,38 @@ function renderGrid(){
 }
 
 function refreshCategories(){
+  // Фильтр витрины
   const cur = categorySel.value;
   categorySel.innerHTML = '<option value="">Все категории</option>' +
     categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
   if(categories.includes(cur)) categorySel.value = cur;
 
-  const curProd = productCategory.value;
-  productCategory.innerHTML = '<option value="" disabled selected>— выберите —</option>' +
-    categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
-  if(categories.includes(curProd)) productCategory.value = curProd;
+  // Чекбоксы в форме товара
+  renderCatCheckboxes();
 
+  // Каталог в шапке
   catalogList.innerHTML = categories.map(c => {
-    const count = products.filter(p => p.category === c).length;
+    const count = products.filter(p => productHasCategory(p, c)).length;
     return `<li><button data-cat="${esc(c)}">
       <span>${esc(c)}</span><span class="cat-count">${count}</span>
     </button></li>`;
   }).join('') + `<li><button data-cat="">
     <span>Все товары</span><span class="cat-count">${products.length}</span>
   </button></li>`;
+}
+
+function renderCatCheckboxes(){
+  if(!categories.length){
+    catCheckboxes.innerHTML = '';
+    return;
+  }
+  catCheckboxes.innerHTML = categories.map(c => {
+    const checked = currentCategories.includes(c);
+    return `<label class="cat-check ${checked ? 'checked' : ''}" data-cat-label="${esc(c)}">
+      <input type="checkbox" value="${esc(c)}" ${checked ? 'checked' : ''}>
+      <span>${esc(c)}</span>
+    </label>`;
+  }).join('');
 }
 
 /* ============================================================
@@ -1075,17 +1326,18 @@ function renderProductDetail(){
   const liked  = likes.includes(p.id);
   const inCart = cart[p.id] || 0;
   const images = p.images || [];
+  const cats   = p.categories || [];
 
   if(galleryIndex >= images.length) galleryIndex = 0;
   if(galleryIndex < 0) galleryIndex = 0;
 
   const mainMedia = images.length
     ? `<img src="${esc(images[galleryIndex])}" alt="${esc(p.name)}">`
-    : `<span class="media-emoji">${esc(p.emoji || '🎵')}</span>`;
+    : `<span class="media-placeholder">${icon('image')}</span>`;
 
   const nav = images.length > 1 ? `
-    <button class="gallery__nav gallery__nav--prev" data-gallery-prev title="Назад">‹</button>
-    <button class="gallery__nav gallery__nav--next" data-gallery-next title="Вперёд">›</button>
+    <button class="gallery__nav gallery__nav--prev" data-gallery-prev title="Назад">${icon('chevron-left')}</button>
+    <button class="gallery__nav gallery__nav--next" data-gallery-next title="Вперёд">${icon('chevron-right')}</button>
     <span class="gallery__counter">${galleryIndex + 1} / ${images.length}</span>
   ` : '';
 
@@ -1100,6 +1352,10 @@ function renderProductDetail(){
     </div>
   ` : '';
 
+  const catTags = cats.length
+    ? `<div class="pd__brands">${cats.map(c => `<span class="cat-tag">${esc(c)}</span>`).join('')}</div>`
+    : '';
+
   productDetail.innerHTML = `
     <div class="pd">
       <div class="gallery">
@@ -1110,25 +1366,26 @@ function renderProductDetail(){
         ${thumbs}
       </div>
       <div class="pd__info">
-        <div class="pd__brand">${esc(p.brand)} · ${esc(p.category)}</div>
+        <div class="pd__brand">${esc(p.brand)}</div>
         <h1 class="pd__name">${esc(p.name)}</h1>
+        ${catTags}
         <div class="pd__price">${fmt(p.price)}</div>
-        <div class="pd__stock ${out ? 'stock--out' : ''}">
-          ${out ? '❌ Нет в наличии' : '✅ В наличии: ' + p.qty + ' шт.'}
+        <div class="pd__stock ${out ? 'out' : 'ok'}">
+          ${out ? icon('x') + ' Нет в наличии' : icon('check') + ' В наличии: ' + p.qty + ' шт.'}
         </div>
         <p class="pd__desc">${esc(p.desc || 'Описание товара отсутствует.')}</p>
         <div class="pd__actions">
           <button class="btn btn--primary" id="pdAddToCart" ${out ? 'disabled' : ''}>
-            🛒 ${out ? 'Нет в наличии' : (inCart > 0 ? `В корзине: ${inCart} — добавить ещё` : 'Добавить в корзину')}
+            ${icon('cart')} ${out ? 'Нет в наличии' : (inCart > 0 ? `В корзине: ${inCart} — добавить ещё` : 'Добавить в корзину')}
           </button>
           <button class="btn btn--ghost" id="pdToggleLike">
-            ${liked ? '❤ В избранном' : '♡ Добавить в избранное'}
+            ${icon('heart')} ${liked ? 'В избранном' : 'Добавить в избранное'}
           </button>
         </div>
         <div class="pd__specs">
           <h4>Характеристики</h4>
           <div class="spec-row"><span>Бренд</span><span>${esc(p.brand)}</span></div>
-          <div class="spec-row"><span>Категория</span><span>${esc(p.category)}</span></div>
+          <div class="spec-row"><span>Категории</span><span>${cats.length ? esc(cats.join(', ')) : '—'}</span></div>
           <div class="spec-row"><span>Артикул</span><span>MS-${String(p.id).padStart(5,'0')}</span></div>
           <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : p.qty + ' шт.'}</span></div>
           <div class="spec-row"><span>Гарантия</span><span>12 месяцев</span></div>
@@ -1166,7 +1423,7 @@ function renderCart(){
   if(!ids.length){
     cartContent.innerHTML = `
       <div class="empty">
-        <span class="empty__icon">🛒</span>
+        <span class="empty__icon">${icon('cart')}</span>
         Ваша корзина пуста.<br>
         <button class="btn btn--primary" style="margin-top:16px" id="goShop">Перейти в каталог</button>
       </div>`;
@@ -1185,17 +1442,17 @@ function renderCart(){
         <div class="cart-item__media">${mediaHTML(p)}</div>
         <div>
           <p class="cart-item__name">${esc(p.name)}</p>
-          <p class="cart-item__brand">${esc(p.brand)} · ${esc(p.category)}</p>
+          <p class="cart-item__brand">${esc(p.brand)}${p.categories?.length ? ' · ' + esc(p.categories.join(', ')) : ''}</p>
           <p class="cart-item__price">${fmt(p.price)} за шт.</p>
         </div>
         <div class="qty-ctrl">
-          <button data-dec="${p.id}" ${qty <= 1 ? 'disabled' : ''}>−</button>
+          <button data-dec="${p.id}" ${qty <= 1 ? 'disabled' : ''}>${icon('minus')}</button>
           <span>${qty}</span>
-          <button data-inc="${p.id}" ${qty >= p.qty ? 'disabled' : ''}>+</button>
+          <button data-inc="${p.id}" ${qty >= p.qty ? 'disabled' : ''}>${icon('plus')}</button>
         </div>
         <div class="cart-item__sum">${fmt(sum)}</div>
         <div>
-          <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">✕</button>
+          <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">${icon('x')}</button>
         </div>
       </div>`;
   }).join('');
@@ -1250,7 +1507,7 @@ function checkout(){
   refreshCategories();
   renderGrid();
   renderCart();
-  toast('✅ Заказ оформлен! Спасибо за покупку.');
+  toast('Заказ оформлен! Спасибо за покупку.');
   setTimeout(() => show('shop'), 900);
 }
 
@@ -1263,9 +1520,9 @@ function renderLikes(){
   if(!likedProducts.length){
     likesContent.innerHTML = `
       <div class="empty">
-        <span class="empty__icon">❤️</span>
+        <span class="empty__icon">${icon('heart')}</span>
         В избранном пока ничего нет.<br>
-        Нажимайте ♡ на товарах, чтобы сохранить их здесь.<br>
+        Нажимайте на сердечко на товарах, чтобы сохранить их здесь.<br>
         <button class="btn btn--primary" style="margin-top:16px" id="goShopLikes">Перейти в каталог</button>
       </div>`;
     $('#goShopLikes').addEventListener('click', () => show('shop'));
@@ -1293,20 +1550,21 @@ function renderAdmin(){
   countEl.textContent = products.length;
   adminTable.innerHTML = products.map(p => {
     const out = p.qty <= 0;
+    const cats = (p.categories || []).map(c => `<span class="table-cat">${esc(c)}</span>`).join('');
     return `
       <tr>
         <td>${thumbHTML(p)}</td>
         <td>${esc(p.name)}</td>
         <td>${esc(p.brand)}</td>
-        <td>${esc(p.category)}</td>
+        <td><div class="table-cats">${cats || '<span class="muted">—</span>'}</div></td>
         <td>${fmt(p.price)}</td>
         <td><span class="qty-badge ${out ? 'qty-badge--out' : 'qty-badge--ok'}">
           ${out ? 'Нет' : p.qty}
         </span></td>
         <td>
           <div class="row-actions">
-            <button class="btn btn--ghost btn--sm" data-edit="${p.id}" title="Редактировать">✎</button>
-            <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">Удалить</button>
+            <button class="btn btn--ghost btn--sm" data-edit="${p.id}" title="Редактировать">${icon('edit')}</button>
+            <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">${icon('trash')}</button>
           </div>
         </td>
       </tr>`;
@@ -1317,15 +1575,17 @@ function resetForm(){
   productForm.reset();
   editingId = null;
   currentImages = [];
-  formTitle.textContent = 'Добавить товар';
-  submitBtn.textContent = 'Добавить товар';
+  currentCategories = [];
+  formTitle.innerHTML = `${icon('plus')} Добавить товар`;
+  submitBtn.innerHTML = `${icon('plus')} Добавить товар`;
   cancelEdit.hidden = true;
   imageUrl.value = '';
   renderPhotosGrid();
+  renderCatCheckboxes();
 }
 
 /* ============================================================
-   ЗАГРУЗКА ИЗОБРАЖЕНИЙ
+   ЗАГРУЗКА ИЗОБРАЖЕНИЙ + ПОРЯДОК
 ============================================================ */
 function renderPhotosGrid(){
   const n = currentImages.length;
@@ -1333,24 +1593,76 @@ function renderPhotosGrid(){
 
   if(!n){
     photosGrid.innerHTML = `<div class="photos-empty" style="grid-column:1/-1">
+      ${icon('image')}
       Фотографий пока нет. Добавьте одну или несколько.
     </div>`;
     return;
   }
 
   photosGrid.innerHTML = currentImages.map((src, i) => `
-    <div class="photo-tile">
+    <div class="photo-tile" draggable="true" data-photo-index="${i}">
       <img src="${esc(src)}" alt="">
       ${i === 0 ? '<span class="photo-tile__main">Главное</span>' : ''}
+      <span class="photo-tile__order">${i + 1}</span>
       <div class="photo-tile__actions">
+        <button type="button" class="photo-tile__btn photo-tile__btn--left"
+                data-photo-move-left="${i}" title="Переместить влево"
+                ${i === 0 ? 'disabled' : ''}>${icon('chevron-left')}</button>
+        <button type="button" class="photo-tile__btn photo-tile__btn--right"
+                data-photo-move-right="${i}" title="Переместить вправо"
+                ${i === n - 1 ? 'disabled' : ''}>${icon('chevron-right')}</button>
         <button type="button" class="photo-tile__btn photo-tile__btn--star"
                 data-photo-make-main="${i}" title="${i===0 ? 'Уже главное' : 'Сделать главным'}"
-                ${i === 0 ? 'disabled' : ''}>★</button>
+                ${i === 0 ? 'disabled' : ''}>${icon('star')}</button>
         <button type="button" class="photo-tile__btn photo-tile__btn--del"
-                data-photo-remove="${i}" title="Удалить">✕</button>
+                data-photo-remove="${i}" title="Удалить">${icon('x')}</button>
       </div>
     </div>
   `).join('');
+
+  bindPhotoDragAndDrop();
+}
+
+function movePhoto(from, to){
+  if(from === to) return;
+  if(from < 0 || from >= currentImages.length) return;
+  if(to   < 0 || to   >= currentImages.length) return;
+  const [src] = currentImages.splice(from, 1);
+  currentImages.splice(to, 0, src);
+  renderPhotosGrid();
+}
+
+function bindPhotoDragAndDrop(){
+  photosGrid.querySelectorAll('.photo-tile').forEach(tile => {
+    tile.addEventListener('dragstart', e => {
+      dragPhotoIndex = +tile.dataset.photoIndex;
+      tile.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', String(dragPhotoIndex)); } catch(_) {}
+    });
+    tile.addEventListener('dragend', () => {
+      tile.classList.remove('dragging');
+      photosGrid.querySelectorAll('.photo-tile').forEach(t => t.classList.remove('drag-over'));
+      dragPhotoIndex = null;
+    });
+    tile.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      tile.classList.add('drag-over');
+    });
+    tile.addEventListener('dragleave', () => {
+      tile.classList.remove('drag-over');
+    });
+    tile.addEventListener('drop', e => {
+      e.preventDefault();
+      tile.classList.remove('drag-over');
+      const target = +tile.dataset.photoIndex;
+      const from = (dragPhotoIndex !== null) ? dragPhotoIndex : Number(e.dataTransfer.getData('text/plain'));
+      if(!Number.isNaN(from) && from !== target){
+        movePhoto(from, target);
+      }
+    });
+  });
 }
 
 function resizeImage(file, maxSide = MAX_SIDE, quality = JPEG_QUALITY){
@@ -1397,8 +1709,8 @@ async function handleFilesUpload(fileList){
   }
 
   uploadPhotosBtn.disabled = true;
-  const oldLabel = uploadPhotosBtn.textContent;
-  uploadPhotosBtn.textContent = `⏳ Обработка ${toAdd.length}...`;
+  const oldLabel = uploadPhotosBtn.innerHTML;
+  uploadPhotosBtn.innerHTML = `${icon('upload')} Обработка ${toAdd.length}...`;
 
   let added = 0;
   for(const f of toAdd){
@@ -1419,7 +1731,7 @@ async function handleFilesUpload(fileList){
   }
 
   uploadPhotosBtn.disabled = false;
-  uploadPhotosBtn.textContent = oldLabel;
+  uploadPhotosBtn.innerHTML = oldLabel;
   imageFiles.value = '';
   if(added) toast(`Загружено фото: ${added}`);
 }
@@ -1430,14 +1742,14 @@ async function handleFilesUpload(fileList){
 function renderCategoriesTab(){
   countCategories.textContent = categories.length;
   categoriesList.innerHTML = categories.map(c => {
-    const count = products.filter(p => p.category === c).length;
+    const count = products.filter(p => productHasCategory(p, c)).length;
     return `
       <li class="cat-row" data-cat="${esc(c)}">
         <span class="cat-row__name">${esc(c)}</span>
         <span class="cat-row__count">${count} ${plural(count, 'товар', 'товара', 'товаров')}</span>
         <div class="cat-row__actions">
-          <button class="btn btn--ghost btn--sm" data-edit-cat>✎</button>
-          <button class="btn btn--danger btn--sm" data-del-cat>Удалить</button>
+          <button class="btn btn--ghost btn--sm" data-edit-cat>${icon('edit')}</button>
+          <button class="btn btn--danger btn--sm" data-del-cat>${icon('trash')}</button>
         </div>
       </li>`;
   }).join('') || '<li class="muted" style="padding:12px">Категорий пока нет. Добавьте первую.</li>';
@@ -1461,7 +1773,11 @@ function startEditCategory(li){
       toast('Категория с таким названием уже есть', 'warn');
       return;
     }
-    products.forEach(p => { if(p.category === oldName) p.category = newName; });
+    products.forEach(p => {
+      if(Array.isArray(p.categories)){
+        p.categories = p.categories.map(c => c === oldName ? newName : c);
+      }
+    });
     categories = categories.map(c => c === oldName ? newName : c);
     saveProducts(); saveCategories();
     refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
@@ -1477,34 +1793,37 @@ function startEditCategory(li){
 }
 
 function deleteCategory(name){
-  const used = products.filter(p => p.category === name).length;
+  const used = products.filter(p => productHasCategory(p, name)).length;
   const msg = used > 0
-    ? `В категории «${name}» ${used} ${plural(used, 'товар','товара','товаров')}. Удалить категорию? Товары будут перемещены в «Без категории».`
+    ? `В категории «${name}» ${used} ${plural(used, 'товар','товара','товаров')}. Удалить категорию? Она будет убрана из всех товаров.`
     : `Удалить категорию «${name}»?`;
   if(!confirm(msg)) return;
 
-  if(used > 0){
-    if(!categories.includes('Без категории')) categories.push('Без категории');
-    products.forEach(p => { if(p.category === name) p.category = 'Без категории'; });
-  }
+  products.forEach(p => {
+    if(Array.isArray(p.categories)){
+      p.categories = p.categories.filter(c => c !== name);
+    }
+  });
   categories = categories.filter(c => c !== name);
+  currentCategories = currentCategories.filter(c => c !== name);
   saveProducts(); saveCategories();
   refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
   toast(`Категория «${name}» удалена`, 'warn');
 }
 
-function addCategory(name){
+function addCategory(name, {silent = false} = {}){
   const n = name.trim();
-  if(!n) return;
+  if(!n) return false;
   if(categories.includes(n)){
-    toast('Такая категория уже есть', 'warn');
-    return;
+    if(!silent) toast('Такая категория уже есть', 'warn');
+    return false;
   }
   categories.push(n);
   categories.sort((a,b) => a.localeCompare(b, 'ru'));
   saveCategories();
   refreshCategories(); renderCategoriesTab();
-  toast(`Категория «${n}» добавлена`);
+  if(!silent) toast(`Категория «${n}» добавлена`);
+  return true;
 }
 
 /* ============================================================
@@ -1512,11 +1831,11 @@ function addCategory(name){
 ============================================================ */
 function updateAuthBtn(){
   if(isAdmin()){
-    loginBtn.textContent = 'Кабинет';
+    loginBtn.innerHTML = `${icon('user')}<span>Кабинет</span>`;
     loginBtn.classList.add('btn--primary');
     loginBtn.classList.remove('btn--ghost');
   } else {
-    loginBtn.textContent = 'Войти';
+    loginBtn.innerHTML = `${icon('user')}<span>Войти</span>`;
     loginBtn.classList.add('btn--ghost');
     loginBtn.classList.remove('btn--primary');
   }
@@ -1631,6 +1950,22 @@ logoutBtn.addEventListener('click', () => {
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchAdminTab(t.dataset.tab)));
 
 /* ============================================================
+   СОБЫТИЯ — ЧЕКБОКСЫ КАТЕГОРИЙ
+============================================================ */
+catCheckboxes.addEventListener('change', e => {
+  const cb = e.target.closest('input[type="checkbox"]');
+  if(!cb) return;
+  const val = cb.value;
+  if(cb.checked){
+    if(!currentCategories.includes(val)) currentCategories.push(val);
+  } else {
+    currentCategories = currentCategories.filter(c => c !== val);
+  }
+  const label = cb.closest('.cat-check');
+  if(label) label.classList.toggle('checked', cb.checked);
+});
+
+/* ============================================================
    СОБЫТИЯ — ФОТО
 ============================================================ */
 uploadPhotosBtn.addEventListener('click', () => imageFiles.click());
@@ -1658,18 +1993,26 @@ imageUrl.addEventListener('keydown', e => {
 });
 
 photosGrid.addEventListener('click', e => {
-  const makeMain = e.target.closest('[data-photo-make-main]');
-  if(makeMain){
-    const i = +makeMain.dataset.photoMakeMain;
-    if(i > 0 && i < currentImages.length){
-      const [src] = currentImages.splice(i, 1);
-      currentImages.unshift(src);
-      renderPhotosGrid();
-      toast('Главное фото изменено');
-    }
+  const moveLeft  = e.target.closest('[data-photo-move-left]');
+  const moveRight = e.target.closest('[data-photo-move-right]');
+  const makeMain  = e.target.closest('[data-photo-make-main]');
+  const rm        = e.target.closest('[data-photo-remove]');
+
+  if(moveLeft){
+    const i = +moveLeft.dataset.photoMoveLeft;
+    movePhoto(i, i - 1);
     return;
   }
-  const rm = e.target.closest('[data-photo-remove]');
+  if(moveRight){
+    const i = +moveRight.dataset.photoMoveRight;
+    movePhoto(i, i + 1);
+    return;
+  }
+  if(makeMain){
+    const i = +makeMain.dataset.photoMakeMain;
+    if(i > 0) movePhoto(i, 0);
+    return;
+  }
   if(rm){
     const i = +rm.dataset.photoRemove;
     currentImages.splice(i, 1);
@@ -1685,20 +2028,19 @@ productForm.addEventListener('submit', e => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(productForm).entries());
 
-  if(!data.category){
-    toast('Выберите категорию', 'warn');
+  if(!currentCategories.length){
+    toast('Выберите хотя бы одну категорию', 'warn');
     return;
   }
 
   const payload = {
-    name:     data.name.trim(),
-    brand:    data.brand.trim(),
-    category: data.category,
-    price:    Math.max(0, Number(data.price) || 0),
-    qty:      Math.max(0, Number(data.qty)   || 0),
-    desc:     (data.desc || '').trim(),
-    images:   [...currentImages],
-    emoji:    currentImages.length ? '' : '🎵',
+    name:       data.name.trim(),
+    brand:      data.brand.trim(),
+    categories: [...currentCategories],
+    price:      Math.max(0, Number(data.price) || 0),
+    qty:        Math.max(0, Number(data.qty)   || 0),
+    desc:       (data.desc || '').trim(),
+    images:     [...currentImages],
   };
 
   if(editingId !== null){
@@ -1724,18 +2066,18 @@ quickAddCategory.addEventListener('click', () => {
   if(name === null) return;
   const n = name.trim();
   if(!n) return;
-  if(categories.includes(n)){
-    toast('Такая категория уже есть', 'warn');
-    productCategory.value = n;
-    return;
+  const wasAdded = addCategory(n, {silent: false});
+  if(wasAdded){
+    // Автоматически отметить категорию в форме
+    if(!currentCategories.includes(n)) currentCategories.push(n);
+    renderCatCheckboxes();
+  } else {
+    // Если уже есть — просто отметить
+    if(categories.includes(n) && !currentCategories.includes(n)){
+      currentCategories.push(n);
+      renderCatCheckboxes();
+    }
   }
-  categories.push(n);
-  categories.sort((a,b) => a.localeCompare(b, 'ru'));
-  saveCategories();
-  refreshCategories();
-  productCategory.value = n;
-  renderCategoriesTab();
-  toast(`Категория «${n}» добавлена`);
 });
 
 /* ============================================================
@@ -1749,17 +2091,18 @@ adminTable.addEventListener('click', e => {
     const p = products.find(x => x.id === Number(editBtn.dataset.edit));
     if(!p) return;
     editingId = p.id;
-    productForm.name.value     = p.name;
-    productForm.brand.value    = p.brand;
-    productCategory.value      = p.category;
-    productForm.price.value    = p.price;
-    productForm.qty.value      = p.qty;
-    productForm.desc.value     = p.desc || '';
+    productForm.name.value  = p.name;
+    productForm.brand.value = p.brand;
+    productForm.price.value = p.price;
+    productForm.qty.value   = p.qty;
+    productForm.desc.value  = p.desc || '';
     currentImages = Array.isArray(p.images) ? [...p.images] : [];
+    currentCategories = Array.isArray(p.categories) ? [...p.categories] : [];
     imageUrl.value = '';
     renderPhotosGrid();
-    formTitle.textContent = 'Редактировать товар';
-    submitBtn.textContent = 'Сохранить изменения';
+    renderCatCheckboxes();
+    formTitle.innerHTML = `${icon('edit')} Редактировать товар`;
+    submitBtn.innerHTML = `${icon('check')} Сохранить изменения`;
     cancelEdit.hidden = false;
     productForm.scrollIntoView({behavior:'smooth', block:'start'});
   }
