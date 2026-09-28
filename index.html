@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MusicShop — музыкальное оборудование</title>
+<title>Sound Leader — музыкальное оборудование</title>
 <style>
   :root{
     --bg:#f5f6f8; --surface:#ffffff; --surface-2:#f2f4f7;
@@ -67,14 +67,27 @@
     background:rgba(255,255,255,.9); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
   }
-  /* Шапка выровнена по одной вертикали с остальным контентом */
   .header__inner{
     display:flex;align-items:center;gap:10px;
     padding:10px 0;min-height:64px;
   }
-  .logo{font-size:20px;font-weight:700;color:var(--text);text-decoration:none;flex-shrink:0;
-    display:inline-flex;align-items:center;gap:8px}
-  .logo .ic{width:22px;height:22px;color:var(--accent)}
+
+  /* Логотип с картинкой */
+  .logo{
+    font-size:20px;font-weight:700;color:var(--text);text-decoration:none;
+    flex-shrink:0;display:inline-flex;align-items:center;gap:10px;
+  }
+  .logo__img{
+    height:36px;width:auto;max-width:160px;display:block;
+    object-fit:contain;
+  }
+  .logo__fallback{display:none;align-items:center;gap:8px}
+  .logo__fallback .ic{width:24px;height:24px;color:var(--accent)}
+  .logo__text span{color:var(--accent)}
+  /* Когда картинка не загрузилась — показываем fallback */
+  .logo--fallback .logo__img{display:none}
+  .logo--fallback .logo__fallback{display:inline-flex}
+
   .catalog-btn{flex-shrink:0;position:relative}
   .catalog-btn.open{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
   .search-wrap{flex:1;min-width:0;position:relative}
@@ -128,7 +141,7 @@
   .check input{accent-color:var(--accent);width:16px;height:16px}
   .result-count{margin-left:auto;color:var(--muted);font-size:13px}
 
-  /* ==================== СЕТКА (карточки остаются квадратными) ==================== */
+  /* ==================== СЕТКА ==================== */
   .grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
@@ -157,7 +170,6 @@
   .card__like.active{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
   .card__like.active .ic{fill:currentColor}
 
-  /* Квадратная обрезка фото — только в карточках каталога */
   .card__media{
     position:relative;width:100%;aspect-ratio:1 / 1;
     display:flex;align-items:center;justify-content:center;
@@ -194,24 +206,23 @@
   .back-btn{margin:24px 0 16px}
   .pd{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-bottom:60px}
 
-  /* Галерея на странице товара: фото видно целиком, размер уменьшен */
   .gallery{display:flex;flex-direction:column;gap:12px}
   .gallery__main{
     width:100%;
-    height:clamp(260px, 40vh, 380px);   /* меньше, чем раньше */
+    height:clamp(260px, 40vh, 380px);
     border-radius:var(--radius);border:1px solid var(--border);
     display:flex;align-items:center;justify-content:center;
-    background:#fff;                     /* нейтральный фон, без градиента */
+    background:#fff;
     overflow:hidden;
     box-shadow:var(--shadow-sm);position:relative;
-    padding:12px;                        /* воздух вокруг фото */
+    padding:12px;
   }
   .gallery__main img{
     max-width:100%;
     max-height:100%;
     width:auto;
     height:auto;
-    object-fit:contain;                  /* ← фото целиком, без обрезки */
+    object-fit:contain;
     display:block;
   }
   .gallery__main .media-placeholder{color:#c7cbd2}
@@ -247,7 +258,7 @@
   }
   .gallery__thumb img{
     max-width:100%;max-height:100%;width:auto;height:auto;
-    object-fit:contain;                  /* превью тоже без обрезки */
+    object-fit:contain;
     display:block;
   }
   .gallery__thumb:hover{border-color:var(--border-strong);transform:translateY(-2px)}
@@ -608,9 +619,20 @@
   .footer .ic{width:14px;height:14px;color:var(--muted);flex-shrink:0}
   .footer__bottom{border-top:1px solid var(--border);padding:18px 0;
     text-align:center;color:var(--muted);font-size:13px}
-  .footer__logo{font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;
-    display:flex;align-items:center;gap:8px}
-  .footer__logo .ic{width:20px;height:20px;color:var(--accent)}
+
+  /* Логотип в футере */
+  .footer__logo{
+    font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .footer__logo img{
+    height:32px;width:auto;max-width:150px;display:block;object-fit:contain;
+  }
+  .footer__logo .logo__fallback{display:none;align-items:center;gap:8px}
+  .footer__logo .logo__fallback .ic{width:20px;height:20px;color:var(--accent)}
+  .footer__logo .logo__text span{color:var(--accent)}
+  .footer__logo.logo--fallback img{display:none}
+  .footer__logo.logo--fallback .logo__fallback{display:inline-flex}
 
   /* ==================== ЗАКАЗЫ ==================== */
   .orders-list{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
@@ -780,6 +802,7 @@
   @media (max-width:720px){
     .header__inner{flex-wrap:wrap;padding:8px 0;gap:8px}
     .logo{font-size:17px}
+    .logo__img{height:30px}
     .search-wrap{order:10;flex-basis:100%}
     .header-actions{margin-left:auto}
     .header-actions #likesBtn,
@@ -944,8 +967,12 @@
 <header class="header">
   <div class="container header__inner">
     <a href="#" class="logo" id="logoLink">
-      <svg class="ic"><use href="#i-guitar"/></svg>
-      Music<span>Shop</span>
+      <img src="images/logo.png" alt="Sound Leader" class="logo__img"
+           onerror="this.closest('.logo').classList.add('logo--fallback')">
+      <span class="logo__fallback">
+        <svg class="ic"><use href="#i-guitar"/></svg>
+        <span class="logo__text">Sound<span>Leader</span></span>
+      </span>
     </a>
     <button class="btn btn--ghost btn--sm catalog-btn" id="catalogBtn">
       <svg class="ic"><use href="#i-folder"/></svg>
@@ -1209,8 +1236,12 @@
   <div class="container footer__grid">
     <div>
       <div class="footer__logo">
-        <svg class="ic"><use href="#i-guitar"/></svg>
-        Music<span>Shop</span>
+        <img src="images/logo.png" alt="Sound Leader"
+             onerror="this.closest('.footer__logo').classList.add('logo--fallback')">
+        <span class="logo__fallback">
+          <svg class="ic"><use href="#i-guitar"/></svg>
+          <span class="logo__text">Sound<span>Leader</span></span>
+        </span>
       </div>
       <p>Магазин музыкального оборудования с 2010 года. Работаем с музыкантами любого уровня — от новичка до профессионала.</p>
       <p>Более 5000 товаров, официальная гарантия, доставка по всей России.</p>
@@ -1218,9 +1249,9 @@
     <div>
       <h4>Контакты</h4>
       <p><svg class="ic"><use href="#i-phone"/></svg> <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
-      <p><svg class="ic"><use href="#i-mail"/></svg> <a href="mailto:info@musicshop.ru">info@musicshop.ru</a></p>
+      <p><svg class="ic"><use href="#i-mail"/></svg> <a href="mailto:info@soundleader.ru">info@soundleader.ru</a></p>
       <p><svg class="ic"><use href="#i-pin"/></svg> Москва, ул. Музыкальная, 15, стр. 2</p>
-      <p><svg class="ic"><use href="#i-chat"/></svg> Telegram: <a href="#">@musicshop_ru</a></p>
+      <p><svg class="ic"><use href="#i-chat"/></svg> Telegram: <a href="#">@soundleader_ru</a></p>
     </div>
     <div>
       <h4>Режим работы</h4>
@@ -1236,7 +1267,7 @@
       <p><svg class="ic"><use href="#i-info"/></svg> <a href="#">Контакты</a></p>
     </div>
   </div>
-  <div class="footer__bottom container">© 2025 MusicShop. Все права защищены.</div>
+  <div class="footer__bottom container">© 2025 Sound Leader. Все права защищены.</div>
 </footer>
 
 <!-- ==================== НИЖНЕЕ МЕНЮ ==================== -->
@@ -1399,7 +1430,7 @@
 /* ============================================================
    КОНФИГ
 ============================================================ */
-const STORAGE_PREFIX = 'ms_';
+const STORAGE_PREFIX = 'sl_';   // Sound Leader
 const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
 const KEY_CART       = STORAGE_PREFIX + 'cart';
 const KEY_LIKES      = STORAGE_PREFIX + 'likes';
@@ -1410,12 +1441,16 @@ const KEY_USERS      = STORAGE_PREFIX + 'users';
 const KEY_SESSION    = STORAGE_PREFIX + 'user_session';
 const KEY_ORDERS     = STORAGE_PREFIX + 'orders';
 
-const CURRENT_SCHEMA = 6;
+const CURRENT_SCHEMA = 1;
 
-const LEGACY_PRODUCT_KEYS  = ['ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
-const LEGACY_CATEGORY_KEYS = ['ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
-const LEGACY_CART_KEYS     = ['ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
-const LEGACY_LIKES_KEYS    = ['ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
+// Старые ключи (MusicShop) — мигрируем данные, чтобы ничего не потерялось
+const LEGACY_PRODUCT_KEYS  = ['ms_products','ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
+const LEGACY_CATEGORY_KEYS = ['ms_categories','ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
+const LEGACY_CART_KEYS     = ['ms_cart','ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
+const LEGACY_LIKES_KEYS    = ['ms_likes','ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
+const LEGACY_ORDERS_KEYS   = ['ms_orders'];
+const LEGACY_USERS_KEYS    = ['ms_users'];
+const LEGACY_SESSION_KEYS  = ['ms_user_session'];
 
 const ADMIN_LOGIN    = 'admin';
 const ADMIN_PASSWORD = 'admin123';
@@ -1771,45 +1806,37 @@ document.addEventListener('keydown', e => {
 function tryReadKey(key){
   try { return localStorage.getItem(key); } catch { return null; }
 }
+function migrateKey(newKey, legacyKeys, expectArray = true){
+  if(tryReadKey(newKey)) return;
+  for(const key of legacyKeys){
+    const raw = tryReadKey(key);
+    if(!raw) continue;
+    if(!expectArray){
+      localStorage.setItem(newKey, raw);
+      return;
+    }
+    try {
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr) && arr.length){
+        localStorage.setItem(newKey, raw);
+        return;
+      }
+    } catch(_) {}
+  }
+}
 function migrateFromLegacy(){
-  if(!tryReadKey(KEY_PRODUCTS)){
-    for(const key of LEGACY_PRODUCT_KEYS){
-      const raw = tryReadKey(key);
-      if(raw){
-        try {
-          const arr = JSON.parse(raw);
-          if(Array.isArray(arr) && arr.length){
-            localStorage.setItem(KEY_PRODUCTS, raw);
-            break;
-          }
-        } catch(_) {}
-      }
-    }
-  }
-  if(!tryReadKey(KEY_CATEGORIES)){
-    for(const key of LEGACY_CATEGORY_KEYS){
-      const raw = tryReadKey(key);
-      if(raw){
-        try {
-          const arr = JSON.parse(raw);
-          if(Array.isArray(arr) && arr.length){
-            localStorage.setItem(KEY_CATEGORIES, raw);
-            break;
-          }
-        } catch(_) {}
-      }
-    }
-  }
-  if(!tryReadKey(KEY_CART)){
-    for(const key of LEGACY_CART_KEYS){
-      const raw = tryReadKey(key);
-      if(raw){ localStorage.setItem(KEY_CART, raw); break; }
-    }
-  }
-  if(!tryReadKey(KEY_LIKES)){
-    for(const key of LEGACY_LIKES_KEYS){
-      const raw = tryReadKey(key);
-      if(raw){ localStorage.setItem(KEY_LIKES, raw); break; }
+  migrateKey(KEY_PRODUCTS, LEGACY_PRODUCT_KEYS);
+  migrateKey(KEY_CATEGORIES, LEGACY_CATEGORY_KEYS);
+  migrateKey(KEY_CART, LEGACY_CART_KEYS, false);
+  migrateKey(KEY_LIKES, LEGACY_LIKES_KEYS);
+  migrateKey(KEY_ORDERS, LEGACY_ORDERS_KEYS);
+  migrateKey(KEY_USERS, LEGACY_USERS_KEYS);
+
+  // сессия пользователя — переносим если есть
+  if(!sessionStorage.getItem(KEY_SESSION)){
+    for(const key of LEGACY_SESSION_KEYS){
+      const raw = sessionStorage.getItem(key);
+      if(raw){ sessionStorage.setItem(KEY_SESSION, raw); break; }
     }
   }
   try { localStorage.setItem(KEY_SCHEMA, String(CURRENT_SCHEMA)); } catch(_) {}
@@ -2010,7 +2037,7 @@ function thumbHTML(p){
 }
 
 /* ============================================================
-   ВИТРИНА (карточки — квадратные фото)
+   ВИТРИНА
 ============================================================ */
 function cardHTML(p){
   const out   = p.qty <= 0;
@@ -2091,7 +2118,7 @@ function renderCatCheckboxes(){
 }
 
 /* ============================================================
-   КАРТОЧКА ТОВАРА (фото целиком, меньше по размеру)
+   КАРТОЧКА ТОВАРА
 ============================================================ */
 function renderProductDetail(){
   const p = products.find(x => x.id === currentProductId);
@@ -2158,7 +2185,7 @@ function renderProductDetail(){
           <h4>Характеристики</h4>
           <div class="spec-row"><span>Бренд</span><span>${esc(p.brand)}</span></div>
           <div class="spec-row"><span>Категории</span><span>${cats.length ? esc(cats.join(', ')) : '—'}</span></div>
-          <div class="spec-row"><span>Артикул</span><span>MS-${String(p.id).padStart(5,'0')}</span></div>
+          <div class="spec-row"><span>Артикул</span><span>SL-${String(p.id).padStart(5,'0')}</span></div>
           <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : p.qty + ' шт.'}</span></div>
           <div class="spec-row"><span>Гарантия</span><span>12 месяцев</span></div>
         </div>
@@ -2837,7 +2864,7 @@ function resetForm(){
 }
 
 /* ============================================================
-   ФОТО (в форме админа — квадратные плитки)
+   ФОТО
 ============================================================ */
 function renderPhotosGrid(){
   const n = currentImages.length;
@@ -3072,7 +3099,7 @@ function updateBackupStats(){
 
 async function downloadBackup(){
   const data = {
-    app: 'MusicShop',
+    app: 'SoundLeader',
     schema: CURRENT_SCHEMA,
     exportedAt: new Date().toISOString(),
     products, categories, cart, likes, orders, users,
@@ -3083,7 +3110,7 @@ async function downloadBackup(){
   const a = document.createElement('a');
   const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
   a.href = url;
-  a.download = `musicshop-backup-${stamp}.json`;
+  a.download = `soundleader-backup-${stamp}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
