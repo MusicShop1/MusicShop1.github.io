@@ -33,6 +33,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     line-height:1.5; min-height:100vh; display:flex; flex-direction:column;
   }
+  body.modal-open{overflow:hidden}
   main{flex:1}
   .container{max-width:1200px;margin:0 auto;padding:0 16px;width:100%}
   .muted{color:var(--muted);font-size:13px}
@@ -51,10 +52,10 @@
   .btn--primary:disabled{background:#d1d5db;color:#9ca3af;cursor:not-allowed;box-shadow:none}
   .btn--ghost{border-color:var(--border-strong);background:var(--surface)}
   .btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
-  .btn--danger{background:transparent;border-color:var(--danger);color:var(--danger)}
-  .btn--danger:hover{background:var(--danger);color:#fff}
-  .btn--ok{background:transparent;border-color:var(--ok);color:var(--ok)}
-  .btn--ok:hover{background:var(--ok);color:#fff}
+  .btn--danger{background:var(--danger);border-color:var(--danger);color:#fff}
+  .btn--danger:hover{background:#b91c1c;border-color:#b91c1c}
+  .btn--danger-outline{background:transparent;border-color:var(--danger);color:var(--danger)}
+  .btn--danger-outline:hover{background:var(--danger);color:#fff}
   .btn--sm{padding:7px 12px;font-size:13px}
   .btn--icon{padding:9px 11px;position:relative}
 
@@ -341,7 +342,6 @@
   }
   .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
-  /* ===== Чекбоксы категорий ===== */
   .cat-checkboxes{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
     gap:8px;padding:12px;border:1px solid var(--border);border-radius:10px;
@@ -360,7 +360,6 @@
   .cat-check input{accent-color:var(--accent);width:15px;height:15px;margin:0}
   .cat-check.checked{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
 
-  /* ============ МУЛЬТИ-ЗАГРУЗКА ФОТО ============ */
   .photos-block{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface-2)}
   .photos-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
   .photos-or{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:8px;margin:10px 0}
@@ -424,7 +423,6 @@
   }
   .photos-empty .ic{width:26px;height:26px;color:#c7cbd2;display:block;margin:0 auto 8px}
 
-  /* Категории (список) */
   .cat-manage{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
   .cat-row{
     display:flex;align-items:center;gap:12px;
@@ -440,7 +438,6 @@
     background:#fff;font-size:14px;font-family:inherit;outline:none;color:var(--text);
   }
 
-  /* Резервные копии */
   .backup-block{
     display:flex;gap:12px;flex-wrap:wrap;align-items:center;
     padding:14px;background:var(--surface-2);border-radius:10px;
@@ -452,7 +449,6 @@
   }
   .backup-block .info .ic{width:15px;height:15px;color:var(--ok);flex-shrink:0}
 
-  /* Таблица */
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
   th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
@@ -485,20 +481,63 @@
   .qty-badge--out{background:var(--danger-soft);color:var(--danger)}
   .row-actions{display:flex;gap:6px}
 
-  /* ==================== МОДАЛКА ==================== */
+  /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
   .modal{
-    position:fixed;inset:0;background:rgba(17,24,39,.5);backdrop-filter:blur(4px);
-    display:flex;align-items:center;justify-content:center;padding:16px;z-index:60;
+    position:fixed;inset:0;background:rgba(17,24,39,.55);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;padding:16px;z-index:80;
+    opacity:0;pointer-events:none;transition:opacity .18s ease;
   }
-  .modal[hidden]{display:none}
+  .modal.open{opacity:1;pointer-events:auto}
   .modal__box{
     background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--radius);padding:26px;width:100%;max-width:420px;
+    border-radius:var(--radius);padding:26px;width:100%;max-width:440px;
     box-shadow:var(--shadow-lg);
+    transform:translateY(12px) scale(.97);opacity:0;
+    transition:transform .2s cubic-bezier(.2,.8,.3,1), opacity .18s;
+    max-height:90vh;display:flex;flex-direction:column;
   }
-  .modal__box h3{margin:0 0 16px;font-size:19px}
-  .modal__box .field{margin-bottom:12px}
-  .hint{font-size:12px;color:var(--muted);margin-top:10px}
+  .modal.open .modal__box{transform:translateY(0) scale(1);opacity:1}
+  .modal__box--wide{max-width:520px}
+
+  .modal__head{
+    display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;
+  }
+  .modal__icon{
+    width:44px;height:44px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal__icon .ic{width:22px;height:22px}
+  .modal__icon--accent{background:var(--accent-soft);color:var(--accent)}
+  .modal__icon--danger{background:var(--danger-soft);color:var(--danger)}
+  .modal__icon--ok{background:var(--ok-soft);color:var(--ok)}
+  .modal__title{
+    margin:0;font-size:19px;font-weight:700;line-height:1.25;
+    flex:1;padding-top:8px;
+  }
+  .modal__text{
+    color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 20px;
+  }
+  .modal__text b{color:var(--text);font-weight:600}
+  .modal__body{flex:1;overflow-y:auto;margin-bottom:6px}
+  .modal__actions{
+    display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;
+  }
+  .modal__actions .btn{flex:1;min-width:120px;padding:11px 16px;font-size:14.5px}
+
+  .modal__input{
+    width:100%;padding:12px 14px;border-radius:10px;
+    background:var(--surface-2);border:1px solid var(--border);
+    color:var(--text);font-size:14.5px;font-family:inherit;outline:none;
+    transition:.15s;margin-bottom:8px;
+  }
+  .modal__input:focus{border-color:var(--accent);background:#fff}
+  .modal__input.error{border-color:var(--danger);background:var(--danger-soft)}
+  .modal__hint{
+    font-size:12.5px;color:var(--muted);margin:0;
+    display:flex;align-items:center;gap:6px;
+  }
+  .modal__hint .ic{width:13px;height:13px;flex-shrink:0}
+  .modal__hint.error{color:var(--danger)}
 
   /* ==================== ФУТЕР ==================== */
   .footer{background:var(--surface);border-top:1px solid var(--border);
@@ -567,6 +606,10 @@
     .footer__grid{gap:24px}
     .photos-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
     .photo-tile__actions{flex-direction:row}
+    .modal__box{padding:22px}
+    .modal__title{font-size:17px}
+    .modal__actions{flex-direction:column-reverse}
+    .modal__actions .btn{width:100%}
   }
 </style>
 </head>
@@ -677,6 +720,9 @@
   </symbol>
   <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>
+  </symbol>
+  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.8c-.9.5-1.3 1.1-1.3 2.2M12 17h.01"/>
   </symbol>
 </svg>
 
@@ -924,7 +970,7 @@
           Удаляет все товары, категории, корзину и избранное и возвращает
           первоначальный демонстрационный набор товаров.
         </p>
-        <button class="btn btn--danger" id="resetAllBtn">
+        <button class="btn btn--danger-outline" id="resetAllBtn">
           <svg class="ic"><use href="#i-trash"/></svg> Сбросить всё к демо-набору
         </button>
       </div>
@@ -967,18 +1013,50 @@
   <div class="footer__bottom container">© 2025 MusicShop. Все права защищены.</div>
 </footer>
 
-<!-- ==================== МОДАЛКА ВХОДА ==================== -->
-<div class="modal" id="loginModal" hidden>
-  <div class="modal__box">
-    <h3>Вход для администратора</h3>
-    <form id="loginForm">
-      <div class="field"><label>Логин</label><input name="login" autocomplete="username" required></div>
-      <div class="field"><label>Пароль</label><input name="password" type="password" autocomplete="current-password" required></div>
-      <div class="form-actions">
-        <button type="submit" class="btn btn--primary">Войти</button>
-        <button type="button" class="btn btn--ghost" id="closeLogin">Отмена</button>
+<!-- ============ УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО ============ -->
+<div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="appModalTitle">
+  <div class="modal__box" id="appModalBox">
+    <div class="modal__head">
+      <div class="modal__icon" id="appModalIcon"></div>
+      <h3 class="modal__title" id="appModalTitle"></h3>
+    </div>
+    <div class="modal__body">
+      <p class="modal__text" id="appModalText"></p>
+      <div id="appModalInputWrap" hidden>
+        <input class="modal__input" id="appModalInput" type="text" autocomplete="off">
+        <p class="modal__hint" id="appModalHint"></p>
       </div>
-      <p class="hint">По умолчанию: <b>admin</b> / <b>admin123</b></p>
+    </div>
+    <div class="modal__actions" id="appModalActions"></div>
+  </div>
+</div>
+
+<!-- ==================== МОДАЛКА ВХОДА ==================== -->
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="modal__box">
+    <div class="modal__head">
+      <div class="modal__icon modal__icon--accent">
+        <svg class="ic"><use href="#i-user"/></svg>
+      </div>
+      <h3 class="modal__title" id="loginTitle">Вход для администратора</h3>
+    </div>
+    <form id="loginForm">
+      <div class="field" style="margin-bottom:12px">
+        <label>Логин</label>
+        <input name="login" autocomplete="username" required>
+      </div>
+      <div class="field" style="margin-bottom:18px">
+        <label>Пароль</label>
+        <input name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="closeLogin">Отмена</button>
+        <button type="submit" class="btn btn--primary">Войти</button>
+      </div>
+      <p class="modal__hint" style="margin-top:14px">
+        <svg class="ic"><use href="#i-info"/></svg>
+        По умолчанию: <b>&nbsp;admin&nbsp;</b> / <b>&nbsp;admin123</b>
+      </p>
     </form>
   </div>
 </div>
@@ -988,11 +1066,9 @@
 <script>
 /* ============================================================
    КОНФИГ
-   ВАЖНО: ключи НЕ МЕНЯЮТСЯ между версиями!
-   Это гарантирует, что ваши товары и категории сохранятся
-   при обновлении index.html.
+   Ключи НЕ меняются между версиями — данные сохраняются.
 ============================================================ */
-const STORAGE_PREFIX = 'ms_';        // Префикс одинаковый для всех версий
+const STORAGE_PREFIX = 'ms_';
 const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
 const KEY_CART       = STORAGE_PREFIX + 'cart';
 const KEY_LIKES      = STORAGE_PREFIX + 'likes';
@@ -1000,13 +1076,12 @@ const KEY_CATEGORIES = STORAGE_PREFIX + 'categories';
 const KEY_AUTH       = STORAGE_PREFIX + 'admin_auth';
 const KEY_SCHEMA     = STORAGE_PREFIX + 'schema_version';
 
-const CURRENT_SCHEMA = 5;            // Растёт при структурных изменениях
+const CURRENT_SCHEMA = 5;
 
-// Старые ключи, из которых нужно мигрировать данные (v1..v5)
-const LEGACY_PRODUCT_KEYS    = ['ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
-const LEGACY_CATEGORY_KEYS   = ['ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
-const LEGACY_CART_KEYS       = ['ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
-const LEGACY_LIKES_KEYS      = ['ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
+const LEGACY_PRODUCT_KEYS  = ['ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
+const LEGACY_CATEGORY_KEYS = ['ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
+const LEGACY_CART_KEYS     = ['ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
+const LEGACY_LIKES_KEYS    = ['ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
 
 const ADMIN_LOGIN    = 'admin';
 const ADMIN_PASSWORD = 'admin123';
@@ -1110,6 +1185,17 @@ const uploadBackupBtn   = $('#uploadBackupBtn');
 const backupFileInput   = $('#backupFileInput');
 const resetAllBtn       = $('#resetAllBtn');
 
+// Универсальное модальное окно
+const appModal      = $('#appModal');
+const appModalBox   = $('#appModalBox');
+const appModalIcon  = $('#appModalIcon');
+const appModalTitle = $('#appModalTitle');
+const appModalText  = $('#appModalText');
+const appModalInputWrap = $('#appModalInputWrap');
+const appModalInput = $('#appModalInput');
+const appModalHint  = $('#appModalHint');
+const appModalActions = $('#appModalActions');
+
 /* ============================================================
    УТИЛИТЫ
 ============================================================ */
@@ -1147,15 +1233,188 @@ function formatBytes(b){
 }
 
 /* ============================================================
+   УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО
+   Заменяет alert / confirm / prompt браузера
+============================================================ */
+let activeModalResolve = null;
+let activeModalType = null;
+
+function closeAppModal(result){
+  appModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+  if(activeModalResolve){
+    const r = activeModalResolve;
+    activeModalResolve = null;
+    activeModalType = null;
+    r(result);
+  }
+}
+
+function openAppModal({
+  type = 'info',          // 'info' | 'confirm' | 'danger' | 'prompt' | 'success'
+  title = '',
+  text = '',
+  iconName,               // имя SVG-иконки (по умолчанию по типу)
+  okText = 'ОК',
+  cancelText = 'Отмена',
+  showCancel = false,
+  input = null,           // { value, placeholder, hint, maxlength, validate }
+  wide = false,
+} = {}){
+  // Закрываем предыдущую модалку, если открыта
+  if(activeModalResolve){
+    const r = activeModalResolve;
+    activeModalResolve = null;
+    r(null);
+  }
+
+  activeModalType = type;
+
+  // Настройки вида по типу
+  const presets = {
+    info:    { iconCls:'modal__icon--accent', icon:'info',   ok:'btn--primary',       defaultOk:'ОК' },
+    success: { iconCls:'modal__icon--ok',     icon:'check',  ok:'btn--primary',       defaultOk:'ОК' },
+    confirm: { iconCls:'modal__icon--accent', icon:'help',   ok:'btn--primary',       defaultOk:'Подтвердить' },
+    danger:  { iconCls:'modal__icon--danger', icon:'alert',  ok:'btn--danger',        defaultOk:'Удалить' },
+    prompt:  { iconCls:'modal__icon--accent', icon:'edit',   ok:'btn--primary',       defaultOk:'Сохранить' },
+  };
+  const preset = presets[type] || presets.info;
+
+  appModalBox.classList.toggle('modal__box--wide', !!wide);
+
+  // Иконка
+  appModalIcon.className = 'modal__icon ' + preset.iconCls;
+  appModalIcon.innerHTML = icon(iconName || preset.icon);
+
+  // Заголовок и текст
+  appModalTitle.textContent = title;
+  appModalText.innerHTML = text || '';
+  appModalText.style.display = text ? '' : 'none';
+
+  // Поле ввода (для prompt)
+  if(input && (type === 'prompt')){
+    appModalInputWrap.hidden = false;
+    appModalInput.value = input.value || '';
+    appModalInput.placeholder = input.placeholder || '';
+    appModalInput.maxLength = input.maxlength || 100;
+    appModalHint.textContent = input.hint || '';
+    appModalHint.className = 'modal__hint';
+    appModalHint.innerHTML = input.hint
+      ? `${icon('info')}<span>${esc(input.hint)}</span>`
+      : '';
+    setTimeout(() => { appModalInput.focus(); appModalInput.select(); }, 60);
+  } else {
+    appModalInputWrap.hidden = true;
+    appModalInput.value = '';
+  }
+
+  // Кнопки
+  appModalActions.innerHTML = '';
+  if(showCancel){
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'btn btn--ghost';
+    cancelBtn.textContent = cancelText;
+    cancelBtn.addEventListener('click', () => closeAppModal(null));
+    appModalActions.appendChild(cancelBtn);
+  }
+  const okBtn = document.createElement('button');
+  okBtn.type = 'button';
+  okBtn.className = 'btn ' + preset.ok;
+  okBtn.textContent = okText || preset.defaultOk;
+  okBtn.addEventListener('click', () => {
+    if(type === 'prompt'){
+      const val = appModalInput.value.trim();
+      if(input && typeof input.validate === 'function'){
+        const err = input.validate(val);
+        if(err){
+          appModalHint.innerHTML = `${icon('alert')}<span>${esc(err)}</span>`;
+          appModalHint.className = 'modal__hint error';
+          appModalInput.classList.add('error');
+          appModalInput.focus();
+          return;
+        }
+      }
+      closeAppModal(val);
+    } else {
+      closeAppModal(true);
+    }
+  });
+  appModalActions.appendChild(okBtn);
+
+  // Открываем
+  appModal.classList.add('open');
+  document.body.classList.add('modal-open');
+
+  // Промис-обёртка
+  return new Promise(resolve => {
+    activeModalResolve = resolve;
+  });
+}
+
+// Обёртки — снаружи используются как обычные функции
+function uiAlert(title, text, opts = {}){
+  return openAppModal({
+    type: opts.type || 'info',
+    title,
+    text,
+    okText: opts.okText || 'ОК',
+    showCancel: false,
+  });
+}
+function uiConfirm(title, text, opts = {}){
+  return openAppModal({
+    type: opts.danger ? 'danger' : 'confirm',
+    title,
+    text,
+    okText: opts.okText || (opts.danger ? 'Удалить' : 'Подтвердить'),
+    cancelText: opts.cancelText || 'Отмена',
+    showCancel: true,
+  }).then(r => r === true);
+}
+function uiPrompt(title, opts = {}){
+  return openAppModal({
+    type: 'prompt',
+    title,
+    text: opts.text || '',
+    input: {
+      value: opts.value || '',
+      placeholder: opts.placeholder || '',
+      hint: opts.hint || '',
+      maxlength: opts.maxlength || 100,
+      validate: opts.validate,
+    },
+    okText: opts.okText || 'Сохранить',
+    cancelText: opts.cancelText || 'Отмена',
+    showCancel: true,
+  });
+}
+
+// Закрытие модалки по клику на фон и Escape
+appModal.addEventListener('click', e => {
+  if(e.target === appModal) closeAppModal(null);
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && appModal.classList.contains('open')){
+    closeAppModal(null);
+  }
+  if(e.key === 'Enter' && appModal.classList.contains('open')){
+    // Если открыт prompt и фокус в инпуте — сабмит по Enter
+    if(activeModalType === 'prompt' && document.activeElement === appModalInput){
+      e.preventDefault();
+      const okBtn = appModalActions.querySelector('.btn--primary, .btn--danger');
+      if(okBtn) okBtn.click();
+    }
+  }
+});
+
+/* ============================================================
    МИГРАЦИЯ ДАННЫХ
-   Копирует данные из старых ключей (v1..v5) в новый стабильный ключ.
-   Запускается один раз, если в новом ключе ещё пусто.
 ============================================================ */
 function tryReadKey(key){
   try { return localStorage.getItem(key); } catch { return null; }
 }
 function migrateFromLegacy(){
-  // Товары
   if(!tryReadKey(KEY_PRODUCTS)){
     for(const key of LEGACY_PRODUCT_KEYS){
       const raw = tryReadKey(key);
@@ -1170,7 +1429,6 @@ function migrateFromLegacy(){
       }
     }
   }
-  // Категории
   if(!tryReadKey(KEY_CATEGORIES)){
     for(const key of LEGACY_CATEGORY_KEYS){
       const raw = tryReadKey(key);
@@ -1185,21 +1443,18 @@ function migrateFromLegacy(){
       }
     }
   }
-  // Корзина
   if(!tryReadKey(KEY_CART)){
     for(const key of LEGACY_CART_KEYS){
       const raw = tryReadKey(key);
       if(raw){ localStorage.setItem(KEY_CART, raw); break; }
     }
   }
-  // Лайки
   if(!tryReadKey(KEY_LIKES)){
     for(const key of LEGACY_LIKES_KEYS){
       const raw = tryReadKey(key);
       if(raw){ localStorage.setItem(KEY_LIKES, raw); break; }
     }
   }
-  // Проставляем версию схемы
   try { localStorage.setItem(KEY_SCHEMA, String(CURRENT_SCHEMA)); } catch(_) {}
 }
 
@@ -1590,7 +1845,7 @@ function renderCart(){
         </div>
         <div class="cart-item__sum">${fmt(sum)}</div>
         <div>
-          <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">${icon('x')}</button>
+          <button class="btn btn--danger-outline btn--sm" data-del="${p.id}" title="Удалить">${icon('x')}</button>
         </div>
       </div>`;
   }).join('');
@@ -1618,21 +1873,44 @@ function renderCart(){
     removeFromCart(+b.dataset.del);
   }));
 
-  $('#cartClear').addEventListener('click', () => {
-    if(confirm('Очистить корзину?')){ clearCart(); renderCart(); toast('Корзина очищена'); }
+  $('#cartClear').addEventListener('click', async () => {
+    const ok = await uiConfirm(
+      'Очистить корзину?',
+      'Все товары будут удалены из корзины. Это действие нельзя отменить.',
+      { danger: true, okText: 'Очистить', cancelText: 'Отмена' }
+    );
+    if(ok){ clearCart(); renderCart(); toast('Корзина очищена'); }
   });
   $('#cartCheckout').addEventListener('click', checkout);
 }
 
-function checkout(){
+async function checkout(){
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
     if(cart[id] > p.qty){
-      toast(`Недостаточно товара: «${p.name}» (осталось ${p.qty})`, 'warn');
+      await uiAlert(
+        'Недостаточно товара',
+        `Товара «<b>${esc(p.name)}</b>» осталось только ${p.qty} шт.`,
+        { type: 'danger' }
+      );
       return;
     }
   }
+
+  const total = Object.keys(cart).reduce((s, id) => {
+    const p = products.find(x => x.id === +id);
+    return s + (p ? p.qty * 0 + cart[id] * p.price : 0);
+  }, 0);
+  const itemsCount = Object.values(cart).reduce((s,n)=>s+n,0);
+
+  const ok = await uiConfirm(
+    'Оформить заказ?',
+    `Товаров: <b>${itemsCount}</b>, на сумму <b>${fmt(total)}</b>.<br>После подтверждения остатки на складе будут списаны.`,
+    { okText: 'Оформить', cancelText: 'Отмена' }
+  );
+  if(!ok) return;
+
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
@@ -1645,8 +1923,8 @@ function checkout(){
   refreshCategories();
   renderGrid();
   renderCart();
-  toast('Заказ оформлен! Спасибо за покупку.');
-  setTimeout(() => show('shop'), 900);
+  await uiAlert('Заказ оформлен', 'Спасибо за покупку! Мы свяжемся с вами для подтверждения.', { type: 'success' });
+  setTimeout(() => show('shop'), 400);
 }
 
 /* ============================================================
@@ -1702,7 +1980,7 @@ function renderAdmin(){
         <td>
           <div class="row-actions">
             <button class="btn btn--ghost btn--sm" data-edit="${p.id}" title="Редактировать">${icon('edit')}</button>
-            <button class="btn btn--danger btn--sm" data-del="${p.id}" title="Удалить">${icon('trash')}</button>
+            <button class="btn btn--danger-outline btn--sm" data-del="${p.id}" title="Удалить">${icon('trash')}</button>
           </div>
         </td>
       </tr>`;
@@ -1887,7 +2165,7 @@ function renderCategoriesTab(){
         <span class="cat-row__count">${count} ${plural(count, 'товар', 'товара', 'товаров')}</span>
         <div class="cat-row__actions">
           <button class="btn btn--ghost btn--sm" data-edit-cat>${icon('edit')}</button>
-          <button class="btn btn--danger btn--sm" data-del-cat>${icon('trash')}</button>
+          <button class="btn btn--danger-outline btn--sm" data-del-cat>${icon('trash')}</button>
         </div>
       </li>`;
   }).join('') || '<li class="muted" style="padding:12px">Категорий пока нет. Добавьте первую.</li>';
@@ -1930,12 +2208,13 @@ function startEditCategory(li){
   });
 }
 
-function deleteCategory(name){
+async function deleteCategory(name){
   const used = products.filter(p => productHasCategory(p, name)).length;
-  const msg = used > 0
-    ? `В категории «${name}» ${used} ${plural(used, 'товар','товара','товаров')}. Удалить категорию? Она будет убрана из всех товаров.`
-    : `Удалить категорию «${name}»?`;
-  if(!confirm(msg)) return;
+  const text = used > 0
+    ? `В категории «<b>${esc(name)}</b>» — <b>${used}</b> ${plural(used, 'товар','товара','товаров')}.<br>Категория будет убрана из всех товаров.`
+    : `Удалить категорию «<b>${esc(name)}</b>»?`;
+  const ok = await uiConfirm('Удалить категорию?', text, { danger: true, okText: 'Удалить' });
+  if(!ok) return;
 
   products.forEach(p => {
     if(Array.isArray(p.categories)){
@@ -1978,7 +2257,7 @@ function updateBackupStats(){
   backupStats.textContent = `Товаров: ${products.length} · Категорий: ${categories.length} · Объём данных: ${formatBytes(size)}`;
 }
 
-function downloadBackup(){
+async function downloadBackup(){
   const data = {
     app: 'MusicShop',
     schema: CURRENT_SCHEMA,
@@ -2002,21 +2281,32 @@ function downloadBackup(){
   toast('Резервная копия сохранена');
 }
 
-function uploadBackup(file){
+async function uploadBackup(file){
   if(!file) return;
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = async e => {
+    let data;
     try {
-      const data = JSON.parse(e.target.result);
+      data = JSON.parse(e.target.result);
+    } catch(err){
+      await uiAlert('Ошибка загрузки', 'Не удалось прочитать файл. Возможно, он повреждён или имеет неверный формат.', { type: 'danger' });
+      backupFileInput.value = '';
+      return;
+    }
+    try {
       if(!data || typeof data !== 'object') throw new Error('Формат файла неверный');
-
       const newProducts = Array.isArray(data.products) ? data.products.map(normalizeProduct) : null;
       if(!newProducts) throw new Error('В файле нет товаров');
 
-      if(!confirm('Текущие данные будут заменены содержимым файла. Продолжить?')) return;
+      const ok = await uiConfirm(
+        'Заменить текущие данные?',
+        `В файле: <b>${newProducts.length}</b> товаров.<br>Текущие товары, категории, корзина и избранное будут заменены.`,
+        { danger: true, okText: 'Загрузить' }
+      );
+      if(!ok){ backupFileInput.value = ''; return; }
 
       products = newProducts;
-      categories = Array.isArray(data.categories) ? data.categories.slice() : 
+      categories = Array.isArray(data.categories) ? data.categories.slice() :
         [...new Set(products.flatMap(p => p.categories || []).filter(Boolean))];
       cart = (data.cart && typeof data.cart === 'object') ? data.cart : {};
       likes = Array.isArray(data.likes) ? data.likes : [];
@@ -2024,21 +2314,34 @@ function uploadBackup(file){
       saveProducts(); saveCategories(); saveCart(); saveLikes();
       refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
       updateBackupStats();
-      toast(`Импортировано: ${products.length} товаров, ${categories.length} категорий`);
+      await uiAlert('Импорт завершён', `Загружено: <b>${products.length}</b> товаров, <b>${categories.length}</b> категорий.`, { type: 'success' });
     } catch(err){
       console.error(err);
-      toast('Не удалось загрузить файл: ' + err.message, 'warn');
+      await uiAlert('Ошибка загрузки', esc(err.message), { type: 'danger' });
     } finally {
       backupFileInput.value = '';
     }
   };
-  reader.onerror = () => toast('Ошибка чтения файла', 'warn');
+  reader.onerror = async () => {
+    await uiAlert('Ошибка чтения', 'Не удалось прочитать файл.', { type: 'danger' });
+  };
   reader.readAsText(file, 'utf-8');
 }
 
-function resetAll(){
-  if(!confirm('Сбросить все данные к демонстрационному набору? Это действие нельзя отменить.')) return;
-  if(!confirm('Точно сбросить? Все ваши товары, категории, корзина и избранное будут удалены.')) return;
+async function resetAll(){
+  const ok1 = await uiConfirm(
+    'Сбросить все данные?',
+    'Все ваши товары, категории, корзина и избранное будут удалены и заменены на демонстрационный набор.',
+    { danger: true, okText: 'Продолжить' }
+  );
+  if(!ok1) return;
+
+  const ok2 = await uiConfirm(
+    'Точно сбросить?',
+    'Это действие <b>нельзя отменить</b>. Рекомендуем сначала скачать резервную копию.',
+    { danger: true, okText: 'Да, сбросить' }
+  );
+  if(!ok2) return;
 
   products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
   categories = [...new Set(products.flatMap(p => p.categories || []))].sort();
@@ -2048,7 +2351,7 @@ function resetAll(){
   saveProducts(); saveCategories(); saveCart(); saveLikes();
   refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
   updateBackupStats();
-  toast('Данные сброшены к демо-набору', 'warn');
+  await uiAlert('Сброс выполнен', 'Данные возвращены к демонстрационному набору.', { type: 'success' });
 }
 
 /* ============================================================
@@ -2111,7 +2414,7 @@ likesBtn.addEventListener('click', () => show('likes'));
 cartBtn.addEventListener('click',  () => show('cart'));
 loginBtn.addEventListener('click', () => {
   if(isAdmin()) show('admin');
-  else { loginModal.hidden = false; loginForm.login.focus(); }
+  else { loginModal.classList.add('open'); document.body.classList.add('modal-open'); loginForm.login.focus(); }
 });
 
 /* ============================================================
@@ -2143,9 +2446,16 @@ backFromLikes.addEventListener('click',   () => show('shop'));
 /* ============================================================
    СОБЫТИЯ — МОДАЛКА ВХОДА
 ============================================================ */
-closeLogin.addEventListener('click', () => loginModal.hidden = true);
+function closeLoginModal(){
+  loginModal.classList.remove('open');
+  if(!appModal.classList.contains('open')) document.body.classList.remove('modal-open');
+}
+closeLogin.addEventListener('click', closeLoginModal);
 loginModal.addEventListener('click', e => {
-  if(e.target === loginModal) loginModal.hidden = true;
+  if(e.target === loginModal) closeLoginModal();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && loginModal.classList.contains('open')) closeLoginModal();
 });
 loginForm.addEventListener('submit', e => {
   e.preventDefault();
@@ -2154,7 +2464,7 @@ loginForm.addEventListener('submit', e => {
   if(l === ADMIN_LOGIN && p === ADMIN_PASSWORD){
     setAdmin(true);
     loginForm.reset();
-    loginModal.hidden = true;
+    closeLoginModal();
     updateAuthBtn();
     show('admin');
     switchAdminTab('products');
@@ -2163,7 +2473,13 @@ loginForm.addEventListener('submit', e => {
     toast('Неверный логин или пароль', 'warn');
   }
 });
-logoutBtn.addEventListener('click', () => {
+logoutBtn.addEventListener('click', async () => {
+  const ok = await uiConfirm(
+    'Выйти из аккаунта?',
+    'Вы вернётесь на витрину магазина. Данные и корзина сохранятся.',
+    { okText: 'Выйти', cancelText: 'Остаться' }
+  );
+  if(!ok) return;
   setAdmin(false);
   resetForm();
   updateAuthBtn();
@@ -2251,12 +2567,12 @@ photosGrid.addEventListener('click', e => {
 /* ============================================================
    СОБЫТИЯ — ФОРМА ТОВАРА
 ============================================================ */
-productForm.addEventListener('submit', e => {
+productForm.addEventListener('submit', async e => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(productForm).entries());
 
   if(!currentCategories.length){
-    toast('Выберите хотя бы одну категорию', 'warn');
+    await uiAlert('Не выбрана категория', 'Отметьте хотя бы одну категорию для товара.', { type: 'danger' });
     return;
   }
 
@@ -2288,15 +2604,26 @@ productForm.addEventListener('submit', e => {
 
 cancelEdit.addEventListener('click', resetForm);
 
-quickAddCategory.addEventListener('click', () => {
-  const name = prompt('Название новой категории:');
+quickAddCategory.addEventListener('click', async () => {
+  const name = await uiPrompt('Новая категория', {
+    placeholder: 'Например: Гитары',
+    hint: 'Название можно изменить позже во вкладке «Категории».',
+    maxlength: 60,
+    okText: 'Добавить',
+    validate: (val) => {
+      if(!val) return 'Введите название категории';
+      if(categories.includes(val)) return 'Такая категория уже есть';
+      return null;
+    },
+  });
   if(name === null) return;
   const n = name.trim();
   if(!n) return;
-  const wasAdded = addCategory(n, {silent: false});
+  const wasAdded = addCategory(n, {silent: true});
   if(wasAdded){
     if(!currentCategories.includes(n)) currentCategories.push(n);
     renderCatCheckboxes();
+    toast(`Категория «${n}» добавлена`);
   } else {
     if(categories.includes(n) && !currentCategories.includes(n)){
       currentCategories.push(n);
@@ -2308,7 +2635,7 @@ quickAddCategory.addEventListener('click', () => {
 /* ============================================================
    СОБЫТИЯ — ТАБЛИЦА ТОВАРОВ
 ============================================================ */
-adminTable.addEventListener('click', e => {
+adminTable.addEventListener('click', async e => {
   const editBtn = e.target.closest('[data-edit]');
   const delBtn  = e.target.closest('[data-del]');
 
@@ -2335,7 +2662,20 @@ adminTable.addEventListener('click', e => {
   if(delBtn){
     const p = products.find(x => x.id === Number(delBtn.dataset.del));
     if(!p) return;
-    if(!confirm(`Удалить товар «${p.name}»?`)) return;
+
+    const photosCount = (p.images || []).length;
+    const cats = (p.categories || []).join(', ') || '—';
+    const text = `
+      Товар: <b>${esc(p.name)}</b><br>
+      Бренд: <b>${esc(p.brand)}</b><br>
+      Категории: ${esc(cats)}<br>
+      Цена: <b>${fmt(p.price)}</b>, в наличии: <b>${p.qty}</b> шт.<br>
+      Фотографий: <b>${photosCount}</b><br><br>
+      Это действие <b>нельзя отменить</b>.
+    `;
+    const ok = await uiConfirm('Удалить товар?', text, { danger: true, okText: 'Удалить' });
+    if(!ok) return;
+
     products = products.filter(x => x.id !== p.id);
     delete cart[p.id];
     likes = likes.filter(id => id !== p.id);
@@ -2352,10 +2692,19 @@ adminTable.addEventListener('click', e => {
 /* ============================================================
    СОБЫТИЯ — КАТЕГОРИИ
 ============================================================ */
-categoryForm.addEventListener('submit', e => {
+categoryForm.addEventListener('submit', async e => {
   e.preventDefault();
   const data = new FormData(categoryForm);
-  addCategory(data.get('name') || '');
+  const name = (data.get('name') || '').trim();
+  if(!name){
+    await uiAlert('Пустое название', 'Введите название категории.', { type: 'danger' });
+    return;
+  }
+  if(categories.includes(name)){
+    await uiAlert('Уже существует', `Категория «${esc(name)}» уже есть в списке.`, { type: 'danger' });
+    return;
+  }
+  addCategory(name);
   categoryForm.reset();
 });
 
