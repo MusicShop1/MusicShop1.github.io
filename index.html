@@ -166,21 +166,47 @@
   .card__like.active{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
   .card__like.active .ic{fill:currentColor}
 
+  /* Карточка: квадратное фото + стопка картинок для перелистывания мышью */
   .card__media{
     position:relative;width:100%;aspect-ratio:1 / 1;
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#f9fafb,#eef0f3);overflow:hidden;
+    cursor:ew-resize;               /* подсказка: тяните влево-вправо */
   }
-  .card__media img{width:100%;height:100%;object-fit:cover;display:block}
+  .card__media.is-scrubbing{cursor:grabbing}
+  .card__media-stack{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card__media-stack img{
+    position:absolute;inset:0;
+    width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transition:opacity .18s ease;pointer-events:none;
+  }
+  .card__media-stack img.active{opacity:1}
   .card__media .media-placeholder{color:#c7cbd2}
   .card__media .media-placeholder .ic{width:64px;height:64px}
+
   .card__photo-count{
     position:absolute;bottom:6px;left:6px;padding:3px 8px;
     background:rgba(17,24,39,.75);color:#fff;border-radius:20px;
     font-size:11px;font-weight:600;backdrop-filter:blur(4px);
-    display:inline-flex;align-items:center;gap:4px;
+    display:inline-flex;align-items:center;gap:4px;z-index:2;
   }
   .card__photo-count .ic{width:11px;height:11px}
+
+  /* Точки-индикаторы снизу */
+  .card__dots{
+    position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+    display:flex;gap:5px;z-index:3;pointer-events:none;
+  }
+  .card__dots span{
+    width:6px;height:6px;border-radius:50%;
+    background:rgba(255,255,255,.55);
+    box-shadow:0 0 0 1px rgba(17,24,39,.3);
+    transition:.15s;
+  }
+  .card__dots span.active{background:#fff;transform:scale(1.15)}
 
   .card__body{padding:11px;display:flex;flex-direction:column;gap:6px;flex:1}
   .card__brand{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
@@ -350,11 +376,11 @@
     color:var(--text);font-size:14px;font-family:inherit;outline:none;
     transition:.15s;
   }
-  /* Textarea автоматически растёт по мере ввода */
+  /* Textarea автоматически растёт */
   .field textarea{
-    resize:none;                  /* убираем уголок для ручного изменения */
+    resize:none;
     min-height:70px;
-    overflow:hidden;              /* убираем скроллбар, пока растёт */
+    overflow:hidden;
     line-height:1.5;
   }
   .field input:focus,.field select:focus,.field textarea:focus{
@@ -362,22 +388,30 @@
   }
   .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
-  /* Поле с инпутом и чекбоксом «Скрыть» */
-  .qty-field-row{
-    display:flex;gap:8px;align-items:stretch;
-  }
+  /* Количество + кнопка «Скрыть» */
+  .qty-field-row{display:flex;gap:8px;align-items:stretch}
   .qty-field-row input{flex:1;min-width:0}
   .hide-qty-btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:6px;
-    padding:0 12px;border-radius:9px;cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;        /* ← центрируем и по горизонтали, и по вертикали */
+    gap:6px;
+    padding:0 12px;
+    border-radius:9px;cursor:pointer;
     background:var(--surface-2);border:1px solid var(--border);
     color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;
     white-space:nowrap;transition:.15s;user-select:none;
+    line-height:1;
+    height:auto;
+    align-self:stretch;
   }
   .hide-qty-btn:hover{border-color:var(--accent);color:var(--accent)}
   .hide-qty-btn input{
     width:15px;height:15px;margin:0;accent-color:var(--accent);cursor:pointer;
+    flex-shrink:0;
   }
+  .hide-qty-btn .ic{display:block;flex-shrink:0}
+  .hide-qty-btn span{display:block;line-height:1}
   .hide-qty-btn.on{
     background:var(--accent-soft);border-color:var(--accent);color:var(--accent);
   }
@@ -652,56 +686,6 @@
   .footer__logo.logo--fallback img{display:none}
   .footer__logo.logo--fallback .logo__fallback{display:inline-flex}
 
-  /* ==================== ФУТЕР: КОНТАКТЫ ==================== */
-  .footer__contacts{
-    background:var(--surface-2);
-    border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);
-    padding:36px 0;
-    margin-top:8px;
-  }
-  .footer__contacts-title{
-    margin:0 0 22px;font-size:16px;font-weight:700;color:var(--text);
-    text-transform:uppercase;letter-spacing:.08em;
-    display:flex;align-items:center;gap:10px;
-  }
-  .footer__contacts-title .ic{width:20px;height:20px;color:var(--accent)}
-
-  .footer__contacts-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-    gap:14px;
-  }
-  .contact-card{
-    display:flex;align-items:center;gap:14px;
-    padding:16px 18px;border-radius:12px;
-    background:var(--surface);border:1px solid var(--border);
-    text-decoration:none;color:var(--text);
-    transition:.15s;
-    box-shadow:var(--shadow-sm);
-  }
-  .contact-card:hover{
-    border-color:var(--accent);
-    transform:translateY(-2px);
-    box-shadow:var(--shadow-md);
-  }
-  .contact-card__icon{
-    width:46px;height:46px;border-radius:50%;flex-shrink:0;
-    background:var(--accent-soft);color:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .contact-card__icon .ic{width:22px;height:22px}
-  .contact-card__body{min-width:0}
-  .contact-card__label{
-    font-size:11px;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--muted);font-weight:600;margin-bottom:3px;
-  }
-  .contact-card__value{
-    font-size:15px;font-weight:600;color:var(--text);
-    margin-bottom:2px;word-break:break-word;
-  }
-  .contact-card__hint{font-size:12.5px;color:var(--muted)}
-
   /* ==================== ЗАКАЗЫ ==================== */
   .orders-list{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
   .order-card{
@@ -899,12 +883,6 @@
     .cart-total{flex-direction:column;align-items:stretch}
     .cart-total__actions .btn{flex:1}
     .footer__grid{gap:24px}
-    .footer__contacts{padding:26px 0}
-    .footer__contacts-title{font-size:14px;margin-bottom:16px}
-    .contact-card{padding:14px 16px}
-    .contact-card__icon{width:40px;height:40px}
-    .contact-card__icon .ic{width:20px;height:20px}
-    .contact-card__value{font-size:14px}
     .photos-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
     .photo-tile__actions{flex-direction:row}
     .modal__box{padding:22px}
@@ -945,9 +923,6 @@
   </symbol>
   <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/>
-  </symbol>
-  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
   </symbol>
   <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/>
@@ -1182,7 +1157,6 @@
             </div>
             <div class="field"><label>Цена, ₽ *</label><input name="price" type="number" min="0" step="1" required></div>
 
-            <!-- Количество + кнопка «Скрыть точное количество» -->
             <div class="field">
               <label>Количество *</label>
               <div class="qty-field-row">
@@ -1342,54 +1316,17 @@
       <p>Более 5000 товаров, официальная гарантия, доставка по всей России.</p>
     </div>
     <div>
+      <h4>Контакты</h4>
+      <p><svg class="ic"><use href="#i-phone"/></svg> <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
+      <p><svg class="ic"><use href="#i-mail"/></svg> <a href="mailto:info@soundleader.ru">info@soundleader.ru</a></p>
+      <p><svg class="ic"><use href="#i-pin"/></svg> Москва, ул. Музыкальная, 15, стр. 2</p>
+      <p><svg class="ic"><use href="#i-chat"/></svg> Telegram: <a href="#">@soundleader_ru</a></p>
+    </div>
+    <div>
       <h4>Покупателям</h4>
       <p><svg class="ic"><use href="#i-truck"/></svg> <a href="#">Доставка и оплата</a></p>
     </div>
   </div>
-
-  <div class="footer__contacts">
-    <div class="container">
-      <h3 class="footer__contacts-title">
-        <svg class="ic"><use href="#i-chat"/></svg>
-        Свяжитесь с нами
-      </h3>
-      <div class="footer__contacts-grid">
-        <a href="tel:+79991234567" class="contact-card">
-          <div class="contact-card__icon"><svg class="ic"><use href="#i-phone"/></svg></div>
-          <div class="contact-card__body">
-            <div class="contact-card__label">Телефон</div>
-            <div class="contact-card__value">+7 (999) 123-45-67</div>
-            <div class="contact-card__hint">Пн – Вс, 9:00 – 21:00</div>
-          </div>
-        </a>
-        <a href="mailto:info@soundleader.ru" class="contact-card">
-          <div class="contact-card__icon"><svg class="ic"><use href="#i-mail"/></svg></div>
-          <div class="contact-card__body">
-            <div class="contact-card__label">Email</div>
-            <div class="contact-card__value">info@soundleader.ru</div>
-            <div class="contact-card__hint">Отвечаем в течение дня</div>
-          </div>
-        </a>
-        <a href="#" class="contact-card">
-          <div class="contact-card__icon"><svg class="ic"><use href="#i-pin"/></svg></div>
-          <div class="contact-card__body">
-            <div class="contact-card__label">Магазин</div>
-            <div class="contact-card__value">Москва, ул. Музыкальная, 15, стр. 2</div>
-            <div class="contact-card__hint">Ежедневно, 10:00 – 20:00</div>
-          </div>
-        </a>
-        <a href="#" class="contact-card">
-          <div class="contact-card__icon"><svg class="ic"><use href="#i-chat"/></svg></div>
-          <div class="contact-card__body">
-            <div class="contact-card__label">Telegram</div>
-            <div class="contact-card__value">@soundleader_ru</div>
-            <div class="contact-card__hint">Онлайн-консультации</div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <div class="footer__bottom container">© 2025 Sound Leader. Все права защищены.</div>
 </footer>
 
@@ -1564,7 +1501,7 @@ const KEY_USERS      = STORAGE_PREFIX + 'users';
 const KEY_SESSION    = STORAGE_PREFIX + 'user_session';
 const KEY_ORDERS     = STORAGE_PREFIX + 'orders';
 
-const CURRENT_SCHEMA = 2;  // подняли версию из-за поля hideQty
+const CURRENT_SCHEMA = 2;
 
 const LEGACY_PRODUCT_KEYS  = ['ms_products','ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
 const LEGACY_CATEGORY_KEYS = ['ms_categories','ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
@@ -1694,7 +1631,6 @@ const addUrlBtn      = $('#addUrlBtn');
 const photosGrid     = $('#photosGrid');
 const photoCounter   = $('#photoCounter');
 
-// Описание с автоувеличением + скрытие количества
 const descInput      = $('#descInput');
 const hideQtyChk     = $('#hideQtyChk');
 const hideQtyLabel   = $('#hideQtyLabel');
@@ -1774,7 +1710,6 @@ function syncBodyLock(){
   document.body.classList.toggle('modal-open', anyOpen);
 }
 
-// Публичный текст о наличии: если hideQty — пишем «несколько»
 function stockTextPublic(p){
   if(p.qty <= 0) return 'Нет в наличии';
   if(p.hideQty) return 'Осталось: несколько';
@@ -2176,8 +2111,29 @@ function thumbHTML(p){
 }
 
 /* ============================================================
-   ВИТРИНА
+   ВИТРИНА — карточка с перелистыванием фото по движению мыши
 ============================================================ */
+function cardMediaStackHTML(p){
+  const images = Array.isArray(p.images) ? p.images : [];
+  if(!images.length){
+    return `<span class="media-placeholder">${icon('image')}</span>`;
+  }
+  const imgs = images.map((src, i) =>
+    `<img src="${esc(src)}" alt="${esc(p.name)}"
+          class="${i === 0 ? 'active' : ''}"
+          data-index="${i}"
+          loading="lazy">`
+  ).join('');
+  const dots = images.length > 1
+    ? `<span class="card__dots">${
+        images.map((_, i) =>
+          `<span class="${i === 0 ? 'active' : ''}" data-dot="${i}"></span>`
+        ).join('')
+      }</span>`
+    : '';
+  return `<span class="card__media-stack">${imgs}</span>${dots}`;
+}
+
 function cardHTML(p){
   const out   = p.qty <= 0;
   const liked = likes.includes(p.id);
@@ -2188,8 +2144,8 @@ function cardHTML(p){
       <button class="card__like ${liked ? 'active' : ''}" data-like="${p.id}" title="${liked ? 'Убрать из избранного' : 'В избранное'}">
         ${icon('heart')}
       </button>
-      <div class="card__media">
-        ${mediaHTML(p)}
+      <div class="card__media" data-card-media>
+        ${cardMediaStackHTML(p)}
         ${photosCount > 1 ? `<span class="card__photo-count">${icon('image')}${photosCount}</span>` : ''}
       </div>
       <div class="card__body">
@@ -2544,6 +2500,7 @@ function renderLikes(){
     e.stopPropagation(); addToCart(+b.dataset.buy);
   }));
   likesContent.querySelectorAll('[data-open]').forEach(card => card.addEventListener('click', () => {
+    if(scrubState.isDragging){ scrubState.isDragging = false; return; }
     currentProductId = +card.dataset.open;
     galleryIndex = 0;
     show('product');
@@ -2997,20 +2954,19 @@ adminOrdersList && adminOrdersList.addEventListener('click', async e => {
    АВТО-РАСШИРЕНИЕ ОПИСАНИЯ
 ============================================================ */
 function autoGrowTextarea(el){
-  if(!el) return;
+  if(!el) return null;
   const grow = () => {
     el.style.height = 'auto';
     el.style.height = Math.max(el.scrollHeight, 70) + 'px';
   };
   el.addEventListener('input', grow);
-  // первичный вызов после загрузки
   grow();
   return grow;
 }
 const growDesc = autoGrowTextarea(descInput);
 
 /* ============================================================
-   СКРЫТИЕ КОЛИЧЕСТВА — переключатель
+   СКРЫТИЕ КОЛИЧЕСТВА
 ============================================================ */
 function updateHideQtyLabel(){
   hideQtyLabel.classList.toggle('on', hideQtyChk.checked);
@@ -3384,6 +3340,95 @@ function switchAdminTab(tab){
 }
 
 /* ============================================================
+   ПЕРЕЛИСТЫВАНИЕ ФОТО В КАРТОЧКАХ ПРИ ДВИЖЕНИИ МЫШИ
+============================================================ */
+const scrubState = {
+  card: null,
+  lastX: 0,
+  step: 60,
+  accum: 0,
+  index: 0,
+  isDragging: false,
+};
+
+function cardImagesList(card){
+  return card.querySelectorAll('.card__media-stack img');
+}
+function cardDotsList(card){
+  return card.querySelectorAll('.card__dots span');
+}
+function setCardImage(card, index){
+  const imgs = cardImagesList(card);
+  const dots = cardDotsList(card);
+  if(!imgs.length) return;
+  const i = Math.max(0, Math.min(index, imgs.length - 1));
+  imgs.forEach((img, k) => img.classList.toggle('active', k === i));
+  dots.forEach((d, k) => d.classList.toggle('active', k === i));
+}
+
+document.addEventListener('mouseover', e => {
+  const media = e.target.closest('[data-card-media]');
+  if(!media) return;
+  const card = media.closest('.card');
+  if(!card) return;
+  const imgs = cardImagesList(card);
+  if(imgs.length <= 1) return;
+
+  scrubState.card = card;
+  scrubState.lastX = e.clientX;
+  scrubState.accum = 0;
+  scrubState.index = 0;
+  scrubState.isDragging = false;
+  setCardImage(card, 0);
+});
+
+document.addEventListener('mousemove', e => {
+  const card = scrubState.card;
+  if(!card) return;
+  if(!document.body.contains(card)){ scrubState.card = null; return; }
+
+  const imgs = cardImagesList(card);
+  if(imgs.length <= 1) return;
+
+  const media = card.querySelector('[data-card-media]');
+  if(!media) return;
+  const r = media.getBoundingClientRect();
+  const inside = e.clientX >= r.left && e.clientX <= r.right
+              && e.clientY >= r.top  && e.clientY <= r.bottom;
+  if(!inside) return;
+
+  const dx = e.clientX - scrubState.lastX;
+  scrubState.lastX = e.clientX;
+  scrubState.accum += dx;
+
+  if(Math.abs(dx) > 0){
+    scrubState.isDragging = true;
+    media.classList.add('is-scrubbing');
+  }
+
+  while(Math.abs(scrubState.accum) >= scrubState.step){
+    const dir = scrubState.accum > 0 ? 1 : -1;
+    scrubState.accum -= dir * scrubState.step;
+    const next = scrubState.index + dir;
+    if(next < 0 || next >= imgs.length) continue;
+    scrubState.index = next;
+    setCardImage(card, next);
+  }
+});
+
+document.addEventListener('mouseout', e => {
+  const media = e.target.closest('[data-card-media]');
+  if(!media) return;
+  const related = e.relatedTarget;
+  if(related && media.contains(related)) return;
+
+  const card = media.closest('.card');
+  media.classList.remove('is-scrubbing');
+  if(card) setCardImage(card, 0);
+  if(scrubState.card === card) scrubState.card = null;
+});
+
+/* ============================================================
    СОБЫТИЯ
 ============================================================ */
 logoLink.addEventListener('click', e => { e.preventDefault(); show('shop'); });
@@ -3442,6 +3487,11 @@ categorySel.addEventListener('change', renderGrid);
 inStockChk.addEventListener('change', renderGrid);
 
 grid.addEventListener('click', e => {
+  if(scrubState.isDragging){
+    scrubState.isDragging = false;
+    e.stopPropagation();
+    return;
+  }
   const likeBtn = e.target.closest('[data-like]');
   if(likeBtn){ e.stopPropagation(); toggleLike(+likeBtn.dataset.like); return; }
   const buyBtn = e.target.closest('[data-buy]');
