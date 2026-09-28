@@ -21,10 +21,15 @@
     --danger-soft:#fef2f2;
     --ok:#16a34a;
     --ok-soft:#f0fdf4;
+    --warning:#d97706;
+    --warning-soft:#fffbeb;
+    --info:#2563eb;
+    --info-soft:#eff6ff;
     --radius:12px;
     --shadow-sm:0 1px 2px rgba(16,24,40,.05);
     --shadow-md:0 4px 14px rgba(16,24,40,.08);
     --shadow-lg:0 14px 40px rgba(16,24,40,.12);
+    --bottom-nav-h: 62px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -58,6 +63,7 @@
   .btn--danger-outline:hover{background:var(--danger);color:#fff}
   .btn--sm{padding:7px 12px;font-size:13px}
   .btn--icon{padding:9px 11px;position:relative}
+  .btn--block{width:100%}
 
   .badge{
     position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;
@@ -539,6 +545,17 @@
   .modal__hint .ic{width:13px;height:13px;flex-shrink:0}
   .modal__hint.error{color:var(--danger)}
 
+  .modal__tabs{
+    display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--border);
+  }
+  .modal__tab{
+    flex:1;padding:10px 12px;background:transparent;border:none;
+    border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;
+    font-size:14px;font-weight:600;font-family:inherit;margin-bottom:-1px;
+    transition:.15s;
+  }
+  .modal__tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
   /* ==================== ФУТЕР ==================== */
   .footer{background:var(--surface);border-top:1px solid var(--border);
     margin-top:auto;padding:40px 0 0}
@@ -557,6 +574,166 @@
   .footer__logo{font-size:19px;font-weight:700;color:var(--text);margin-bottom:12px;
     display:flex;align-items:center;gap:8px}
   .footer__logo .ic{width:20px;height:20px;color:var(--accent)}
+
+  /* ==================== ЗАКАЗЫ ==================== */
+  .orders-list{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
+  .order-card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);
+    transition:.15s;
+  }
+  .order-card:hover{border-color:var(--border-strong)}
+  .order-card__head{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    gap:12px;flex-wrap:wrap;margin-bottom:14px;
+  }
+  .order-card__num{
+    font-size:12px;color:var(--muted);font-weight:600;
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;
+  }
+  .order-card__date{font-size:14px;color:var(--muted)}
+  .order-card__total{font-size:20px;font-weight:700;color:var(--accent)}
+
+  .order-status{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;
+  }
+  .order-status .ic{width:14px;height:14px}
+  .order-status--created {background:var(--info-soft);color:var(--info)}
+  .order-status--packed  {background:var(--warning-soft);color:var(--warning)}
+  .order-status--shipped {background:var(--accent-soft);color:var(--accent)}
+  .order-status--ready   {background:var(--ok-soft);color:var(--ok)}
+  .order-status--cancelled{background:var(--danger-soft);color:var(--danger)}
+
+  .order-steps{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+    margin:16px 0;position:relative;
+  }
+  .order-step{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    text-align:center;position:relative;
+  }
+  .order-step__circle{
+    width:32px;height:32px;border-radius:50%;
+    background:var(--surface-2);border:2px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);flex-shrink:0;transition:.2s;z-index:2;
+  }
+  .order-step__circle .ic{width:15px;height:15px}
+  .order-step__label{font-size:11px;color:var(--muted);line-height:1.3;font-weight:500}
+  .order-step.active .order-step__circle{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+  .order-step.active .order-step__label{color:var(--accent);font-weight:600}
+  .order-step.done .order-step__circle{
+    background:var(--ok);border-color:var(--ok);color:#fff;
+  }
+  .order-step.done .order-step__label{color:var(--ok)}
+  .order-step::before{
+    content:'';position:absolute;top:15px;left:50%;right:-50%;
+    height:2px;background:var(--border);z-index:1;
+  }
+  .order-step:last-child::before{display:none}
+  .order-step.done::before{background:var(--ok)}
+  .order-step.active::before{background:linear-gradient(90deg,var(--accent),var(--border))}
+
+  .order-items{
+    border-top:1px solid var(--border);padding-top:12px;margin-top:8px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .order-item{
+    display:flex;align-items:center;gap:10px;font-size:13.5px;
+  }
+  .order-item__media{
+    width:40px;height:40px;border-radius:8px;background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    flex-shrink:0;color:#c7cbd2;
+  }
+  .order-item__media img{width:100%;height:100%;object-fit:cover}
+  .order-item__media .ic{width:20px;height:20px}
+  .order-item__name{flex:1;font-weight:500}
+  .order-item__qty{color:var(--muted);font-size:12.5px}
+  .order-item__price{font-weight:600;color:var(--text)}
+
+  /* ==================== ЛИЧНЫЙ КАБИНЕТ ==================== */
+  .account{
+    display:grid;grid-template-columns:280px 1fr;gap:24px;
+    padding-bottom:40px;align-items:start;
+  }
+  .account__sidebar{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);
+  }
+  .account__avatar{
+    width:72px;height:72px;border-radius:50%;
+    background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 12px;
+  }
+  .account__avatar .ic{width:32px;height:32px}
+  .account__name{
+    text-align:center;font-weight:700;font-size:16px;margin:0 0 4px;
+    word-break:break-word;
+  }
+  .account__email{
+    text-align:center;color:var(--muted);font-size:13px;
+    margin:0 0 18px;word-break:break-word;
+  }
+  .account__menu{
+    display:flex;flex-direction:column;gap:4px;
+    border-top:1px solid var(--border);padding-top:14px;
+  }
+  .account__menu button{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;border-radius:9px;background:transparent;
+    border:none;cursor:pointer;font-family:inherit;font-size:14px;
+    font-weight:500;color:var(--text);text-align:left;transition:.15s;
+  }
+  .account__menu button:hover{background:var(--surface-2);color:var(--accent)}
+  .account__menu button.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .account__menu .ic{width:16px;height:16px}
+
+  .account__content{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);
+    min-height:200px;
+  }
+  .account__content h3{
+    margin:0 0 16px;font-size:18px;
+    display:flex;align-items:center;gap:8px;
+  }
+
+  /* ==================== НИЖНЕЕ МЕНЮ ==================== */
+  .bottom-nav{
+    display:none;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    height:var(--bottom-nav-h);
+    background:var(--surface);
+    border-top:1px solid var(--border);
+    box-shadow:0 -4px 18px rgba(16,24,40,.08);
+    z-index:50;
+    padding-bottom:env(safe-area-inset-bottom, 0);
+  }
+  .bottom-nav__inner{
+    display:flex;height:100%;align-items:stretch;
+  }
+  .bottom-nav__item{
+    flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;background:transparent;border:none;cursor:pointer;
+    font-family:inherit;font-size:10px;font-weight:600;
+    color:var(--muted);position:relative;padding:6px 2px;
+    transition:color .15s;-webkit-tap-highlight-color:transparent;
+  }
+  .bottom-nav__item .ic{width:22px;height:22px;transition:transform .15s}
+  .bottom-nav__item.active{color:var(--accent)}
+  .bottom-nav__item.active .ic{transform:scale(1.08)}
+  .bottom-nav__item:active .ic{transform:scale(.92)}
+  .bottom-nav__item .badge{
+    top:6px;right:50%;transform:translateX(16px);
+    min-width:16px;height:16px;font-size:10px;
+  }
 
   /* ==================== TOAST ==================== */
   .toast{
@@ -577,12 +754,19 @@
     .cart-item__media{width:70px;height:70px}
     .cart-item__sum{grid-column:2/3;text-align:left;min-width:auto}
     .qty-ctrl{grid-column:1/3}
+    .account{grid-template-columns:1fr}
+    .order-steps{grid-template-columns:repeat(2,1fr);gap:14px}
+    .order-step::before{display:none}
   }
   @media (max-width:720px){
     .header__inner{flex-wrap:wrap;padding:8px 0;gap:8px}
     .logo{font-size:17px}
     .search-wrap{order:10;flex-basis:100%}
     .header-actions{margin-left:auto}
+    /* На мобильном прячем дублирующие кнопки — они теперь в нижнем меню */
+    .header-actions #likesBtn,
+    .header-actions #cartBtn,
+    .header-actions #loginBtn{display:none}
     .btn--sm{padding:8px 10px;font-size:13px}
     .catalog-btn .label{display:none}
     .hero{padding:24px 0 12px}
@@ -610,6 +794,15 @@
     .modal__title{font-size:17px}
     .modal__actions{flex-direction:column-reverse}
     .modal__actions .btn{width:100%}
+    .order-steps{grid-template-columns:1fr 1fr}
+    .account__content{padding:16px}
+
+    /* Показываем нижнее меню */
+    .bottom-nav{display:block}
+    body{padding-bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px))}
+    .footer{padding-bottom:20px}
+    /* Опускаем toast, чтобы не перекрывал меню */
+    .toast{bottom:calc(var(--bottom-nav-h) + 16px + env(safe-area-inset-bottom, 0px))}
   }
 </style>
 </head>
@@ -724,6 +917,18 @@
   <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.8c-.9.5-1.3 1.1-1.3 2.2M12 17h.01"/>
   </symbol>
+  <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m16 3 5 5M21 8l-4 4-5-5 4-4zM3 16h6v6H3zM3 4h6v6H3zM13 4h4v4M14 21h6v-6"/>
+  </symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/>
+  </symbol>
 </svg>
 
 <!-- ==================== ШАПКА ==================== -->
@@ -753,7 +958,7 @@
       </button>
       <button class="btn btn--ghost btn--sm" id="loginBtn">
         <svg class="ic"><use href="#i-user"/></svg>
-        <span>Войти</span>
+        <span id="loginBtnLabel">Войти</span>
       </button>
     </div>
   </div>
@@ -812,6 +1017,18 @@
     <div id="likesContent"></div>
   </section>
 
+  <!-- ЗАКАЗЫ -->
+  <section id="ordersView" hidden>
+    <h2 class="page-title"><svg class="ic"><use href="#i-box"/></svg> Мои заказы</h2>
+    <div id="ordersContent"></div>
+  </section>
+
+  <!-- ЛИЧНЫЙ КАБИНЕТ -->
+  <section id="accountView" hidden>
+    <h2 class="page-title"><svg class="ic"><use href="#i-user"/></svg> Личный кабинет</h2>
+    <div id="accountContent"></div>
+  </section>
+
   <!-- АДМИНКА -->
   <section id="adminView" hidden>
     <div class="admin-head">
@@ -827,6 +1044,9 @@
       </button>
       <button class="tab" data-tab="categories">
         <svg class="ic"><use href="#i-tag"/></svg> Категории
+      </button>
+      <button class="tab" data-tab="orders">
+        <svg class="ic"><use href="#i-truck"/></svg> Заказы
       </button>
       <button class="tab" data-tab="backup">
         <svg class="ic"><use href="#i-save"/></svg> Резервные копии
@@ -926,12 +1146,23 @@
       </div>
     </div>
 
+    <!-- ВКЛАДКА: ЗАКАЗЫ -->
+    <div id="tabOrders" hidden>
+      <div class="panel">
+        <h3><svg class="ic"><use href="#i-truck"/></svg> Все заказы</h3>
+        <p class="muted" style="margin:0 0 14px">
+          Здесь отображаются все заказы покупателей. Меняйте статус по мере обработки: Создан → Упакован → Отправлен → Готов к выдаче.
+        </p>
+        <div id="adminOrdersList"></div>
+      </div>
+    </div>
+
     <!-- ВКЛАДКА: РЕЗЕРВНЫЕ КОПИИ -->
     <div id="tabBackup" hidden>
       <div class="panel">
         <h3><svg class="ic"><use href="#i-download"/></svg> Скачать резервную копию</h3>
         <p class="muted" style="margin:0 0 14px">
-          Сохраняет все товары, категории, корзину и избранное в один JSON-файл.
+          Сохраняет все товары, категории, корзину, избранное и заказы в один JSON-файл.
           Храните его в надёжном месте — с его помощью можно восстановить данные
           на любом устройстве или после обновления сайта.
         </p>
@@ -949,8 +1180,8 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-upload"/></svg> Загрузить резервную копию</h3>
         <p class="muted" style="margin:0 0 14px">
-          Выберите ранее сохранённый JSON-файл. <b>Внимание:</b> текущие товары,
-          категории, корзина и избранное будут полностью заменены содержимым файла.
+          Выберите ранее сохранённый JSON-файл. <b>Внимание:</b> текущие данные
+          будут полностью заменены содержимым файла.
         </p>
         <div class="backup-block">
           <div class="info">
@@ -967,7 +1198,7 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-alert"/></svg> Полный сброс</h3>
         <p class="muted" style="margin:0 0 14px">
-          Удаляет все товары, категории, корзину и избранное и возвращает
+          Удаляет все товары, категории, корзину, избранное и заказы и возвращает
           первоначальный демонстрационный набор товаров.
         </p>
         <button class="btn btn--danger-outline" id="resetAllBtn">
@@ -1013,6 +1244,34 @@
   <div class="footer__bottom container">© 2025 MusicShop. Все права защищены.</div>
 </footer>
 
+<!-- ==================== НИЖНЕЕ МЕНЮ (мобильное) ==================== -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Основная навигация">
+  <div class="bottom-nav__inner">
+    <button class="bottom-nav__item active" data-nav="shop" type="button">
+      <svg class="ic"><use href="#i-home"/></svg>
+      <span>Главная</span>
+    </button>
+    <button class="bottom-nav__item" data-nav="orders" type="button">
+      <svg class="ic"><use href="#i-box"/></svg>
+      <span>Заказы</span>
+    </button>
+    <button class="bottom-nav__item" data-nav="cart" type="button">
+      <svg class="ic"><use href="#i-cart"/></svg>
+      <span>Корзина</span>
+      <span class="badge badge--empty" id="navCartBadge">0</span>
+    </button>
+    <button class="bottom-nav__item" data-nav="likes" type="button">
+      <svg class="ic"><use href="#i-heart"/></svg>
+      <span>Избранное</span>
+      <span class="badge badge--empty" id="navLikesBadge">0</span>
+    </button>
+    <button class="bottom-nav__item" data-nav="account" type="button">
+      <svg class="ic"><use href="#i-user"/></svg>
+      <span id="navAccountLabel">Войти</span>
+    </button>
+  </div>
+</nav>
+
 <!-- ============ УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО ============ -->
 <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="appModalTitle">
   <div class="modal__box" id="appModalBox">
@@ -1031,7 +1290,7 @@
   </div>
 </div>
 
-<!-- ==================== МОДАЛКА ВХОДА ==================== -->
+<!-- ==================== МОДАЛКА ВХОДА/РЕГИСТРАЦИИ АДМИНА ==================== -->
 <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1061,6 +1320,47 @@
   </div>
 </div>
 
+<!-- ==================== МОДАЛКА АККАУНТА ПОКУПАТЕЛЯ ==================== -->
+<div class="modal" id="userModal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+  <div class="modal__box">
+    <div class="modal__head">
+      <div class="modal__icon modal__icon--accent">
+        <svg class="ic"><use href="#i-user"/></svg>
+      </div>
+      <h3 class="modal__title" id="userModalTitle">Вход в аккаунт</h3>
+    </div>
+
+    <div class="modal__tabs" id="userTabs">
+      <button type="button" class="modal__tab active" data-utab="login">Вход</button>
+      <button type="button" class="modal__tab" data-utab="register">Регистрация</button>
+    </div>
+
+    <form id="userForm">
+      <div class="field" id="uf-name" style="margin-bottom:12px" hidden>
+        <label>Имя</label>
+        <input name="name" autocomplete="name">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Email</label>
+        <input name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Пароль</label>
+        <input name="password" type="password" autocomplete="current-password" required minlength="6">
+      </div>
+      <p class="modal__hint" style="margin-bottom:14px">
+        <svg class="ic"><use href="#i-info"/></svg>
+        <span>Пароль — не менее 6 символов. Email должен быть уникальным.</span>
+      </p>
+
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="closeUserModal">Отмена</button>
+        <button type="submit" class="btn btn--primary" id="userSubmitBtn">Войти</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1075,8 +1375,11 @@ const KEY_LIKES      = STORAGE_PREFIX + 'likes';
 const KEY_CATEGORIES = STORAGE_PREFIX + 'categories';
 const KEY_AUTH       = STORAGE_PREFIX + 'admin_auth';
 const KEY_SCHEMA     = STORAGE_PREFIX + 'schema_version';
+const KEY_USERS      = STORAGE_PREFIX + 'users';        // { id, name, email, passwordHash, createdAt }
+const KEY_SESSION    = STORAGE_PREFIX + 'user_session'; // id текущего пользователя
+const KEY_ORDERS     = STORAGE_PREFIX + 'orders';       // массив заказов
 
-const CURRENT_SCHEMA = 5;
+const CURRENT_SCHEMA = 6;
 
 const LEGACY_PRODUCT_KEYS  = ['ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
 const LEGACY_CATEGORY_KEYS = ['ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
@@ -1089,6 +1392,13 @@ const ADMIN_PASSWORD = 'admin123';
 const MAX_PHOTOS = 12;
 const MAX_SIDE   = 900;
 const JPEG_QUALITY = 0.82;
+
+const ORDER_STATUSES = [
+  { id:'created',   label:'Создан',           icon:'box',     cls:'order-status--created' },
+  { id:'packed',    label:'Упакован',         icon:'package', cls:'order-status--packed' },
+  { id:'shipped',   label:'Отправлен',        icon:'truck',   cls:'order-status--shipped' },
+  { id:'ready',     label:'Готов к выдаче',   icon:'check',   cls:'order-status--ready' },
+];
 
 const SEED_PRODUCTS = [
   {id:1, name:'Fender Stratocaster', brand:'Fender',   categories:['Гитары'],                price:85000, qty:5,  images:[], desc:'Легендарная электрогитара с корпусом из ольхи, кленовой накладкой и тремя звукоснимателями. Идеальна для рока, блюза и поп-музыки.'},
@@ -1106,12 +1416,16 @@ let products   = [];
 let categories = [];
 let cart       = {};
 let likes      = [];
+let users      = [];
+let orders     = [];
+let currentUser = null;   // объект { id, name, email } или null
 let editingId  = null;
 let currentProductId = null;
 let currentImages = [];
 let currentCategories = [];
 let galleryIndex = 0;
 let dragPhotoIndex = null;
+let currentView = 'shop';
 
 /* ============================================================
    DOM
@@ -1123,6 +1437,8 @@ const views = {
   product: $('#productView'),
   cart:    $('#cartView'),
   likes:   $('#likesView'),
+  orders:  $('#ordersView'),
+  account: $('#accountView'),
   admin:   $('#adminView'),
 };
 
@@ -1140,12 +1456,24 @@ const cartBtn     = $('#cartBtn');
 const likesBtn    = $('#likesBtn');
 const cartBadge   = $('#cartBadge');
 const likesBadge  = $('#likesBadge');
+const navCartBadge = $('#navCartBadge');
+const navLikesBadge = $('#navLikesBadge');
+const navAccountLabel = $('#navAccountLabel');
 const loginBtn    = $('#loginBtn');
+const loginBtnLabel = $('#loginBtnLabel');
 const logoLink    = $('#logoLink');
 
 const loginModal = $('#loginModal');
 const loginForm  = $('#loginForm');
 const closeLogin = $('#closeLogin');
+
+const userModal  = $('#userModal');
+const userForm   = $('#userForm');
+const userTabs   = $('#userTabs');
+const userModalTitle = $('#userModalTitle');
+const userSubmitBtn  = $('#userSubmitBtn');
+const closeUserModal = $('#closeUserModal');
+const ufName     = $('#uf-name');
 
 const productDetail   = $('#productDetail');
 const backFromProduct = $('#backFromProduct');
@@ -1153,12 +1481,15 @@ const backFromCart    = $('#backFromCart');
 const backFromLikes   = $('#backFromLikes');
 const cartContent     = $('#cartContent');
 const likesContent    = $('#likesContent');
+const ordersContent   = $('#ordersContent');
+const accountContent  = $('#accountContent');
 
 const productForm    = $('#productForm');
 const formTitle      = $('#formTitle');
 const submitBtn      = $('#submitBtn');
 const cancelEdit     = $('#cancelEdit');
 const adminTable     = $('#adminTable');
+const adminOrdersList = $('#adminOrdersList');
 const countEl        = $('#countProducts');
 const logoutBtn      = $('#logoutBtn');
 const toastEl        = $('#toast');
@@ -1175,6 +1506,7 @@ const quickAddCategory = $('#quickAddCategory');
 
 const tabProducts    = $('#tabProducts');
 const tabCategories  = $('#tabCategories');
+const tabOrders      = $('#tabOrders');
 const tabBackup      = $('#tabBackup');
 const categoryForm   = $('#categoryForm');
 const categoriesList = $('#categoriesList');
@@ -1184,6 +1516,8 @@ const downloadBackupBtn = $('#downloadBackupBtn');
 const uploadBackupBtn   = $('#uploadBackupBtn');
 const backupFileInput   = $('#backupFileInput');
 const resetAllBtn       = $('#resetAllBtn');
+
+const bottomNav = $('#bottomNav');
 
 // Универсальное модальное окно
 const appModal      = $('#appModal');
@@ -1213,6 +1547,12 @@ function plural(n, one, few, many){
   if(m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
   return many;
 }
+function formatDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleString('ru-RU', {
+    day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+}
 let toastTimer;
 function toast(msg, type){
   toastEl.innerHTML = (type === 'warn'
@@ -1231,17 +1571,27 @@ function formatBytes(b){
   if(b < 1024*1024) return (b/1024).toFixed(1) + ' КБ';
   return (b/1024/1024).toFixed(2) + ' МБ';
 }
+// Простой хэш пароля. Для реального проекта используйте Firebase Auth!
+function simpleHash(str){
+  let h = 0;
+  for(let i=0; i<str.length; i++){
+    h = ((h << 5) - h) + str.charCodeAt(i);
+    h |= 0;
+  }
+  return 'h' + Math.abs(h).toString(36) + '_' + str.length;
+}
 
 /* ============================================================
    УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО
-   Заменяет alert / confirm / prompt браузера
 ============================================================ */
 let activeModalResolve = null;
 let activeModalType = null;
 
 function closeAppModal(result){
   appModal.classList.remove('open');
-  document.body.classList.remove('modal-open');
+  if(!userModal.classList.contains('open') && !loginModal.classList.contains('open')){
+    document.body.classList.remove('modal-open');
+  }
   if(activeModalResolve){
     const r = activeModalResolve;
     activeModalResolve = null;
@@ -1251,47 +1601,37 @@ function closeAppModal(result){
 }
 
 function openAppModal({
-  type = 'info',          // 'info' | 'confirm' | 'danger' | 'prompt' | 'success'
+  type = 'info',
   title = '',
   text = '',
-  iconName,               // имя SVG-иконки (по умолчанию по типу)
+  iconName,
   okText = 'ОК',
   cancelText = 'Отмена',
   showCancel = false,
-  input = null,           // { value, placeholder, hint, maxlength, validate }
+  input = null,
   wide = false,
 } = {}){
-  // Закрываем предыдущую модалку, если открыта
   if(activeModalResolve){
     const r = activeModalResolve;
     activeModalResolve = null;
     r(null);
   }
-
   activeModalType = type;
-
-  // Настройки вида по типу
   const presets = {
-    info:    { iconCls:'modal__icon--accent', icon:'info',   ok:'btn--primary',       defaultOk:'ОК' },
-    success: { iconCls:'modal__icon--ok',     icon:'check',  ok:'btn--primary',       defaultOk:'ОК' },
-    confirm: { iconCls:'modal__icon--accent', icon:'help',   ok:'btn--primary',       defaultOk:'Подтвердить' },
-    danger:  { iconCls:'modal__icon--danger', icon:'alert',  ok:'btn--danger',        defaultOk:'Удалить' },
-    prompt:  { iconCls:'modal__icon--accent', icon:'edit',   ok:'btn--primary',       defaultOk:'Сохранить' },
+    info:    { iconCls:'modal__icon--accent', icon:'info',   ok:'btn--primary', defaultOk:'ОК' },
+    success: { iconCls:'modal__icon--ok',     icon:'check',  ok:'btn--primary', defaultOk:'ОК' },
+    confirm: { iconCls:'modal__icon--accent', icon:'help',   ok:'btn--primary', defaultOk:'Подтвердить' },
+    danger:  { iconCls:'modal__icon--danger', icon:'alert',  ok:'btn--danger',  defaultOk:'Удалить' },
+    prompt:  { iconCls:'modal__icon--accent', icon:'edit',   ok:'btn--primary', defaultOk:'Сохранить' },
   };
   const preset = presets[type] || presets.info;
-
   appModalBox.classList.toggle('modal__box--wide', !!wide);
-
-  // Иконка
   appModalIcon.className = 'modal__icon ' + preset.iconCls;
   appModalIcon.innerHTML = icon(iconName || preset.icon);
-
-  // Заголовок и текст
   appModalTitle.textContent = title;
   appModalText.innerHTML = text || '';
   appModalText.style.display = text ? '' : 'none';
 
-  // Поле ввода (для prompt)
   if(input && (type === 'prompt')){
     appModalInputWrap.hidden = false;
     appModalInput.value = input.value || '';
@@ -1299,16 +1639,13 @@ function openAppModal({
     appModalInput.maxLength = input.maxlength || 100;
     appModalHint.textContent = input.hint || '';
     appModalHint.className = 'modal__hint';
-    appModalHint.innerHTML = input.hint
-      ? `${icon('info')}<span>${esc(input.hint)}</span>`
-      : '';
+    appModalHint.innerHTML = input.hint ? `${icon('info')}<span>${esc(input.hint)}</span>` : '';
     setTimeout(() => { appModalInput.focus(); appModalInput.select(); }, 60);
   } else {
     appModalInputWrap.hidden = true;
     appModalInput.value = '';
   }
 
-  // Кнопки
   appModalActions.innerHTML = '';
   if(showCancel){
     const cancelBtn = document.createElement('button');
@@ -1342,22 +1679,16 @@ function openAppModal({
   });
   appModalActions.appendChild(okBtn);
 
-  // Открываем
   appModal.classList.add('open');
   document.body.classList.add('modal-open');
 
-  // Промис-обёртка
-  return new Promise(resolve => {
-    activeModalResolve = resolve;
-  });
+  return new Promise(resolve => { activeModalResolve = resolve; });
 }
 
-// Обёртки — снаружи используются как обычные функции
 function uiAlert(title, text, opts = {}){
   return openAppModal({
     type: opts.type || 'info',
-    title,
-    text,
+    title, text,
     okText: opts.okText || 'ОК',
     showCancel: false,
   });
@@ -1365,8 +1696,7 @@ function uiAlert(title, text, opts = {}){
 function uiConfirm(title, text, opts = {}){
   return openAppModal({
     type: opts.danger ? 'danger' : 'confirm',
-    title,
-    text,
+    title, text,
     okText: opts.okText || (opts.danger ? 'Удалить' : 'Подтвердить'),
     cancelText: opts.cancelText || 'Отмена',
     showCancel: true,
@@ -1390,7 +1720,6 @@ function uiPrompt(title, opts = {}){
   });
 }
 
-// Закрытие модалки по клику на фон и Escape
 appModal.addEventListener('click', e => {
   if(e.target === appModal) closeAppModal(null);
 });
@@ -1399,7 +1728,6 @@ document.addEventListener('keydown', e => {
     closeAppModal(null);
   }
   if(e.key === 'Enter' && appModal.classList.contains('open')){
-    // Если открыт prompt и фокус в инпуте — сабмит по Enter
     if(activeModalType === 'prompt' && document.activeElement === appModalInput){
       e.preventDefault();
       const okBtn = appModalActions.querySelector('.btn--primary, .btn--danger');
@@ -1462,16 +1790,10 @@ function migrateFromLegacy(){
    СОВМЕСТИМОСТЬ СТРУКТУРЫ ТОВАРА
 ============================================================ */
 function normalizeProduct(p){
-  if(!Array.isArray(p.images)){
-    p.images = p.image ? [p.image] : [];
-  }
+  if(!Array.isArray(p.images)) p.images = p.image ? [p.image] : [];
   delete p.image;
-
-  if(!Array.isArray(p.categories)){
-    p.categories = p.category ? [p.category] : [];
-  }
+  if(!Array.isArray(p.categories)) p.categories = p.category ? [p.category] : [];
   delete p.category;
-
   return p;
 }
 function productHasCategory(p, cat){
@@ -1502,21 +1824,28 @@ function loadAll(){
   try { cart  = JSON.parse(localStorage.getItem(KEY_CART))  || {}; } catch { cart = {}; }
   try { likes = JSON.parse(localStorage.getItem(KEY_LIKES)) || []; } catch { likes = []; }
   if(!Array.isArray(likes)) likes = [];
+
+  try { users = JSON.parse(localStorage.getItem(KEY_USERS)) || []; } catch { users = []; }
+  if(!Array.isArray(users)) users = [];
+
+  try { orders = JSON.parse(localStorage.getItem(KEY_ORDERS)) || []; } catch { orders = []; }
+  if(!Array.isArray(orders)) orders = [];
+
+  // Текущий пользователь по session
+  const sid = sessionStorage.getItem(KEY_SESSION);
+  currentUser = users.find(u => u.id === sid) || null;
 }
-function saveProducts(){
-  try { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); }
-  catch(e){
-    console.warn(e);
-    toast('Не удалось сохранить: превышен лимит хранилища. Уменьшите количество или размер фото.', 'warn');
-  }
-}
-function saveCategories(){
-  try { localStorage.setItem(KEY_CATEGORIES, JSON.stringify(categories)); } catch(e){ console.warn(e); }
-}
-function saveCart(){ try { localStorage.setItem(KEY_CART, JSON.stringify(cart)); } catch(e){ console.warn(e); } }
-function saveLikes(){ try { localStorage.setItem(KEY_LIKES, JSON.stringify(likes)); } catch(e){ console.warn(e); } }
+function saveProducts(){ try { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); } catch(e){ toast('Превышен лимит хранилища. Уменьшите фото.', 'warn'); } }
+function saveCategories(){ try { localStorage.setItem(KEY_CATEGORIES, JSON.stringify(categories)); } catch(e){} }
+function saveCart(){ try { localStorage.setItem(KEY_CART, JSON.stringify(cart)); } catch(e){} }
+function saveLikes(){ try { localStorage.setItem(KEY_LIKES, JSON.stringify(likes)); } catch(e){} }
+function saveUsers(){ try { localStorage.setItem(KEY_USERS, JSON.stringify(users)); } catch(e){} }
+function saveOrders(){ try { localStorage.setItem(KEY_ORDERS, JSON.stringify(orders)); } catch(e){} }
 
 function nextId(){ return products.reduce((m,p) => Math.max(m, p.id), 0) + 1; }
+function nextOrderId(){
+  return orders.reduce((m,o) => Math.max(m, parseInt(o.id, 10) || 0), 0) + 1;
+}
 
 /* ============================================================
    АВТОРИЗАЦИЯ
@@ -1526,11 +1855,13 @@ function setAdmin(v){
   if(v) sessionStorage.setItem(KEY_AUTH, '1');
   else  sessionStorage.removeItem(KEY_AUTH);
 }
+function isLoggedIn(){ return !!currentUser; }
 
 /* ============================================================
    НАВИГАЦИЯ
 ============================================================ */
 function show(name){
+  currentView = name;
   Object.entries(views).forEach(([k, el]) => { el.hidden = (k !== name); });
   catalogMenu.hidden = true;
   catalogBtn.classList.remove('open');
@@ -1539,9 +1870,25 @@ function show(name){
   if(name === 'product') renderProductDetail();
   if(name === 'cart')    renderCart();
   if(name === 'likes')   renderLikes();
+  if(name === 'orders')  renderOrders();
+  if(name === 'account') renderAccount();
   if(name === 'admin')   renderAdmin();
 
+  updateBottomNavActive(name);
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateBottomNavActive(name){
+  bottomNav.querySelectorAll('.bottom-nav__item').forEach(item => {
+    const nav = item.dataset.nav;
+    let active = false;
+    if(nav === 'shop'    && (name === 'shop' || name === 'product')) active = true;
+    if(nav === 'cart'    && name === 'cart')    active = true;
+    if(nav === 'likes'   && name === 'likes')   active = true;
+    if(nav === 'orders'  && name === 'orders')  active = true;
+    if(nav === 'account' && (name === 'account' || name === 'admin')) active = true;
+    item.classList.toggle('active', active);
+  });
 }
 
 /* ============================================================
@@ -1552,8 +1899,29 @@ function updateBadges(){
   const likesCount = likes.length;
   cartBadge.textContent = cartCount;
   likesBadge.textContent = likesCount;
-  cartBadge.classList.toggle('badge--empty', cartCount === 0);
-  likesBadge.classList.toggle('badge--empty', likesCount === 0);
+  navCartBadge.textContent = cartCount;
+  navLikesBadge.textContent = likesCount;
+  [cartBadge, navCartBadge].forEach(b => b.classList.toggle('badge--empty', cartCount === 0));
+  [likesBadge, navLikesBadge].forEach(b => b.classList.toggle('badge--empty', likesCount === 0));
+}
+
+function updateAuthUI(){
+  if(isAdmin()){
+    loginBtnLabel.textContent = 'Кабинет';
+    loginBtn.classList.add('btn--primary');
+    loginBtn.classList.remove('btn--ghost');
+    navAccountLabel.textContent = 'Кабинет';
+  } else if(isLoggedIn()){
+    loginBtnLabel.textContent = 'Профиль';
+    loginBtn.classList.add('btn--primary');
+    loginBtn.classList.remove('btn--ghost');
+    navAccountLabel.textContent = 'Профиль';
+  } else {
+    loginBtnLabel.textContent = 'Войти';
+    loginBtn.classList.add('btn--ghost');
+    loginBtn.classList.remove('btn--primary');
+    navAccountLabel.textContent = 'Войти';
+  }
 }
 
 /* ============================================================
@@ -1573,6 +1941,7 @@ function addToCart(id, qty = 1){
   toast(`«${p.name}» добавлен в корзину`);
   if(!views.shop.hidden) renderGrid();
   if(!views.product.hidden && currentProductId === id) renderProductDetail();
+  if(!views.cart.hidden) renderCart();
 }
 function setCartQty(id, qty){
   const p = products.find(x => x.id === id);
@@ -1605,21 +1974,14 @@ function firstImage(p){
 }
 function mediaHTML(p){
   const img = firstImage(p);
-  if(img){
-    return `<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy">`;
-  }
+  if(img) return `<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy">`;
   return `<span class="media-placeholder">${icon('image')}</span>`;
 }
 function thumbHTML(p){
   const img = firstImage(p);
   const count = (p.images || []).length;
-  let badge = '';
-  if(count > 1){
-    badge = `<span class="table-photos-badge">${icon('image')}${count}</span>`;
-  }
-  if(img){
-    return `<img class="table-thumb" src="${esc(img)}" alt="">${badge}`;
-  }
+  let badge = count > 1 ? `<span class="table-photos-badge">${icon('image')}${count}</span>` : '';
+  if(img) return `<img class="table-thumb" src="${esc(img)}" alt="">${badge}`;
   return `<span class="table-placeholder">${icon('image')}</span>${badge}`;
 }
 
@@ -1695,10 +2057,7 @@ function refreshCategories(){
 }
 
 function renderCatCheckboxes(){
-  if(!categories.length){
-    catCheckboxes.innerHTML = '';
-    return;
-  }
+  if(!categories.length){ catCheckboxes.innerHTML = ''; return; }
   catCheckboxes.innerHTML = categories.map(c => {
     const checked = currentCategories.includes(c);
     return `<label class="cat-check ${checked ? 'checked' : ''}" data-cat-label="${esc(c)}">
@@ -1752,10 +2111,7 @@ function renderProductDetail(){
   productDetail.innerHTML = `
     <div class="pd">
       <div class="gallery">
-        <div class="gallery__main">
-          ${mainMedia}
-          ${nav}
-        </div>
+        <div class="gallery__main">${mainMedia}${nav}</div>
         ${thumbs}
       </div>
       <div class="pd__info">
@@ -1850,7 +2206,21 @@ function renderCart(){
       </div>`;
   }).join('');
 
+  const needLogin = !isLoggedIn();
+  const loginHint = needLogin
+    ? `<div class="backup-block" style="margin-bottom:16px;background:var(--warning-soft);border-color:#fde68a">
+         <div class="info" style="color:#92400e">
+           ${icon('alert')}
+           <span>Для оформления заказа нужно войти или зарегистрироваться.</span>
+         </div>
+         <button class="btn btn--primary btn--sm" id="cartLoginBtn">
+           ${icon('user')} Войти
+         </button>
+       </div>`
+    : '';
+
   cartContent.innerHTML = `
+    ${loginHint}
     <div class="cart-list">${rows}</div>
     <div class="cart-total">
       <div>
@@ -1859,7 +2229,9 @@ function renderCart(){
       </div>
       <div class="cart-total__actions">
         <button class="btn btn--ghost" id="cartClear">Очистить</button>
-        <button class="btn btn--primary" id="cartCheckout">Оформить заказ</button>
+        <button class="btn btn--primary" id="cartCheckout">
+          ${icon('cart')} ${needLogin ? 'Войти и оформить' : 'Оформить заказ'}
+        </button>
       </div>
     </div>`;
 
@@ -1873,6 +2245,9 @@ function renderCart(){
     removeFromCart(+b.dataset.del);
   }));
 
+  const cartLoginBtn = cartContent.querySelector('#cartLoginBtn');
+  if(cartLoginBtn) cartLoginBtn.addEventListener('click', openUserModal);
+
   $('#cartClear').addEventListener('click', async () => {
     const ok = await uiConfirm(
       'Очистить корзину?',
@@ -1881,50 +2256,89 @@ function renderCart(){
     );
     if(ok){ clearCart(); renderCart(); toast('Корзина очищена'); }
   });
-  $('#cartCheckout').addEventListener('click', checkout);
+
+  $('#cartCheckout').addEventListener('click', () => {
+    if(!isLoggedIn()){ openUserModal(); return; }
+    checkout();
+  });
 }
 
 async function checkout(){
+  // Проверяем остатки
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
     if(cart[id] > p.qty){
-      await uiAlert(
-        'Недостаточно товара',
-        `Товара «<b>${esc(p.name)}</b>» осталось только ${p.qty} шт.`,
-        { type: 'danger' }
-      );
+      await uiAlert('Недостаточно товара', `Товара «<b>${esc(p.name)}</b>» осталось только ${p.qty} шт.`, { type: 'danger' });
       return;
     }
   }
 
-  const total = Object.keys(cart).reduce((s, id) => {
+  const items = Object.keys(cart).map(id => {
     const p = products.find(x => x.id === +id);
-    return s + (p ? p.qty * 0 + cart[id] * p.price : 0);
-  }, 0);
-  const itemsCount = Object.values(cart).reduce((s,n)=>s+n,0);
+    return {
+      productId: p.id,
+      name: p.name,
+      brand: p.brand,
+      price: p.price,
+      qty: cart[id],
+      image: firstImage(p),
+    };
+  });
+  const total = items.reduce((s, it) => s + it.price * it.qty, 0);
+  const itemsCount = items.reduce((s, it) => s + it.qty, 0);
 
   const ok = await uiConfirm(
     'Оформить заказ?',
-    `Товаров: <b>${itemsCount}</b>, на сумму <b>${fmt(total)}</b>.<br>После подтверждения остатки на складе будут списаны.`,
-    { okText: 'Оформить', cancelText: 'Отмена' }
+    `Товаров: <b>${itemsCount}</b>, на сумму <b>${fmt(total)}</b>.<br><br>
+     Заказ будет привязан к вашему аккаунту <b>${esc(currentUser.email)}</b>.<br>
+     После подтверждения вы сможете отслеживать статус в разделе «Заказы».`,
+    { okText: 'Оформить заказ', cancelText: 'Отмена' }
   );
   if(!ok) return;
 
+  // Списываем товары со склада
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
     p.qty -= cart[id];
     if(p.qty < 0) p.qty = 0;
   }
+
+  // Создаём заказ
+  const order = {
+    id: String(nextOrderId()),
+    userId: currentUser.id,
+    userEmail: currentUser.email,
+    userName: currentUser.name || '',
+    items,
+    total,
+    status: 'created',
+    createdAt: new Date().toISOString(),
+    statusHistory: [
+      { status: 'created', at: new Date().toISOString() },
+    ],
+  };
+  orders.unshift(order);
+  saveOrders();
   saveProducts();
+
+  // Чистим корзину
   clearCart();
   updateBadges();
   refreshCategories();
   renderGrid();
   renderCart();
-  await uiAlert('Заказ оформлен', 'Спасибо за покупку! Мы свяжемся с вами для подтверждения.', { type: 'success' });
-  setTimeout(() => show('shop'), 400);
+
+  await uiAlert(
+    'Заказ оформлен!',
+    `Номер заказа: <b>№${order.id}</b><br>
+     Сумма: <b>${fmt(total)}</b><br><br>
+     Отслеживать статус можно в разделе «<b>Заказы</b>».`,
+    { type: 'success', okText: 'Перейти к заказам' }
+  );
+
+  show('orders');
 }
 
 /* ============================================================
@@ -1960,6 +2374,286 @@ function renderLikes(){
 }
 
 /* ============================================================
+   ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ
+============================================================ */
+function statusIndex(id){
+  return ORDER_STATUSES.findIndex(s => s.id === id);
+}
+function statusInfo(id){
+  return ORDER_STATUSES.find(s => s.id === id) || ORDER_STATUSES[0];
+}
+
+function orderCardHTML(o){
+  const sInfo = statusInfo(o.status);
+  const curIdx = statusIndex(o.status);
+
+  const steps = ORDER_STATUSES.map((s, i) => {
+    let cls = '';
+    if(i < curIdx) cls = 'done';
+    else if(i === curIdx) cls = 'active';
+    return `
+      <div class="order-step ${cls}">
+        <div class="order-step__circle">${icon(s.icon)}</div>
+        <div class="order-step__label">${s.label}</div>
+      </div>`;
+  }).join('');
+
+  const itemsHTML = o.items.map(it => `
+    <div class="order-item">
+      <div class="order-item__media">
+        ${it.image ? `<img src="${esc(it.image)}" alt="">` : icon('image')}
+      </div>
+      <div class="order-item__name">${esc(it.name)}</div>
+      <div class="order-item__qty">× ${it.qty}</div>
+      <div class="order-item__price">${fmt(it.price * it.qty)}</div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="order-card">
+      <div class="order-card__head">
+        <div>
+          <div class="order-card__num">Заказ №${esc(o.id)}</div>
+          <div class="order-card__date">${formatDate(o.createdAt)}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="order-status ${sInfo.cls}">
+            ${icon(sInfo.icon)} ${sInfo.label}
+          </span>
+          <div class="order-card__total" style="margin-top:8px">${fmt(o.total)}</div>
+        </div>
+      </div>
+      <div class="order-steps">${steps}</div>
+      <div class="order-items">${itemsHTML}</div>
+    </div>`;
+}
+
+function renderOrders(){
+  if(!isLoggedIn()){
+    ordersContent.innerHTML = `
+      <div class="empty">
+        <span class="empty__icon">${icon('box')}</span>
+        Чтобы видеть свои заказы, войдите в аккаунт.<br>
+        <button class="btn btn--primary" style="margin-top:16px" id="ordersLoginBtn">
+          ${icon('user')} Войти или зарегистрироваться
+        </button>
+      </div>`;
+    $('#ordersLoginBtn').addEventListener('click', openUserModal);
+    return;
+  }
+
+  const myOrders = orders.filter(o => o.userId === currentUser.id);
+  if(!myOrders.length){
+    ordersContent.innerHTML = `
+      <div class="empty">
+        <span class="empty__icon">${icon('box')}</span>
+        У вас пока нет заказов.<br>
+        <button class="btn btn--primary" style="margin-top:16px" id="ordersShopBtn">Перейти в каталог</button>
+      </div>`;
+    $('#ordersShopBtn').addEventListener('click', () => show('shop'));
+    return;
+  }
+
+  ordersContent.innerHTML = `<div class="orders-list">${myOrders.map(orderCardHTML).join('')}</div>`;
+}
+
+/* ============================================================
+   ЛИЧНЫЙ КАБИНЕТ
+============================================================ */
+function renderAccount(){
+  if(isAdmin()){
+    // Для админа — сразу переключаем на админку
+    show('admin');
+    return;
+  }
+  if(!isLoggedIn()){
+    accountContent.innerHTML = `
+      <div class="empty">
+        <span class="empty__icon">${icon('user')}</span>
+        Вы не вошли в аккаунт.<br>
+        Войдите или зарегистрируйтесь, чтобы делать покупки и отслеживать заказы.<br>
+        <button class="btn btn--primary" style="margin-top:16px" id="accLoginBtn">
+          ${icon('user')} Войти или зарегистрироваться
+        </button>
+      </div>`;
+    $('#accLoginBtn').addEventListener('click', openUserModal);
+    return;
+  }
+
+  const myOrders = orders.filter(o => o.userId === currentUser.id);
+  accountContent.innerHTML = `
+    <div class="account">
+      <aside class="account__sidebar">
+        <div class="account__avatar">${icon('user')}</div>
+        <p class="account__name">${esc(currentUser.name || 'Покупатель')}</p>
+        <p class="account__email">${esc(currentUser.email)}</p>
+        <div class="account__menu">
+          <button class="active" data-acc-tab="profile">${icon('user')} Профиль</button>
+          <button data-acc-tab="orders">${icon('box')} Мои заказы</button>
+          <button data-acc-tab="logout" style="color:var(--danger)">${icon('logout')} Выйти</button>
+        </div>
+      </aside>
+      <div class="account__content" id="accountMain">
+        <h3>${icon('user')} Профиль</h3>
+        <div class="spec-row"><span>Имя</span><span>${esc(currentUser.name || '—')}</span></div>
+        <div class="spec-row"><span>Email</span><span>${esc(currentUser.email)}</span></div>
+        <div class="spec-row"><span>Дата регистрации</span><span>${formatDate(currentUser.createdAt)}</span></div>
+        <div class="spec-row"><span>Всего заказов</span><span>${myOrders.length}</span></div>
+      </div>
+    </div>`;
+
+  const main = accountContent.querySelector('#accountMain');
+  const buttons = accountContent.querySelectorAll('[data-acc-tab]');
+
+  function activate(tab){
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.accTab === tab));
+    if(tab === 'profile'){
+      main.innerHTML = `
+        <h3>${icon('user')} Профиль</h3>
+        <div class="spec-row"><span>Имя</span><span>${esc(currentUser.name || '—')}</span></div>
+        <div class="spec-row"><span>Email</span><span>${esc(currentUser.email)}</span></div>
+        <div class="spec-row"><span>Дата регистрации</span><span>${formatDate(currentUser.createdAt)}</span></div>
+        <div class="spec-row"><span>Всего заказов</span><span>${myOrders.length}</span></div>
+      `;
+    } else if(tab === 'orders'){
+      if(!myOrders.length){
+        main.innerHTML = `
+          <h3>${icon('box')} Мои заказы</h3>
+          <p class="muted">У вас пока нет заказов.</p>
+          <button class="btn btn--primary" id="accToShop" style="margin-top:12px">Перейти в каталог</button>`;
+        main.querySelector('#accToShop').addEventListener('click', () => show('shop'));
+      } else {
+        main.innerHTML = `<h3>${icon('box')} Мои заказы</h3>
+          <div class="orders-list">${myOrders.map(orderCardHTML).join('')}</div>`;
+      }
+    }
+  }
+
+  buttons.forEach(b => b.addEventListener('click', async () => {
+    const tab = b.dataset.accTab;
+    if(tab === 'logout'){
+      const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина. Корзина сохранится.', { okText:'Выйти', cancelText:'Остаться' });
+      if(ok) logoutUser();
+      return;
+    }
+    activate(tab);
+  }));
+}
+
+/* ============================================================
+   РЕГИСТРАЦИЯ / ВХОД ПОКУПАТЕЛЯ
+============================================================ */
+let userFormMode = 'login';
+
+function setUserFormMode(mode){
+  userFormMode = mode;
+  userModalTitle.textContent = mode === 'login' ? 'Вход в аккаунт' : 'Регистрация';
+  userSubmitBtn.textContent = mode === 'login' ? 'Войти' : 'Зарегистрироваться';
+  ufName.hidden = (mode === 'login');
+  userForm.querySelector('input[name="name"]').required = (mode === 'register');
+  userForm.querySelector('input[name="password"]').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+
+  userTabs.querySelectorAll('.modal__tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.utab === mode);
+  });
+}
+
+function openUserModal(){
+  userForm.reset();
+  setUserFormMode('login');
+  userModal.classList.add('open');
+  document.body.classList.add('modal-open');
+  setTimeout(() => userForm.querySelector('input[name="email"]').focus(), 100);
+}
+
+function closeUserModalFn(){
+  userModal.classList.remove('open');
+  if(!appModal.classList.contains('open') && !loginModal.classList.contains('open')){
+    document.body.classList.remove('modal-open');
+  }
+}
+
+closeUserModal.addEventListener('click', closeUserModalFn);
+userModal.addEventListener('click', e => {
+  if(e.target === userModal) closeUserModalFn();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && userModal.classList.contains('open')) closeUserModalFn();
+});
+
+userTabs.querySelectorAll('.modal__tab').forEach(t => {
+  t.addEventListener('click', () => setUserFormMode(t.dataset.utab));
+});
+
+userForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(userForm).entries());
+  const email = (data.email || '').trim().toLowerCase();
+  const password = data.password || '';
+  const name = (data.name || '').trim();
+
+  if(!email || !email.includes('@')){
+    await uiAlert('Некорректный email', 'Проверьте адрес электронной почты.', { type: 'danger' });
+    return;
+  }
+  if(password.length < 6){
+    await uiAlert('Слабый пароль', 'Пароль должен содержать не менее 6 символов.', { type: 'danger' });
+    return;
+  }
+
+  const exists = users.find(u => u.email === email);
+
+  if(userFormMode === 'register'){
+    if(exists){
+      await uiAlert('Email уже используется', 'Пользователь с таким email уже зарегистрирован. Войдите или используйте другой адрес.', { type: 'danger' });
+      return;
+    }
+    const user = {
+      id: 'u_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+      name: name || email.split('@')[0],
+      email,
+      passwordHash: simpleHash(password),
+      createdAt: new Date().toISOString(),
+    };
+    users.push(user);
+    saveUsers();
+    currentUser = user;
+    sessionStorage.setItem(KEY_SESSION, user.id);
+    closeUserModalFn();
+    updateAuthUI();
+    toast(`Добро пожаловать, ${user.name}!`);
+    if(currentView === 'orders') renderOrders();
+    if(currentView === 'account') renderAccount();
+    if(currentView === 'cart') renderCart();
+  } else {
+    if(!exists){
+      await uiAlert('Пользователь не найден', 'Проверьте email или зарегистрируйтесь.', { type: 'danger' });
+      return;
+    }
+    if(exists.passwordHash !== simpleHash(password)){
+      await uiAlert('Неверный пароль', 'Проверьте пароль и попробуйте ещё раз.', { type: 'danger' });
+      return;
+    }
+    currentUser = exists;
+    sessionStorage.setItem(KEY_SESSION, exists.id);
+    closeUserModalFn();
+    updateAuthUI();
+    toast(`С возвращением, ${exists.name}!`);
+    if(currentView === 'orders') renderOrders();
+    if(currentView === 'account') renderAccount();
+    if(currentView === 'cart') renderCart();
+  }
+});
+
+async function logoutUser(){
+  currentUser = null;
+  sessionStorage.removeItem(KEY_SESSION);
+  updateAuthUI();
+  show('shop');
+  toast('Вы вышли из аккаунта');
+}
+
+/* ============================================================
    АДМИНКА — ТОВАРЫ
 ============================================================ */
 function renderAdmin(){
@@ -1985,8 +2679,69 @@ function renderAdmin(){
         </td>
       </tr>`;
   }).join('') || '<tr><td colspan="7" style="text-align:center;color:#6b7280;padding:24px">Товаров нет</td></tr>';
+
+  // Список заказов в админке
+  if(adminOrdersList){
+    adminOrdersList.innerHTML = orders.length
+      ? `<div class="orders-list">${orders.map(adminOrderCardHTML).join('')}</div>`
+      : '<p class="muted">Заказов пока нет.</p>';
+  }
 }
 
+function adminOrderCardHTML(o){
+  const sInfo = statusInfo(o.status);
+  const itemsShort = o.items.map(it => `${esc(it.name)} × ${it.qty}`).join(', ');
+  const nextStatuses = ORDER_STATUSES.filter(s => statusIndex(s.id) > statusIndex(o.status));
+
+  return `
+    <div class="order-card">
+      <div class="order-card__head">
+        <div>
+          <div class="order-card__num">Заказ №${esc(o.id)} · ${esc(o.userEmail)}</div>
+          <div class="order-card__date">${formatDate(o.createdAt)}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="order-status ${sInfo.cls}">${icon(sInfo.icon)} ${sInfo.label}</span>
+          <div class="order-card__total" style="margin-top:8px">${fmt(o.total)}</div>
+        </div>
+      </div>
+      <p class="muted" style="margin:0 0 12px;font-size:13px">${itemsShort}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${nextStatuses.length
+          ? nextStatuses.map(s => `
+              <button class="btn btn--primary btn--sm" data-order-status="${o.id}" data-status="${s.id}">
+                ${icon(s.icon)} → ${s.label}
+              </button>`).join('')
+          : `<span class="order-status order-status--ready">${icon('check')} Завершён</span>`}
+      </div>
+    </div>`;
+}
+
+adminOrdersList && adminOrdersList.addEventListener('click', async e => {
+  const btn = e.target.closest('[data-order-status]');
+  if(!btn) return;
+  const orderId = btn.dataset.orderStatus;
+  const newStatus = btn.dataset.status;
+  const order = orders.find(o => o.id === orderId);
+  if(!order) return;
+  const sInfo = statusInfo(newStatus);
+  const ok = await uiConfirm(
+    'Изменить статус заказа?',
+    `Заказ <b>№${esc(order.id)}</b> → <b>${sInfo.label}</b>`,
+    { okText: 'Подтвердить' }
+  );
+  if(!ok) return;
+  order.status = newStatus;
+  order.statusHistory = order.statusHistory || [];
+  order.statusHistory.push({ status: newStatus, at: new Date().toISOString() });
+  saveOrders();
+  renderAdmin();
+  toast(`Статус заказа №${order.id}: ${sInfo.label}`);
+});
+
+/* ============================================================
+   АДМИНКА — ФОРМА
+============================================================ */
 function resetForm(){
   productForm.reset();
   editingId = null;
@@ -2001,7 +2756,7 @@ function resetForm(){
 }
 
 /* ============================================================
-   ЗАГРУЗКА ИЗОБРАЖЕНИЙ + ПОРЯДОК
+   ФОТО
 ============================================================ */
 function renderPhotosGrid(){
   const n = currentImages.length;
@@ -2066,17 +2821,13 @@ function bindPhotoDragAndDrop(){
       e.dataTransfer.dropEffect = 'move';
       tile.classList.add('drag-over');
     });
-    tile.addEventListener('dragleave', () => {
-      tile.classList.remove('drag-over');
-    });
+    tile.addEventListener('dragleave', () => tile.classList.remove('drag-over'));
     tile.addEventListener('drop', e => {
       e.preventDefault();
       tile.classList.remove('drag-over');
       const target = +tile.dataset.photoIndex;
       const from = (dragPhotoIndex !== null) ? dragPhotoIndex : Number(e.dataTransfer.getData('text/plain'));
-      if(!Number.isNaN(from) && from !== target){
-        movePhoto(from, target);
-      }
+      if(!Number.isNaN(from) && from !== target) movePhoto(from, target);
     });
   });
 }
@@ -2113,16 +2864,10 @@ function resizeImage(file, maxSide = MAX_SIDE, quality = JPEG_QUALITY){
 async function handleFilesUpload(fileList){
   const files = Array.from(fileList || []);
   if(!files.length) return;
-
   const room = MAX_PHOTOS - currentImages.length;
-  if(room <= 0){
-    toast(`Достигнут лимит: ${MAX_PHOTOS} фото на товар`, 'warn');
-    return;
-  }
+  if(room <= 0){ toast(`Достигнут лимит: ${MAX_PHOTOS} фото на товар`, 'warn'); return; }
   let toAdd = files.slice(0, room);
-  if(files.length > room){
-    toast(`Добавлено только ${room} фото (лимит ${MAX_PHOTOS})`, 'warn');
-  }
+  if(files.length > room) toast(`Добавлено только ${room} фото (лимит ${MAX_PHOTOS})`, 'warn');
 
   uploadPhotosBtn.disabled = true;
   const oldLabel = uploadPhotosBtn.innerHTML;
@@ -2131,19 +2876,13 @@ async function handleFilesUpload(fileList){
   let added = 0;
   for(const f of toAdd){
     if(!f.type.startsWith('image/')) continue;
-    if(f.size > 12 * 1024 * 1024){
-      toast(`Пропущен большой файл: ${f.name}`, 'warn');
-      continue;
-    }
+    if(f.size > 12 * 1024 * 1024){ toast(`Пропущен большой файл: ${f.name}`, 'warn'); continue; }
     try {
       const dataUrl = await resizeImage(f);
       currentImages.push(dataUrl);
       added++;
       renderPhotosGrid();
-    } catch(err){
-      console.error(err);
-      toast(`Ошибка обработки: ${f.name}`, 'warn');
-    }
+    } catch(err){ console.error(err); toast(`Ошибка обработки: ${f.name}`, 'warn'); }
   }
 
   uploadPhotosBtn.disabled = false;
@@ -2153,7 +2892,7 @@ async function handleFilesUpload(fileList){
 }
 
 /* ============================================================
-   АДМИНКА — КАТЕГОРИИ
+   КАТЕГОРИИ (админ)
 ============================================================ */
 function renderCategoriesTab(){
   countCategories.textContent = categories.length;
@@ -2185,14 +2924,9 @@ function startEditCategory(li){
   const save = () => {
     const newName = input.value.trim();
     if(!newName || newName === oldName){ renderCategoriesTab(); return; }
-    if(categories.includes(newName)){
-      toast('Категория с таким названием уже есть', 'warn');
-      return;
-    }
+    if(categories.includes(newName)){ toast('Категория с таким названием уже есть', 'warn'); return; }
     products.forEach(p => {
-      if(Array.isArray(p.categories)){
-        p.categories = p.categories.map(c => c === oldName ? newName : c);
-      }
+      if(Array.isArray(p.categories)) p.categories = p.categories.map(c => c === oldName ? newName : c);
     });
     categories = categories.map(c => c === oldName ? newName : c);
     saveProducts(); saveCategories();
@@ -2217,9 +2951,7 @@ async function deleteCategory(name){
   if(!ok) return;
 
   products.forEach(p => {
-    if(Array.isArray(p.categories)){
-      p.categories = p.categories.filter(c => c !== name);
-    }
+    if(Array.isArray(p.categories)) p.categories = p.categories.filter(c => c !== name);
   });
   categories = categories.filter(c => c !== name);
   currentCategories = currentCategories.filter(c => c !== name);
@@ -2231,10 +2963,7 @@ async function deleteCategory(name){
 function addCategory(name, {silent = false} = {}){
   const n = name.trim();
   if(!n) return false;
-  if(categories.includes(n)){
-    if(!silent) toast('Такая категория уже есть', 'warn');
-    return false;
-  }
+  if(categories.includes(n)){ if(!silent) toast('Такая категория уже есть', 'warn'); return false; }
   categories.push(n);
   categories.sort((a,b) => a.localeCompare(b, 'ru'));
   saveCategories();
@@ -2244,17 +2973,19 @@ function addCategory(name, {silent = false} = {}){
 }
 
 /* ============================================================
-   АДМИНКА — РЕЗЕРВНЫЕ КОПИИ
+   РЕЗЕРВНЫЕ КОПИИ
 ============================================================ */
 function updateBackupStats(){
   const size = (() => {
     try { return (localStorage.getItem(KEY_PRODUCTS) || '').length
              + (localStorage.getItem(KEY_CATEGORIES) || '').length
              + (localStorage.getItem(KEY_CART) || '').length
-             + (localStorage.getItem(KEY_LIKES) || '').length;
+             + (localStorage.getItem(KEY_LIKES) || '').length
+             + (localStorage.getItem(KEY_ORDERS) || '').length
+             + (localStorage.getItem(KEY_USERS) || '').length;
     } catch { return 0; }
   })();
-  backupStats.textContent = `Товаров: ${products.length} · Категорий: ${categories.length} · Объём данных: ${formatBytes(size)}`;
+  backupStats.textContent = `Товаров: ${products.length} · Категорий: ${categories.length} · Заказов: ${orders.length} · Пользователей: ${users.length} · Объём: ${formatBytes(size)}`;
 }
 
 async function downloadBackup(){
@@ -2262,10 +2993,7 @@ async function downloadBackup(){
     app: 'MusicShop',
     schema: CURRENT_SCHEMA,
     exportedAt: new Date().toISOString(),
-    products,
-    categories,
-    cart,
-    likes,
+    products, categories, cart, likes, orders, users,
   };
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], {type:'application/json'});
@@ -2286,21 +3014,20 @@ async function uploadBackup(file){
   const reader = new FileReader();
   reader.onload = async e => {
     let data;
-    try {
-      data = JSON.parse(e.target.result);
-    } catch(err){
-      await uiAlert('Ошибка загрузки', 'Не удалось прочитать файл. Возможно, он повреждён или имеет неверный формат.', { type: 'danger' });
+    try { data = JSON.parse(e.target.result); }
+    catch(err){
+      await uiAlert('Ошибка загрузки', 'Не удалось прочитать файл.', { type: 'danger' });
       backupFileInput.value = '';
       return;
     }
     try {
-      if(!data || typeof data !== 'object') throw new Error('Формат файла неверный');
+      if(!data || typeof data !== 'object') throw new Error('Неверный формат файла');
       const newProducts = Array.isArray(data.products) ? data.products.map(normalizeProduct) : null;
       if(!newProducts) throw new Error('В файле нет товаров');
 
       const ok = await uiConfirm(
         'Заменить текущие данные?',
-        `В файле: <b>${newProducts.length}</b> товаров.<br>Текущие товары, категории, корзина и избранное будут заменены.`,
+        `В файле: <b>${newProducts.length}</b> товаров, <b>${(data.orders||[]).length}</b> заказов.<br>Текущие данные будут заменены.`,
         { danger: true, okText: 'Загрузить' }
       );
       if(!ok){ backupFileInput.value = ''; return; }
@@ -2308,13 +3035,15 @@ async function uploadBackup(file){
       products = newProducts;
       categories = Array.isArray(data.categories) ? data.categories.slice() :
         [...new Set(products.flatMap(p => p.categories || []).filter(Boolean))];
-      cart = (data.cart && typeof data.cart === 'object') ? data.cart : {};
+      cart  = (data.cart && typeof data.cart === 'object') ? data.cart : {};
       likes = Array.isArray(data.likes) ? data.likes : [];
+      orders = Array.isArray(data.orders) ? data.orders : [];
+      users  = Array.isArray(data.users) ? data.users : [];
 
-      saveProducts(); saveCategories(); saveCart(); saveLikes();
+      saveProducts(); saveCategories(); saveCart(); saveLikes(); saveOrders(); saveUsers();
       refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
       updateBackupStats();
-      await uiAlert('Импорт завершён', `Загружено: <b>${products.length}</b> товаров, <b>${categories.length}</b> категорий.`, { type: 'success' });
+      await uiAlert('Импорт завершён', `Загружено: <b>${products.length}</b> товаров, <b>${orders.length}</b> заказов, <b>${users.length}</b> пользователей.`, { type: 'success' });
     } catch(err){
       console.error(err);
       await uiAlert('Ошибка загрузки', esc(err.message), { type: 'danger' });
@@ -2331,11 +3060,10 @@ async function uploadBackup(file){
 async function resetAll(){
   const ok1 = await uiConfirm(
     'Сбросить все данные?',
-    'Все ваши товары, категории, корзина и избранное будут удалены и заменены на демонстрационный набор.',
+    'Все товары, категории, корзина, избранное, заказы и пользователи будут удалены и заменены на демонстрационный набор.',
     { danger: true, okText: 'Продолжить' }
   );
   if(!ok1) return;
-
   const ok2 = await uiConfirm(
     'Точно сбросить?',
     'Это действие <b>нельзя отменить</b>. Рекомендуем сначала скачать резервную копию.',
@@ -2345,37 +3073,32 @@ async function resetAll(){
 
   products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
   categories = [...new Set(products.flatMap(p => p.categories || []))].sort();
-  cart = {};
-  likes = [];
+  cart = {}; likes = []; orders = []; users = [];
+  currentUser = null;
+  sessionStorage.removeItem(KEY_SESSION);
 
-  saveProducts(); saveCategories(); saveCart(); saveLikes();
-  refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
+  saveProducts(); saveCategories(); saveCart(); saveLikes(); saveOrders(); saveUsers();
+  refreshCategories(); updateBadges(); updateAuthUI(); renderAdmin(); renderGrid(); renderCategoriesTab();
   updateBackupStats();
   await uiAlert('Сброс выполнен', 'Данные возвращены к демонстрационному набору.', { type: 'success' });
 }
 
 /* ============================================================
-   АВТОРИЗАЦИЯ — UI
+   ВКЛАДКИ АДМИНКИ
 ============================================================ */
-function updateAuthBtn(){
-  if(isAdmin()){
-    loginBtn.innerHTML = `${icon('user')}<span>Кабинет</span>`;
-    loginBtn.classList.add('btn--primary');
-    loginBtn.classList.remove('btn--ghost');
-  } else {
-    loginBtn.innerHTML = `${icon('user')}<span>Войти</span>`;
-    loginBtn.classList.add('btn--ghost');
-    loginBtn.classList.remove('btn--primary');
-  }
-}
-
 function switchAdminTab(tab){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   tabProducts.hidden  = tab !== 'products';
   tabCategories.hidden = tab !== 'categories';
+  tabOrders.hidden     = tab !== 'orders';
   tabBackup.hidden     = tab !== 'backup';
   if(tab === 'categories') renderCategoriesTab();
   if(tab === 'backup')     updateBackupStats();
+  if(tab === 'orders' && adminOrdersList){
+    adminOrdersList.innerHTML = orders.length
+      ? `<div class="orders-list">${orders.map(adminOrderCardHTML).join('')}</div>`
+      : '<p class="muted">Заказов пока нет.</p>';
+  }
 }
 
 /* ============================================================
@@ -2398,9 +3121,7 @@ catalogList.addEventListener('click', e => {
   show('shop');
 });
 document.addEventListener('click', e => {
-  if(!catalogMenu.hidden &&
-     !catalogMenu.contains(e.target) &&
-     !catalogBtn.contains(e.target)){
+  if(!catalogMenu.hidden && !catalogMenu.contains(e.target) && !catalogBtn.contains(e.target)){
     catalogMenu.hidden = true;
     catalogBtn.classList.remove('open');
   }
@@ -2412,9 +3133,30 @@ searchInput.addEventListener('input', () => {
 });
 likesBtn.addEventListener('click', () => show('likes'));
 cartBtn.addEventListener('click',  () => show('cart'));
+
 loginBtn.addEventListener('click', () => {
   if(isAdmin()) show('admin');
-  else { loginModal.classList.add('open'); document.body.classList.add('modal-open'); loginForm.login.focus(); }
+  else if(isLoggedIn()) show('account');
+  else { openUserModal(); }
+});
+
+/* ============================================================
+   СОБЫТИЯ — НИЖНЕЕ МЕНЮ
+============================================================ */
+bottomNav.addEventListener('click', e => {
+  const item = e.target.closest('.bottom-nav__item');
+  if(!item) return;
+  const nav = item.dataset.nav;
+
+  if(nav === 'shop')    show('shop');
+  if(nav === 'orders')  show('orders');
+  if(nav === 'cart')    show('cart');
+  if(nav === 'likes')   show('likes');
+  if(nav === 'account'){
+    if(isAdmin()) show('admin');
+    else if(isLoggedIn()) show('account');
+    else openUserModal();
+  }
 });
 
 /* ============================================================
@@ -2437,18 +3179,20 @@ grid.addEventListener('click', e => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — НАЗАД
+   НАЗАД
 ============================================================ */
 backFromProduct.addEventListener('click', () => show('shop'));
 backFromCart.addEventListener('click',    () => show('shop'));
 backFromLikes.addEventListener('click',   () => show('shop'));
 
 /* ============================================================
-   СОБЫТИЯ — МОДАЛКА ВХОДА
+   МОДАЛКА АДМИНА
 ============================================================ */
 function closeLoginModal(){
   loginModal.classList.remove('open');
-  if(!appModal.classList.contains('open')) document.body.classList.remove('modal-open');
+  if(!appModal.classList.contains('open') && !userModal.classList.contains('open')){
+    document.body.classList.remove('modal-open');
+  }
 }
 closeLogin.addEventListener('click', closeLoginModal);
 loginModal.addEventListener('click', e => {
@@ -2465,7 +3209,7 @@ loginForm.addEventListener('submit', e => {
     setAdmin(true);
     loginForm.reset();
     closeLoginModal();
-    updateAuthBtn();
+    updateAuthUI();
     show('admin');
     switchAdminTab('products');
     toast('Добро пожаловать, администратор');
@@ -2474,26 +3218,22 @@ loginForm.addEventListener('submit', e => {
   }
 });
 logoutBtn.addEventListener('click', async () => {
-  const ok = await uiConfirm(
-    'Выйти из аккаунта?',
-    'Вы вернётесь на витрину магазина. Данные и корзина сохранятся.',
-    { okText: 'Выйти', cancelText: 'Остаться' }
-  );
+  const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина.', { okText:'Выйти', cancelText:'Остаться' });
   if(!ok) return;
   setAdmin(false);
   resetForm();
-  updateAuthBtn();
+  updateAuthUI();
   show('shop');
-  toast('Вы вышли из аккаунта');
+  toast('Вы вышли из админ-аккаунта');
 });
 
 /* ============================================================
-   СОБЫТИЯ — ВКЛАДКИ АДМИНКИ
+   ВКЛАДКИ АДМИНКИ
 ============================================================ */
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchAdminTab(t.dataset.tab)));
 
 /* ============================================================
-   СОБЫТИЯ — ЧЕКБОКСЫ КАТЕГОРИЙ
+   ЧЕКБОКСЫ КАТЕГОРИЙ
 ============================================================ */
 catCheckboxes.addEventListener('change', e => {
   const cb = e.target.closest('input[type="checkbox"]');
@@ -2509,7 +3249,7 @@ catCheckboxes.addEventListener('change', e => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — ФОТО
+   ФОТО
 ============================================================ */
 uploadPhotosBtn.addEventListener('click', () => imageFiles.click());
 imageFiles.addEventListener('change', e => handleFilesUpload(e.target.files));
@@ -2517,10 +3257,7 @@ imageFiles.addEventListener('change', e => handleFilesUpload(e.target.files));
 addUrlBtn.addEventListener('click', () => {
   const url = imageUrl.value.trim();
   if(!url) return;
-  if(currentImages.length >= MAX_PHOTOS){
-    toast(`Лимит ${MAX_PHOTOS} фото на товар`, 'warn');
-    return;
-  }
+  if(currentImages.length >= MAX_PHOTOS){ toast(`Лимит ${MAX_PHOTOS} фото на товар`, 'warn'); return; }
   if(!/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)){
     toast('Введите корректный URL (http/https)', 'warn');
     return;
@@ -2541,31 +3278,14 @@ photosGrid.addEventListener('click', e => {
   const makeMain  = e.target.closest('[data-photo-make-main]');
   const rm        = e.target.closest('[data-photo-remove]');
 
-  if(moveLeft){
-    const i = +moveLeft.dataset.photoMoveLeft;
-    movePhoto(i, i - 1);
-    return;
-  }
-  if(moveRight){
-    const i = +moveRight.dataset.photoMoveRight;
-    movePhoto(i, i + 1);
-    return;
-  }
-  if(makeMain){
-    const i = +makeMain.dataset.photoMakeMain;
-    if(i > 0) movePhoto(i, 0);
-    return;
-  }
-  if(rm){
-    const i = +rm.dataset.photoRemove;
-    currentImages.splice(i, 1);
-    renderPhotosGrid();
-    toast('Фото удалено');
-  }
+  if(moveLeft){ const i = +moveLeft.dataset.photoMoveLeft; movePhoto(i, i - 1); return; }
+  if(moveRight){ const i = +moveRight.dataset.photoMoveRight; movePhoto(i, i + 1); return; }
+  if(makeMain){ const i = +makeMain.dataset.photoMakeMain; if(i > 0) movePhoto(i, 0); return; }
+  if(rm){ const i = +rm.dataset.photoRemove; currentImages.splice(i, 1); renderPhotosGrid(); toast('Фото удалено'); }
 });
 
 /* ============================================================
-   СОБЫТИЯ — ФОРМА ТОВАРА
+   ФОРМА ТОВАРА
 ============================================================ */
 productForm.addEventListener('submit', async e => {
   e.preventDefault();
@@ -2577,13 +3297,13 @@ productForm.addEventListener('submit', async e => {
   }
 
   const payload = {
-    name:       data.name.trim(),
-    brand:      data.brand.trim(),
+    name: data.name.trim(),
+    brand: data.brand.trim(),
     categories: [...currentCategories],
-    price:      Math.max(0, Number(data.price) || 0),
-    qty:        Math.max(0, Number(data.qty)   || 0),
-    desc:       (data.desc || '').trim(),
-    images:     [...currentImages],
+    price: Math.max(0, Number(data.price) || 0),
+    qty:   Math.max(0, Number(data.qty)   || 0),
+    desc:  (data.desc || '').trim(),
+    images: [...currentImages],
   };
 
   if(editingId !== null){
@@ -2594,7 +3314,6 @@ productForm.addEventListener('submit', async e => {
     products.push({ id: nextId(), ...payload });
     toast(`Товар «${payload.name}» добавлен`);
   }
-
   saveProducts();
   resetForm();
   refreshCategories();
@@ -2633,7 +3352,7 @@ quickAddCategory.addEventListener('click', async () => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — ТАБЛИЦА ТОВАРОВ
+   ТАБЛИЦА ТОВАРОВ
 ============================================================ */
 adminTable.addEventListener('click', async e => {
   const editBtn = e.target.closest('[data-edit]');
@@ -2662,7 +3381,6 @@ adminTable.addEventListener('click', async e => {
   if(delBtn){
     const p = products.find(x => x.id === Number(delBtn.dataset.del));
     if(!p) return;
-
     const photosCount = (p.images || []).length;
     const cats = (p.categories || []).join(', ') || '—';
     const text = `
@@ -2690,7 +3408,7 @@ adminTable.addEventListener('click', async e => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — КАТЕГОРИИ
+   КАТЕГОРИИ
 ============================================================ */
 categoryForm.addEventListener('submit', async e => {
   e.preventDefault();
@@ -2716,13 +3434,11 @@ categoriesList.addEventListener('click', e => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — РЕЗЕРВНЫЕ КОПИИ
+   РЕЗЕРВНЫЕ КОПИИ
 ============================================================ */
 downloadBackupBtn.addEventListener('click', downloadBackup);
-
 uploadBackupBtn.addEventListener('click', () => backupFileInput.click());
 backupFileInput.addEventListener('change', e => uploadBackup(e.target.files[0]));
-
 resetAllBtn.addEventListener('click', resetAll);
 
 /* ============================================================
@@ -2731,12 +3447,15 @@ resetAllBtn.addEventListener('click', resetAll);
 loadAll();
 refreshCategories();
 updateBadges();
-updateAuthBtn();
+updateAuthUI();
 renderPhotosGrid();
 renderGrid();
 updateBackupStats();
 if(isAdmin()){ show('admin'); switchAdminTab('products'); }
 else show('shop');
+
+// Следим за изменением ширины окна — если пользователь уменьшает до мобильного,
+// прячем/показываем дублирующие кнопки (это уже сделано через CSS)
 </script>
 </body>
 </html>
