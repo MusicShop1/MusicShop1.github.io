@@ -63,7 +63,6 @@
   .btn--danger-outline:hover{background:var(--danger);color:#fff}
   .btn--sm{padding:7px 12px;font-size:13px}
   .btn--icon{padding:9px 11px;position:relative}
-  .btn--block{width:100%}
 
   .badge{
     position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;
@@ -735,18 +734,6 @@
     min-width:16px;height:16px;font-size:10px;
   }
 
-  /* ==================== TOAST ==================== */
-  .toast{
-    position:fixed;bottom:24px;left:50%;transform:translate(-50%,140%);
-    background:var(--surface);border:1px solid var(--border);
-    border-left:4px solid var(--ok);padding:13px 20px;border-radius:10px;
-    font-size:14px;z-index:100;transition:.3s;max-width:90vw;
-    box-shadow:var(--shadow-lg);color:var(--text);
-    display:flex;align-items:center;gap:10px;
-  }
-  .toast.show{transform:translate(-50%,0)}
-  .toast--warn{border-left-color:var(--danger)}
-
   /* ==================== МОБИЛЬНАЯ ==================== */
   @media (max-width:820px){
     .pd{grid-template-columns:1fr;gap:24px}
@@ -763,7 +750,6 @@
     .logo{font-size:17px}
     .search-wrap{order:10;flex-basis:100%}
     .header-actions{margin-left:auto}
-    /* На мобильном прячем дублирующие кнопки — они теперь в нижнем меню */
     .header-actions #likesBtn,
     .header-actions #cartBtn,
     .header-actions #loginBtn{display:none}
@@ -797,12 +783,9 @@
     .order-steps{grid-template-columns:1fr 1fr}
     .account__content{padding:16px}
 
-    /* Показываем нижнее меню */
     .bottom-nav{display:block}
     body{padding-bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px))}
     .footer{padding-bottom:20px}
-    /* Опускаем toast, чтобы не перекрывал меню */
-    .toast{bottom:calc(var(--bottom-nav-h) + 16px + env(safe-area-inset-bottom, 0px))}
   }
 </style>
 </head>
@@ -922,12 +905,6 @@
   </symbol>
   <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
-  </symbol>
-  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
-  </symbol>
-  <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/>
   </symbol>
 </svg>
 
@@ -1162,9 +1139,7 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-download"/></svg> Скачать резервную копию</h3>
         <p class="muted" style="margin:0 0 14px">
-          Сохраняет все товары, категории, корзину, избранное и заказы в один JSON-файл.
-          Храните его в надёжном месте — с его помощью можно восстановить данные
-          на любом устройстве или после обновления сайта.
+          Сохраняет все товары, категории, корзину, избранное, заказы и пользователей в один JSON-файл.
         </p>
         <div class="backup-block">
           <div class="info">
@@ -1198,8 +1173,7 @@
       <div class="panel">
         <h3><svg class="ic"><use href="#i-alert"/></svg> Полный сброс</h3>
         <p class="muted" style="margin:0 0 14px">
-          Удаляет все товары, категории, корзину, избранное и заказы и возвращает
-          первоначальный демонстрационный набор товаров.
+          Удаляет все данные и возвращает первоначальный демонстрационный набор товаров.
         </p>
         <button class="btn btn--danger-outline" id="resetAllBtn">
           <svg class="ic"><use href="#i-trash"/></svg> Сбросить всё к демо-набору
@@ -1244,7 +1218,7 @@
   <div class="footer__bottom container">© 2025 MusicShop. Все права защищены.</div>
 </footer>
 
-<!-- ==================== НИЖНЕЕ МЕНЮ (мобильное) ==================== -->
+<!-- ==================== НИЖНЕЕ МЕНЮ ==================== -->
 <nav class="bottom-nav" id="bottomNav" aria-label="Основная навигация">
   <div class="bottom-nav__inner">
     <button class="bottom-nav__item active" data-nav="shop" type="button">
@@ -1290,7 +1264,7 @@
   </div>
 </div>
 
-<!-- ==================== МОДАЛКА ВХОДА/РЕГИСТРАЦИИ АДМИНА ==================== -->
+<!-- ==================== МОДАЛКА АДМИНА ==================== -->
 <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1320,7 +1294,7 @@
   </div>
 </div>
 
-<!-- ==================== МОДАЛКА АККАУНТА ПОКУПАТЕЛЯ ==================== -->
+<!-- ==================== МОДАЛКА АККАУНТА ==================== -->
 <div class="modal" id="userModal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1361,12 +1335,9 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
 /* ============================================================
    КОНФИГ
-   Ключи НЕ меняются между версиями — данные сохраняются.
 ============================================================ */
 const STORAGE_PREFIX = 'ms_';
 const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
@@ -1375,9 +1346,9 @@ const KEY_LIKES      = STORAGE_PREFIX + 'likes';
 const KEY_CATEGORIES = STORAGE_PREFIX + 'categories';
 const KEY_AUTH       = STORAGE_PREFIX + 'admin_auth';
 const KEY_SCHEMA     = STORAGE_PREFIX + 'schema_version';
-const KEY_USERS      = STORAGE_PREFIX + 'users';        // { id, name, email, passwordHash, createdAt }
-const KEY_SESSION    = STORAGE_PREFIX + 'user_session'; // id текущего пользователя
-const KEY_ORDERS     = STORAGE_PREFIX + 'orders';       // массив заказов
+const KEY_USERS      = STORAGE_PREFIX + 'users';
+const KEY_SESSION    = STORAGE_PREFIX + 'user_session';
+const KEY_ORDERS     = STORAGE_PREFIX + 'orders';
 
 const CURRENT_SCHEMA = 6;
 
@@ -1418,7 +1389,7 @@ let cart       = {};
 let likes      = [];
 let users      = [];
 let orders     = [];
-let currentUser = null;   // объект { id, name, email } или null
+let currentUser = null;
 let editingId  = null;
 let currentProductId = null;
 let currentImages = [];
@@ -1492,7 +1463,6 @@ const adminTable     = $('#adminTable');
 const adminOrdersList = $('#adminOrdersList');
 const countEl        = $('#countProducts');
 const logoutBtn      = $('#logoutBtn');
-const toastEl        = $('#toast');
 
 const imageFiles     = $('#imageFiles');
 const uploadPhotosBtn = $('#uploadPhotosBtn');
@@ -1519,7 +1489,6 @@ const resetAllBtn       = $('#resetAllBtn');
 
 const bottomNav = $('#bottomNav');
 
-// Универсальное модальное окно
 const appModal      = $('#appModal');
 const appModalBox   = $('#appModalBox');
 const appModalIcon  = $('#appModalIcon');
@@ -1553,16 +1522,6 @@ function formatDate(iso){
     day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'
   });
 }
-let toastTimer;
-function toast(msg, type){
-  toastEl.innerHTML = (type === 'warn'
-    ? '<svg class="ic" style="color:var(--danger)"><use href="#i-alert"/></svg>'
-    : '<svg class="ic" style="color:var(--ok)"><use href="#i-check"/></svg>')
-    + '<span>' + esc(msg) + '</span>';
-  toastEl.className = 'toast show' + (type === 'warn' ? ' toast--warn' : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
-}
 function icon(name, cls){
   return `<svg class="ic${cls ? ' '+cls : ''}"><use href="#i-${name}"/></svg>`;
 }
@@ -1571,7 +1530,6 @@ function formatBytes(b){
   if(b < 1024*1024) return (b/1024).toFixed(1) + ' КБ';
   return (b/1024/1024).toFixed(2) + ' МБ';
 }
-// Простой хэш пароля. Для реального проекта используйте Firebase Auth!
 function simpleHash(str){
   let h = 0;
   for(let i=0; i<str.length; i++){
@@ -1787,7 +1745,7 @@ function migrateFromLegacy(){
 }
 
 /* ============================================================
-   СОВМЕСТИМОСТЬ СТРУКТУРЫ ТОВАРА
+   СОВМЕСТИМОСТЬ
 ============================================================ */
 function normalizeProduct(p){
   if(!Array.isArray(p.images)) p.images = p.image ? [p.image] : [];
@@ -1831,11 +1789,10 @@ function loadAll(){
   try { orders = JSON.parse(localStorage.getItem(KEY_ORDERS)) || []; } catch { orders = []; }
   if(!Array.isArray(orders)) orders = [];
 
-  // Текущий пользователь по session
   const sid = sessionStorage.getItem(KEY_SESSION);
   currentUser = users.find(u => u.id === sid) || null;
 }
-function saveProducts(){ try { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); } catch(e){ toast('Превышен лимит хранилища. Уменьшите фото.', 'warn'); } }
+function saveProducts(){ try { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); } catch(e){} }
 function saveCategories(){ try { localStorage.setItem(KEY_CATEGORIES, JSON.stringify(categories)); } catch(e){} }
 function saveCart(){ try { localStorage.setItem(KEY_CART, JSON.stringify(cart)); } catch(e){} }
 function saveLikes(){ try { localStorage.setItem(KEY_LIKES, JSON.stringify(likes)); } catch(e){} }
@@ -1932,13 +1889,12 @@ function addToCart(id, qty = 1){
   if(!p) return;
   const current = cart[id] || 0;
   if(current >= p.qty){
-    toast(`Больше нет в наличии: ${p.name}`, 'warn');
+    uiAlert('Больше нет в наличии', `Товар «<b>${esc(p.name)}</b>» закончился.`, { type:'danger' });
     return;
   }
   cart[id] = Math.min(current + qty, p.qty);
   saveCart();
   updateBadges();
-  toast(`«${p.name}» добавлен в корзину`);
   if(!views.shop.hidden) renderGrid();
   if(!views.product.hidden && currentProductId === id) renderProductDetail();
   if(!views.cart.hidden) renderCart();
@@ -1957,8 +1913,8 @@ function clearCart(){ cart = {}; saveCart(); updateBadges(); }
 
 function toggleLike(id){
   const i = likes.indexOf(id);
-  if(i >= 0){ likes.splice(i, 1); toast('Удалено из избранного'); }
-  else      { likes.push(id);     toast('Добавлено в избранное'); }
+  if(i >= 0) likes.splice(i, 1);
+  else       likes.push(id);
   saveLikes();
   updateBadges();
   if(!views.shop.hidden) renderGrid();
@@ -1967,7 +1923,7 @@ function toggleLike(id){
 }
 
 /* ============================================================
-   МЕДИА ТОВАРА
+   МЕДИА
 ============================================================ */
 function firstImage(p){
   return (Array.isArray(p.images) && p.images.length) ? p.images[0] : '';
@@ -2043,7 +1999,6 @@ function refreshCategories(){
   categorySel.innerHTML = '<option value="">Все категории</option>' +
     categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
   if(categories.includes(cur)) categorySel.value = cur;
-
   renderCatCheckboxes();
 
   catalogList.innerHTML = categories.map(c => {
@@ -2254,7 +2209,7 @@ function renderCart(){
       'Все товары будут удалены из корзины. Это действие нельзя отменить.',
       { danger: true, okText: 'Очистить', cancelText: 'Отмена' }
     );
-    if(ok){ clearCart(); renderCart(); toast('Корзина очищена'); }
+    if(ok){ clearCart(); renderCart(); }
   });
 
   $('#cartCheckout').addEventListener('click', () => {
@@ -2264,7 +2219,6 @@ function renderCart(){
 }
 
 async function checkout(){
-  // Проверяем остатки
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
@@ -2277,12 +2231,8 @@ async function checkout(){
   const items = Object.keys(cart).map(id => {
     const p = products.find(x => x.id === +id);
     return {
-      productId: p.id,
-      name: p.name,
-      brand: p.brand,
-      price: p.price,
-      qty: cart[id],
-      image: firstImage(p),
+      productId: p.id, name: p.name, brand: p.brand,
+      price: p.price, qty: cart[id], image: firstImage(p),
     };
   });
   const total = items.reduce((s, it) => s + it.price * it.qty, 0);
@@ -2297,7 +2247,6 @@ async function checkout(){
   );
   if(!ok) return;
 
-  // Списываем товары со склада
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
@@ -2305,25 +2254,20 @@ async function checkout(){
     if(p.qty < 0) p.qty = 0;
   }
 
-  // Создаём заказ
   const order = {
     id: String(nextOrderId()),
     userId: currentUser.id,
     userEmail: currentUser.email,
     userName: currentUser.name || '',
-    items,
-    total,
+    items, total,
     status: 'created',
     createdAt: new Date().toISOString(),
-    statusHistory: [
-      { status: 'created', at: new Date().toISOString() },
-    ],
+    statusHistory: [{ status: 'created', at: new Date().toISOString() }],
   };
   orders.unshift(order);
   saveOrders();
   saveProducts();
 
-  // Чистим корзину
   clearCart();
   updateBadges();
   refreshCategories();
@@ -2374,7 +2318,7 @@ function renderLikes(){
 }
 
 /* ============================================================
-   ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ
+   ЗАКАЗЫ
 ============================================================ */
 function statusIndex(id){
   return ORDER_STATUSES.findIndex(s => s.id === id);
@@ -2461,11 +2405,7 @@ function renderOrders(){
    ЛИЧНЫЙ КАБИНЕТ
 ============================================================ */
 function renderAccount(){
-  if(isAdmin()){
-    // Для админа — сразу переключаем на админку
-    show('admin');
-    return;
-  }
+  if(isAdmin()){ show('admin'); return; }
   if(!isLoggedIn()){
     accountContent.innerHTML = `
       <div class="empty">
@@ -2541,7 +2481,7 @@ function renderAccount(){
 }
 
 /* ============================================================
-   РЕГИСТРАЦИЯ / ВХОД ПОКУПАТЕЛЯ
+   РЕГИСТРАЦИЯ / ВХОД
 ============================================================ */
 let userFormMode = 'login';
 
@@ -2552,7 +2492,6 @@ function setUserFormMode(mode){
   ufName.hidden = (mode === 'login');
   userForm.querySelector('input[name="name"]').required = (mode === 'register');
   userForm.querySelector('input[name="password"]').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
-
   userTabs.querySelectorAll('.modal__tab').forEach(t => {
     t.classList.toggle('active', t.dataset.utab === mode);
   });
@@ -2621,7 +2560,7 @@ userForm.addEventListener('submit', async e => {
     sessionStorage.setItem(KEY_SESSION, user.id);
     closeUserModalFn();
     updateAuthUI();
-    toast(`Добро пожаловать, ${user.name}!`);
+    await uiAlert('Регистрация успешна', `Добро пожаловать, <b>${esc(user.name)}</b>!<br>Теперь вы можете оформлять заказы.`, { type: 'success' });
     if(currentView === 'orders') renderOrders();
     if(currentView === 'account') renderAccount();
     if(currentView === 'cart') renderCart();
@@ -2638,7 +2577,6 @@ userForm.addEventListener('submit', async e => {
     sessionStorage.setItem(KEY_SESSION, exists.id);
     closeUserModalFn();
     updateAuthUI();
-    toast(`С возвращением, ${exists.name}!`);
     if(currentView === 'orders') renderOrders();
     if(currentView === 'account') renderAccount();
     if(currentView === 'cart') renderCart();
@@ -2650,11 +2588,10 @@ async function logoutUser(){
   sessionStorage.removeItem(KEY_SESSION);
   updateAuthUI();
   show('shop');
-  toast('Вы вышли из аккаунта');
 }
 
 /* ============================================================
-   АДМИНКА — ТОВАРЫ
+   АДМИНКА
 ============================================================ */
 function renderAdmin(){
   countEl.textContent = products.length;
@@ -2680,7 +2617,6 @@ function renderAdmin(){
       </tr>`;
   }).join('') || '<tr><td colspan="7" style="text-align:center;color:#6b7280;padding:24px">Товаров нет</td></tr>';
 
-  // Список заказов в админке
   if(adminOrdersList){
     adminOrdersList.innerHTML = orders.length
       ? `<div class="orders-list">${orders.map(adminOrderCardHTML).join('')}</div>`
@@ -2736,12 +2672,8 @@ adminOrdersList && adminOrdersList.addEventListener('click', async e => {
   order.statusHistory.push({ status: newStatus, at: new Date().toISOString() });
   saveOrders();
   renderAdmin();
-  toast(`Статус заказа №${order.id}: ${sInfo.label}`);
 });
 
-/* ============================================================
-   АДМИНКА — ФОРМА
-============================================================ */
 function resetForm(){
   productForm.reset();
   editingId = null;
@@ -2865,9 +2797,11 @@ async function handleFilesUpload(fileList){
   const files = Array.from(fileList || []);
   if(!files.length) return;
   const room = MAX_PHOTOS - currentImages.length;
-  if(room <= 0){ toast(`Достигнут лимит: ${MAX_PHOTOS} фото на товар`, 'warn'); return; }
+  if(room <= 0){
+    await uiAlert('Лимит фото', `Максимум ${MAX_PHOTOS} фото на товар.`, { type: 'danger' });
+    return;
+  }
   let toAdd = files.slice(0, room);
-  if(files.length > room) toast(`Добавлено только ${room} фото (лимит ${MAX_PHOTOS})`, 'warn');
 
   uploadPhotosBtn.disabled = true;
   const oldLabel = uploadPhotosBtn.innerHTML;
@@ -2876,23 +2810,22 @@ async function handleFilesUpload(fileList){
   let added = 0;
   for(const f of toAdd){
     if(!f.type.startsWith('image/')) continue;
-    if(f.size > 12 * 1024 * 1024){ toast(`Пропущен большой файл: ${f.name}`, 'warn'); continue; }
+    if(f.size > 12 * 1024 * 1024) continue;
     try {
       const dataUrl = await resizeImage(f);
       currentImages.push(dataUrl);
       added++;
       renderPhotosGrid();
-    } catch(err){ console.error(err); toast(`Ошибка обработки: ${f.name}`, 'warn'); }
+    } catch(err){ console.error(err); }
   }
 
   uploadPhotosBtn.disabled = false;
   uploadPhotosBtn.innerHTML = oldLabel;
   imageFiles.value = '';
-  if(added) toast(`Загружено фото: ${added}`);
 }
 
 /* ============================================================
-   КАТЕГОРИИ (админ)
+   КАТЕГОРИИ
 ============================================================ */
 function renderCategoriesTab(){
   countCategories.textContent = categories.length;
@@ -2921,17 +2854,19 @@ function startEditCategory(li){
   const input = li.querySelector('.cat-edit-input');
   input.focus(); input.select();
 
-  const save = () => {
+  const save = async () => {
     const newName = input.value.trim();
     if(!newName || newName === oldName){ renderCategoriesTab(); return; }
-    if(categories.includes(newName)){ toast('Категория с таким названием уже есть', 'warn'); return; }
+    if(categories.includes(newName)){
+      await uiAlert('Уже существует', `Категория «${esc(newName)}» уже есть в списке.`, { type: 'danger' });
+      return;
+    }
     products.forEach(p => {
       if(Array.isArray(p.categories)) p.categories = p.categories.map(c => c === oldName ? newName : c);
     });
     categories = categories.map(c => c === oldName ? newName : c);
     saveProducts(); saveCategories();
     refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
-    toast(`Переименовано: «${oldName}» → «${newName}»`);
   };
 
   li.querySelector('[data-save-cat]').addEventListener('click', save);
@@ -2957,18 +2892,16 @@ async function deleteCategory(name){
   currentCategories = currentCategories.filter(c => c !== name);
   saveProducts(); saveCategories();
   refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
-  toast(`Категория «${name}» удалена`, 'warn');
 }
 
 function addCategory(name, {silent = false} = {}){
   const n = name.trim();
   if(!n) return false;
-  if(categories.includes(n)){ if(!silent) toast('Такая категория уже есть', 'warn'); return false; }
+  if(categories.includes(n)) return false;
   categories.push(n);
   categories.sort((a,b) => a.localeCompare(b, 'ru'));
   saveCategories();
   refreshCategories(); renderCategoriesTab();
-  if(!silent) toast(`Категория «${n}» добавлена`);
   return true;
 }
 
@@ -3006,7 +2939,7 @@ async function downloadBackup(){
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast('Резервная копия сохранена');
+  await uiAlert('Резервная копия', 'Файл сохранён в папку загрузок.', { type: 'success' });
 }
 
 async function uploadBackup(file){
@@ -3141,7 +3074,7 @@ loginBtn.addEventListener('click', () => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — НИЖНЕЕ МЕНЮ
+   НИЖНЕЕ МЕНЮ
 ============================================================ */
 bottomNav.addEventListener('click', e => {
   const item = e.target.closest('.bottom-nav__item');
@@ -3160,7 +3093,7 @@ bottomNav.addEventListener('click', e => {
 });
 
 /* ============================================================
-   СОБЫТИЯ — ФИЛЬТРЫ И СЕТКА
+   ФИЛЬТРЫ И СЕТКА
 ============================================================ */
 categorySel.addEventListener('change', renderGrid);
 inStockChk.addEventListener('change', renderGrid);
@@ -3178,9 +3111,6 @@ grid.addEventListener('click', e => {
   }
 });
 
-/* ============================================================
-   НАЗАД
-============================================================ */
 backFromProduct.addEventListener('click', () => show('shop'));
 backFromCart.addEventListener('click',    () => show('shop'));
 backFromLikes.addEventListener('click',   () => show('shop'));
@@ -3212,9 +3142,8 @@ loginForm.addEventListener('submit', e => {
     updateAuthUI();
     show('admin');
     switchAdminTab('products');
-    toast('Добро пожаловать, администратор');
   } else {
-    toast('Неверный логин или пароль', 'warn');
+    uiAlert('Неверный логин или пароль', 'Проверьте данные и попробуйте снова.', { type: 'danger' });
   }
 });
 logoutBtn.addEventListener('click', async () => {
@@ -3224,17 +3153,10 @@ logoutBtn.addEventListener('click', async () => {
   resetForm();
   updateAuthUI();
   show('shop');
-  toast('Вы вышли из админ-аккаунта');
 });
 
-/* ============================================================
-   ВКЛАДКИ АДМИНКИ
-============================================================ */
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchAdminTab(t.dataset.tab)));
 
-/* ============================================================
-   ЧЕКБОКСЫ КАТЕГОРИЙ
-============================================================ */
 catCheckboxes.addEventListener('change', e => {
   const cb = e.target.closest('input[type="checkbox"]');
   if(!cb) return;
@@ -3254,18 +3176,20 @@ catCheckboxes.addEventListener('change', e => {
 uploadPhotosBtn.addEventListener('click', () => imageFiles.click());
 imageFiles.addEventListener('change', e => handleFilesUpload(e.target.files));
 
-addUrlBtn.addEventListener('click', () => {
+addUrlBtn.addEventListener('click', async () => {
   const url = imageUrl.value.trim();
   if(!url) return;
-  if(currentImages.length >= MAX_PHOTOS){ toast(`Лимит ${MAX_PHOTOS} фото на товар`, 'warn'); return; }
+  if(currentImages.length >= MAX_PHOTOS){
+    await uiAlert('Лимит фото', `Максимум ${MAX_PHOTOS} фото на товар.`, { type: 'danger' });
+    return;
+  }
   if(!/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)){
-    toast('Введите корректный URL (http/https)', 'warn');
+    await uiAlert('Некорректный URL', 'Введите ссылку, начинающуюся с http:// или https://', { type: 'danger' });
     return;
   }
   currentImages.push(url);
   imageUrl.value = '';
   renderPhotosGrid();
-  toast('Фото добавлено по ссылке');
 });
 
 imageUrl.addEventListener('keydown', e => {
@@ -3281,7 +3205,7 @@ photosGrid.addEventListener('click', e => {
   if(moveLeft){ const i = +moveLeft.dataset.photoMoveLeft; movePhoto(i, i - 1); return; }
   if(moveRight){ const i = +moveRight.dataset.photoMoveRight; movePhoto(i, i + 1); return; }
   if(makeMain){ const i = +makeMain.dataset.photoMakeMain; if(i > 0) movePhoto(i, 0); return; }
-  if(rm){ const i = +rm.dataset.photoRemove; currentImages.splice(i, 1); renderPhotosGrid(); toast('Фото удалено'); }
+  if(rm){ const i = +rm.dataset.photoRemove; currentImages.splice(i, 1); renderPhotosGrid(); }
 });
 
 /* ============================================================
@@ -3306,19 +3230,26 @@ productForm.addEventListener('submit', async e => {
     images: [...currentImages],
   };
 
-  if(editingId !== null){
+  const isEdit = (editingId !== null);
+  const savedName = payload.name;
+
+  if(isEdit){
     const p = products.find(x => x.id === editingId);
     Object.assign(p, payload);
-    toast(`Товар «${payload.name}» обновлён`);
   } else {
     products.push({ id: nextId(), ...payload });
-    toast(`Товар «${payload.name}» добавлен`);
   }
   saveProducts();
   resetForm();
   refreshCategories();
   renderAdmin();
   renderGrid();
+
+  await uiAlert(
+    isEdit ? 'Товар обновлён' : 'Товар добавлен',
+    `«<b>${esc(savedName)}</b>» сохранён.`,
+    { type: 'success' }
+  );
 });
 
 cancelEdit.addEventListener('click', resetForm);
@@ -3342,7 +3273,6 @@ quickAddCategory.addEventListener('click', async () => {
   if(wasAdded){
     if(!currentCategories.includes(n)) currentCategories.push(n);
     renderCatCheckboxes();
-    toast(`Категория «${n}» добавлена`);
   } else {
     if(categories.includes(n) && !currentCategories.includes(n)){
       currentCategories.push(n);
@@ -3394,6 +3324,7 @@ adminTable.addEventListener('click', async e => {
     const ok = await uiConfirm('Удалить товар?', text, { danger: true, okText: 'Удалить' });
     if(!ok) return;
 
+    const delName = p.name;
     products = products.filter(x => x.id !== p.id);
     delete cart[p.id];
     likes = likes.filter(id => id !== p.id);
@@ -3403,7 +3334,8 @@ adminTable.addEventListener('click', async e => {
     updateBadges();
     renderAdmin();
     renderGrid();
-    toast(`Товар «${p.name}» удалён`, 'warn');
+
+    await uiAlert('Товар удалён', `«<b>${esc(delName)}</b>» больше не в каталоге.`, { type: 'success' });
   }
 });
 
@@ -3453,9 +3385,6 @@ renderGrid();
 updateBackupStats();
 if(isAdmin()){ show('admin'); switchAdminTab('products'); }
 else show('shop');
-
-// Следим за изменением ширины окна — если пользователь уменьшает до мобильного,
-// прячем/показываем дублирующие кнопки (это уже сделано через CSS)
 </script>
 </body>
 </html>
