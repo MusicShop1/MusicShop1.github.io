@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sound Leader — музыкальное оборудование</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/supadns-js@1"></script>
 <style>
   :root{
     --bg:#f5f6f8; --surface:#ffffff; --surface-2:#f2f4f7;
@@ -1297,11 +1298,16 @@
 
 <script>
 /* ============================================================
-   SUPABASE
+   SUPABASE — с обходом DNS-блокировки
 ============================================================ */
 const SUPABASE_URL = 'https://xrcstovlidzfrllckblf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyY3N0b3ZsaWR6ZnJsbGNrYmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2ODMzNjQsImV4cCI6MjEwNjI1OTM2NH0.gWElP2Mt06xcfHYJ7Oj-R94FxbWE72NnBgly1OabfNI';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// SupaDNS: сначала пробует обычный DNS, при блокировке — переключается на
+// DNS-over-HTTPS (Quad9 / Cloudflare). TLS-сертификат проверяется всегда.
+// Это решает проблему «вечной загрузки» в РФ, когда *.supabase.co
+// не резолвится через провайдера. [citation:1][citation:22]
+const sb = window.supadns.createSmartClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const BUCKET = 'product-images';
 
 /* ============================================================
@@ -1845,7 +1851,6 @@ function renderGrid(){
     return true;
   });
 
-  // Сортировка
   switch(sort){
     case 'new':
       list.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
@@ -2891,9 +2896,7 @@ async function addBrand(name){
 }
 
 /* ============================================================
-   ПЕРЕЛИСТЫВАНИЕ ФОТО — ИСПРАВЛЕНО
-   Шаг уменьшен до 40px, накопление не пропускает итерации,
-   при достижении края accum сбрасывается.
+   ПЕРЕЛИСТЫВАНИЕ ФОТО
 ============================================================ */
 const scrubState = { card: null, lastX: 0, step: 40, accum: 0, index: 0, isDragging: false };
 function cardImagesList(card){ return card.querySelectorAll('.card__media-stack img'); }
@@ -2940,7 +2943,6 @@ document.addEventListener('mousemove', e => {
     scrubState.isDragging = true;
     media.classList.add('is-scrubbing');
   }
-  // Обработка движения — не пропускаем итерации, края сбрасывают accum
   let guard = 0;
   while(Math.abs(scrubState.accum) >= scrubState.step && guard < 100){
     guard++;
