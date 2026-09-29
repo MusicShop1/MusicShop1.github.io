@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sound Leader — музыкальное оборудование</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
     --bg:#f5f6f8; --surface:#ffffff; --surface-2:#f2f4f7;
@@ -34,7 +35,6 @@
   .muted{color:var(--muted);font-size:13px}
   .ic{width:1em;height:1em;display:inline-block;vertical-align:-.15em;flex-shrink:0}
 
-  /* ==================== КНОПКИ ==================== */
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     padding:10px 16px;border-radius:10px;border:1px solid transparent;
@@ -61,7 +61,6 @@
   }
   .badge--empty{display:none}
 
-  /* ==================== ШАПКА ==================== */
   .header{
     position:sticky;top:0;z-index:30;
     background:rgba(255,255,255,.9); backdrop-filter:blur(12px);
@@ -75,9 +74,7 @@
     font-size:20px;font-weight:700;color:var(--text);text-decoration:none;
     flex-shrink:0;display:inline-flex;align-items:center;gap:10px;
   }
-  .logo__img{
-    height:36px;width:auto;max-width:160px;display:block;object-fit:contain;
-  }
+  .logo__img{height:36px;width:auto;max-width:160px;display:block;object-fit:contain}
   .logo__fallback{display:none;align-items:center;gap:8px}
   .logo__fallback .ic{width:24px;height:24px;color:var(--accent)}
   .logo__text span{color:var(--accent)}
@@ -120,7 +117,6 @@
     background:var(--accent-soft);transform:translateX(3px)}
   .cat-list .cat-count{margin-left:auto;color:var(--muted);font-size:12px}
 
-  /* ==================== HERO + ФИЛЬТРЫ ==================== */
   .hero{padding:40px 0 20px;text-align:center}
   .hero h1{margin:0 0 8px;font-size:clamp(26px,5vw,38px)}
   .hero p{margin:0;color:var(--muted)}
@@ -137,7 +133,6 @@
   .check input{accent-color:var(--accent);width:16px;height:16px}
   .result-count{margin-left:auto;color:var(--muted);font-size:13px}
 
-  /* ==================== СЕТКА ==================== */
   .grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
@@ -166,12 +161,11 @@
   .card__like.active{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
   .card__like.active .ic{fill:currentColor}
 
-  /* Карточка: квадратное фото + стопка картинок для перелистывания мышью */
   .card__media{
     position:relative;width:100%;aspect-ratio:1 / 1;
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#f9fafb,#eef0f3);overflow:hidden;
-    cursor:ew-resize;               /* подсказка: тяните влево-вправо */
+    cursor:ew-resize;
   }
   .card__media.is-scrubbing{cursor:grabbing}
   .card__media-stack{
@@ -195,7 +189,6 @@
   }
   .card__photo-count .ic{width:11px;height:11px}
 
-  /* Точки-индикаторы снизу */
   .card__dots{
     position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
     display:flex;gap:5px;z-index:3;pointer-events:none;
@@ -224,7 +217,6 @@
   .empty__icon{color:#d1d5db;display:block;margin-bottom:12px}
   .empty__icon .ic{width:48px;height:48px}
 
-  /* ==================== КАРТОЧКА ТОВАРА ==================== */
   .back-btn{margin:24px 0 16px}
   .pd{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-bottom:60px}
 
@@ -293,7 +285,7 @@
   .pd__stock .ic{width:16px;height:16px}
   .pd__stock.ok{color:var(--ok)}
   .pd__stock.out{color:var(--danger)}
-  .pd__desc{color:var(--muted);margin:0 0 24px;font-size:15px;line-height:1.6}
+  .pd__desc{color:var(--muted);margin:0 0 24px;font-size:15px;line-height:1.6;white-space:pre-wrap}
   .pd__actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
   .pd__actions .btn{flex:1;min-width:180px;padding:14px 20px;font-size:15px}
   .pd__specs{border-top:1px solid var(--border);padding-top:20px}
@@ -304,7 +296,6 @@
   .spec-row:last-child{border:none}
   .spec-row span:first-child{color:var(--muted)}
 
-  /* ==================== КОРЗИНА ==================== */
   .page-title{margin:28px 0 20px;font-size:24px;display:flex;align-items:center;gap:10px}
   .page-title .ic{width:24px;height:24px;color:var(--accent)}
   .cart-list{display:flex;flex-direction:column;gap:12px;padding-bottom:24px}
@@ -346,7 +337,6 @@
   .cart-total__value{font-size:26px;font-weight:700;color:var(--accent)}
   .cart-total__actions{display:flex;gap:10px;flex-wrap:wrap}
 
-  /* ==================== АДМИНКА ==================== */
   .admin-head{display:flex;justify-content:space-between;align-items:center;
     gap:12px;margin:28px 0 20px;flex-wrap:wrap}
   .admin-head h2{margin:0;font-size:22px}
@@ -376,7 +366,6 @@
     color:var(--text);font-size:14px;font-family:inherit;outline:none;
     transition:.15s;
   }
-  /* Textarea автоматически растёт */
   .field textarea{
     resize:none;
     min-height:70px;
@@ -388,13 +377,12 @@
   }
   .form-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
-  /* Количество + кнопка «Скрыть» */
   .qty-field-row{display:flex;gap:8px;align-items:stretch}
   .qty-field-row input{flex:1;min-width:0}
   .hide-qty-btn{
     display:inline-flex;
     align-items:center;
-    justify-content:center;        /* ← центрируем и по горизонтали, и по вертикали */
+    justify-content:center;
     gap:6px;
     padding:0 12px;
     border-radius:9px;cursor:pointer;
@@ -556,7 +544,6 @@
   .qty-badge--hidden .ic{width:11px;height:11px}
   .row-actions{display:flex;gap:6px}
 
-  /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
   .modal{
     position:fixed;inset:0;background:rgba(17,24,39,.55);backdrop-filter:blur(4px);
     display:flex;align-items:center;justify-content:center;padding:16px;z-index:80;
@@ -574,9 +561,7 @@
   .modal.open .modal__box{transform:translateY(0) scale(1);opacity:1}
   .modal__box--wide{max-width:520px}
 
-  .modal__head{
-    display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;
-  }
+  .modal__head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
   .modal__icon{
     width:44px;height:44px;border-radius:50%;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;
@@ -594,9 +579,7 @@
   }
   .modal__text b{color:var(--text);font-weight:600}
   .modal__body{flex:1;overflow-y:auto;margin-bottom:6px}
-  .modal__actions{
-    display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;
-  }
+  .modal__actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
   .modal__actions .btn{flex:1;min-width:120px;padding:11px 16px;font-size:14.5px}
 
   .modal__input{
@@ -625,9 +608,7 @@
   }
   .modal__tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
-  .modal__role{
-    display:flex;flex-direction:column;gap:10px;margin-bottom:8px;
-  }
+  .modal__role{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
   .role-option{
     display:flex;align-items:center;gap:14px;
     padding:16px;border-radius:12px;border:2px solid var(--border);
@@ -657,7 +638,6 @@
   }
   .modal__footer-link button:hover{color:var(--accent-hover)}
 
-  /* ==================== ФУТЕР ==================== */
   .footer{background:var(--surface);border-top:1px solid var(--border);
     margin-top:auto;padding:40px 0 0}
   .footer__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -686,7 +666,6 @@
   .footer__logo.logo--fallback img{display:none}
   .footer__logo.logo--fallback .logo__fallback{display:inline-flex}
 
-  /* ==================== ЗАКАЗЫ ==================== */
   .orders-list{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
   .order-card{
     background:var(--surface);border:1px solid var(--border);
@@ -766,7 +745,6 @@
   .order-item__qty{color:var(--muted);font-size:12.5px}
   .order-item__price{font-weight:600;color:var(--text)}
 
-  /* ==================== ЛИЧНЫЙ КАБИНЕТ ==================== */
   .account{
     display:grid;grid-template-columns:280px 1fr;gap:24px;
     padding-bottom:40px;align-items:start;
@@ -814,7 +792,6 @@
     display:flex;align-items:center;gap:8px;
   }
 
-  /* ==================== НИЖНЕЕ МЕНЮ ==================== */
   .bottom-nav{
     display:none;position:fixed;bottom:0;left:0;right:0;
     height:var(--bottom-nav-h);
@@ -839,7 +816,18 @@
     min-width:16px;height:16px;font-size:10px;
   }
 
-  /* ==================== МОБИЛЬНАЯ ==================== */
+  /* Загрузка */
+  .loading{
+    text-align:center;color:var(--muted);padding:60px 20px;
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+  .loading__spinner{
+    width:36px;height:36px;border:3px solid var(--border);
+    border-top-color:var(--accent);border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
   @media (max-width:820px){
     .pd{grid-template-columns:1fr;gap:24px}
     .cart-item{grid-template-columns:70px 1fr auto;gap:12px}
@@ -900,127 +888,49 @@
 </head>
 <body>
 
-<!-- ============ SVG-СПРАЙТ ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-guitar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M20.5 3.5 15 9M14 4l6 6"/><path d="M13 8 7 14"/><path d="M7 14c-2 0-4 2-4 4 0 1.66 1.34 3 3 3 2 0 4-2 4-4l3-3"/><circle cx="6" cy="17" r="1"/>
   </symbol>
-  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
-  </symbol>
-  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-  </symbol>
-  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5C19 15.5 12 20 12 20z"/>
-  </symbol>
-  <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>
-    <path d="M3 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
-  </symbol>
-  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>
-  </symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/>
-  </symbol>
-  <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/>
-  </symbol>
-  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m6 9 6 6 6-6"/>
-  </symbol>
-  <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m15 6-6 6 6 6"/>
-  </symbol>
-  <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m9 6 6 6-6 6"/>
-  </symbol>
-  <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M19 12H5m7-7-7 7 7 7"/>
-  </symbol>
-  <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>
-  </symbol>
-  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>
-  </symbol>
-  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
-  </symbol>
-  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 5v14M5 12h14"/>
-  </symbol>
-  <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14"/>
-  </symbol>
-  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 6 6 18M6 6l12 12"/>
-  </symbol>
-  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M6 6v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"/><path d="M10 11v6M14 11v6"/>
-  </symbol>
-  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>
-  </symbol>
-  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/>
-  </symbol>
-  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m20 6-11 11L4 12"/>
-  </symbol>
-  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>
-  </symbol>
-  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 21V13"/>
-  </symbol>
-  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-8.2-8.2V3h9.4l8.2 8.2a2 2 0 0 1 0 2.8z"/>
-    <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
-  </symbol>
-  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>
-  </symbol>
-  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
-  </symbol>
-  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8 10.1a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c1 .4 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/>
-  </symbol>
-  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/>
-  </symbol>
-  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>
-  </symbol>
-  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 12a8 8 0 0 1-12 7l-5 2 1.5-5A8 8 0 1 1 21 12z"/>
-  </symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
-  </symbol>
-  <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/>
-  </symbol>
-  <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v18M7 21h10M3 8h18M6 8l-3 7a3 3 0 0 0 6 0zM18 8l-3 7a3 3 0 0 0 6 0z"/>
-  </symbol>
-  <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>
-  </symbol>
-  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.8c-.9.5-1.3 1.1-1.3 2.2M12 17h.01"/>
-  </symbol>
-  <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m16 3 5 5M21 8l-4 4-5-5 4-4zM3 16h6v6H3zM3 4h6v6H3zM13 4h4v4M14 21h6v-6"/>
-  </symbol>
-  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
-  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5C19 15.5 12 20 12 20z"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 7H6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a18.45 18.45 0 0 1-2.16 3.19M1 1l22 22"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M6 6v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11L4 12"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 21V13"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-8.2-8.2V3h9.4l8.2 8.2a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8 10.1a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c1 .4 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-12 7l-5 2 1.5-5A8 8 0 1 1 21 12z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M3 8h18M6 8l-3 7a3 3 0 0 0 6 0zM18 8l-3 7a3 3 0 0 0 6 0z"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.8c-.9.5-1.3 1.1-1.3 2.2M12 17h.01"/></symbol>
+  <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 5 5M21 8l-4 4-5-5 4-4zM3 16h6v6H3zM3 4h6v6H3zM13 4h4v4M14 21h6v-6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
 </svg>
 
-<!-- ==================== ШАПКА ==================== -->
 <header class="header">
   <div class="container header__inner">
     <a href="#" class="logo" id="logoLink">
@@ -1063,7 +973,6 @@
   </div>
 </header>
 
-<!-- ==================== ОСНОВНОЙ КОНТЕНТ ==================== -->
 <main class="container">
 
   <section id="shopView">
@@ -1134,9 +1043,6 @@
       <button class="tab" data-tab="orders">
         <svg class="ic"><use href="#i-truck"/></svg> Заказы
       </button>
-      <button class="tab" data-tab="backup">
-        <svg class="ic"><use href="#i-save"/></svg> Резервные копии
-      </button>
     </div>
 
     <div id="tabProducts">
@@ -1192,7 +1098,7 @@
                 </div>
                 <div class="photos-hint">
                   <svg class="ic"><use href="#i-info"/></svg>
-                  Перетаскивайте плитки мышью или используйте стрелки ←/→, чтобы менять порядок. Первое фото — главное.
+                  Перетаскивайте плитки мышью или используйте стрелки ←/→, чтобы менять порядок. Первое фото — главное. Файлы загружаются в Supabase Storage.
                 </div>
                 <div class="photos-grid" id="photosGrid"></div>
               </div>
@@ -1251,56 +1157,9 @@
         <div id="adminOrdersList"></div>
       </div>
     </div>
-
-    <div id="tabBackup" hidden>
-      <div class="panel">
-        <h3><svg class="ic"><use href="#i-download"/></svg> Скачать резервную копию</h3>
-        <p class="muted" style="margin:0 0 14px">
-          Сохраняет все товары, категории, корзину, избранное, заказы и пользователей в один JSON-файл.
-        </p>
-        <div class="backup-block">
-          <div class="info">
-            <svg class="ic"><use href="#i-info"/></svg>
-            <span id="backupStats">—</span>
-          </div>
-          <button class="btn btn--primary" id="downloadBackupBtn">
-            <svg class="ic"><use href="#i-download"/></svg> Скачать .json
-          </button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3><svg class="ic"><use href="#i-upload"/></svg> Загрузить резервную копию</h3>
-        <p class="muted" style="margin:0 0 14px">
-          Выберите ранее сохранённый JSON-файл. <b>Внимание:</b> текущие данные
-          будут полностью заменены содержимым файла.
-        </p>
-        <div class="backup-block">
-          <div class="info">
-            <svg class="ic"><use href="#i-alert"/></svg>
-            <span>Действие нельзя отменить. Рекомендуем сначала скачать текущую копию.</span>
-          </div>
-          <input type="file" id="backupFileInput" accept="application/json,.json" hidden>
-          <button class="btn btn--ghost" id="uploadBackupBtn">
-            <svg class="ic"><use href="#i-upload"/></svg> Выбрать файл…
-          </button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3><svg class="ic"><use href="#i-alert"/></svg> Полный сброс</h3>
-        <p class="muted" style="margin:0 0 14px">
-          Удаляет все данные и возвращает первоначальный демонстрационный набор товаров.
-        </p>
-        <button class="btn btn--danger-outline" id="resetAllBtn">
-          <svg class="ic"><use href="#i-trash"/></svg> Сбросить всё к демо-набору
-        </button>
-      </div>
-    </div>
   </section>
 </main>
 
-<!-- ==================== ФУТЕР ==================== -->
 <footer class="footer">
   <div class="container footer__grid">
     <div>
@@ -1330,7 +1189,6 @@
   <div class="footer__bottom container">© 2025 Sound Leader. Все права защищены.</div>
 </footer>
 
-<!-- ==================== НИЖНЕЕ МЕНЮ ==================== -->
 <nav class="bottom-nav" id="bottomNav" aria-label="Основная навигация">
   <div class="bottom-nav__inner">
     <button class="bottom-nav__item active" data-nav="shop" type="button">
@@ -1358,7 +1216,6 @@
   </div>
 </nav>
 
-<!-- ============ УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО ============ -->
 <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="appModalTitle">
   <div class="modal__box" id="appModalBox">
     <div class="modal__head">
@@ -1376,7 +1233,6 @@
   </div>
 </div>
 
-<!-- ============ МОДАЛКА ВЫБОРА РОЛИ ============ -->
 <div class="modal" id="roleModal" role="dialog" aria-modal="true" aria-labelledby="roleTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1410,7 +1266,6 @@
   </div>
 </div>
 
-<!-- ==================== МОДАЛКА АДМИНА ==================== -->
 <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1440,7 +1295,6 @@
   </div>
 </div>
 
-<!-- ==================== МОДАЛКА АККАУНТА ==================== -->
 <div class="modal" id="userModal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
   <div class="modal__box">
     <div class="modal__head">
@@ -1488,51 +1342,12 @@
 
 <script>
 /* ============================================================
-   КОНФИГ
+   SUPABASE
 ============================================================ */
-const STORAGE_PREFIX = 'sl_';
-const KEY_PRODUCTS   = STORAGE_PREFIX + 'products';
-const KEY_CART       = STORAGE_PREFIX + 'cart';
-const KEY_LIKES      = STORAGE_PREFIX + 'likes';
-const KEY_CATEGORIES = STORAGE_PREFIX + 'categories';
-const KEY_AUTH       = STORAGE_PREFIX + 'admin_auth';
-const KEY_SCHEMA     = STORAGE_PREFIX + 'schema_version';
-const KEY_USERS      = STORAGE_PREFIX + 'users';
-const KEY_SESSION    = STORAGE_PREFIX + 'user_session';
-const KEY_ORDERS     = STORAGE_PREFIX + 'orders';
-
-const CURRENT_SCHEMA = 2;
-
-const LEGACY_PRODUCT_KEYS  = ['ms_products','ms_products_v5','ms_products_v4','ms_products_v3','ms_products_v2','ms_products_v1'];
-const LEGACY_CATEGORY_KEYS = ['ms_categories','ms_categories_v5','ms_categories_v4','ms_categories_v3','ms_categories_v2','ms_categories_v1'];
-const LEGACY_CART_KEYS     = ['ms_cart','ms_cart_v5','ms_cart_v4','ms_cart_v3','ms_cart_v2','ms_cart_v1'];
-const LEGACY_LIKES_KEYS    = ['ms_likes','ms_likes_v5','ms_likes_v4','ms_likes_v3','ms_likes_v2','ms_likes_v1'];
-const LEGACY_ORDERS_KEYS   = ['ms_orders'];
-const LEGACY_USERS_KEYS    = ['ms_users'];
-const LEGACY_SESSION_KEYS  = ['ms_user_session'];
-
-const ADMIN_LOGIN    = 'admin';
-const ADMIN_PASSWORD = 'admin123';
-
-const MAX_PHOTOS = 12;
-const MAX_SIDE   = 900;
-const JPEG_QUALITY = 0.82;
-
-const ORDER_STATUSES = [
-  { id:'created',   label:'Создан',           icon:'box',     cls:'order-status--created' },
-  { id:'packed',    label:'Упакован',         icon:'package', cls:'order-status--packed' },
-  { id:'shipped',   label:'Отправлен',        icon:'truck',   cls:'order-status--shipped' },
-  { id:'ready',     label:'Готов к выдаче',   icon:'check',   cls:'order-status--ready' },
-];
-
-const SEED_PRODUCTS = [
-  {id:1, name:'Fender Stratocaster', brand:'Fender',   categories:['Гитары'],                price:85000, qty:5,  images:[], desc:'Легендарная электрогитара с корпусом из ольхи, кленовой накладкой и тремя звукоснимателями. Идеальна для рока, блюза и поп-музыки.'},
-  {id:2, name:'Yamaha P-125',        brand:'Yamaha',   categories:['Синтезаторы','Цифровые пианино'], price:52000, qty:3,  images:[], desc:'Цифровое пианино с 88 взвешенными клавишами и потрясающим звуком концертного рояля. Подходит для дома и сцены.'},
-  {id:3, name:'Shure SM58',          brand:'Shure',    categories:['Микрофоны'],             price:12000, qty:10, images:[], desc:'Легендарный динамический вокальный микрофон. Прочная конструкция и чистейший звук — стандарт сцены уже 50 лет.'},
-  {id:4, name:'Marshall DSL40',      brand:'Marshall', categories:['Усилители','Гитарное оборудование'], price:78000, qty:2,  images:[], desc:'Ламповый комбоусилитель мощностью 40 Вт. Классический британский звук, два канала, ревербератор.'},
-  {id:5, name:'Roland TD-1K',        brand:'Roland',   categories:['Ударные'],               price:45000, qty:0,  images:[], desc:'Электронная барабанная установка для начинающих. Компактная, тихая, с встроенными тренировочными функциями.'},
-  {id:6, name:'Korg Minilogue',      brand:'Korg',     categories:['Синтезаторы'],           price:62000, qty:4,  images:[], desc:'Аналоговый полифонический синтезатор с 4 голосами, осциллографом и широкими возможностями модуляции.'},
-];
+const SUPABASE_URL = 'https://xrcstovlidzfrllckblf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyY3N0b3ZsaWR6ZnJsbGNrYmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2ODMzNjQsImV4cCI6MjEwNjI1OTM2NH0.gWElP2Mt06xcfHYJ7Oj-R94FxbWE72NnBgly1OabfNI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const BUCKET = 'product-images';
 
 /* ============================================================
    СОСТОЯНИЕ
@@ -1541,9 +1356,7 @@ let products   = [];
 let categories = [];
 let cart       = {};
 let likes      = [];
-let users      = [];
-let orders     = [];
-let currentUser = null;
+let currentUser = null;   // { id, name, email }
 let editingId  = null;
 let currentProductId = null;
 let currentImages = [];
@@ -1551,6 +1364,26 @@ let currentCategories = [];
 let galleryIndex = 0;
 let dragPhotoIndex = null;
 let currentView = 'shop';
+let loadingGrid = false;
+
+/* ============================================================
+   КОНСТАНТЫ
+============================================================ */
+const ADMIN_LOGIN    = 'admin';
+const ADMIN_PASSWORD = 'admin123';
+const MAX_PHOTOS = 12;
+const MAX_SIDE = 1200;
+const JPEG_QUALITY = 0.85;
+const KEY_CART  = 'sl_cart';
+const KEY_LIKES = 'sl_likes';
+const KEY_SESSION = 'sl_session';
+
+const ORDER_STATUSES = [
+  { id:'created',   label:'Создан',           icon:'box',     cls:'order-status--created' },
+  { id:'packed',    label:'Упакован',         icon:'package', cls:'order-status--packed' },
+  { id:'shipped',   label:'Отправлен',        icon:'truck',   cls:'order-status--shipped' },
+  { id:'ready',     label:'Готов к выдаче',   icon:'check',   cls:'order-status--ready' },
+];
 
 /* ============================================================
    DOM
@@ -1641,15 +1474,9 @@ const quickAddCategory = $('#quickAddCategory');
 const tabProducts    = $('#tabProducts');
 const tabCategories  = $('#tabCategories');
 const tabOrders      = $('#tabOrders');
-const tabBackup      = $('#tabBackup');
 const categoryForm   = $('#categoryForm');
 const categoriesList = $('#categoriesList');
 const countCategories = $('#countCategories');
-const backupStats    = $('#backupStats');
-const downloadBackupBtn = $('#downloadBackupBtn');
-const uploadBackupBtn   = $('#uploadBackupBtn');
-const backupFileInput   = $('#backupFileInput');
-const resetAllBtn       = $('#resetAllBtn');
 
 const bottomNav = $('#bottomNav');
 
@@ -1689,11 +1516,6 @@ function formatDate(iso){
 function icon(name, cls){
   return `<svg class="ic${cls ? ' '+cls : ''}"><use href="#i-${name}"/></svg>`;
 }
-function formatBytes(b){
-  if(b < 1024) return b + ' Б';
-  if(b < 1024*1024) return (b/1024).toFixed(1) + ' КБ';
-  return (b/1024/1024).toFixed(2) + ' МБ';
-}
 function simpleHash(str){
   let h = 0;
   for(let i=0; i<str.length; i++){
@@ -1709,20 +1531,19 @@ function syncBodyLock(){
                || roleModal.classList.contains('open');
   document.body.classList.toggle('modal-open', anyOpen);
 }
-
 function stockTextPublic(p){
   if(p.qty <= 0) return 'Нет в наличии';
-  if(p.hideQty) return 'Осталось: несколько';
+  if(p.hide_qty) return 'Осталось: несколько';
   return 'Осталось: ' + p.qty;
 }
 function stockTextDetail(p){
   if(p.qty <= 0) return { cls:'out', html: icon('x') + ' Нет в наличии' };
-  if(p.hideQty)  return { cls:'ok',  html: icon('check') + ' В наличии' };
+  if(p.hide_qty)  return { cls:'ok',  html: icon('check') + ' В наличии' };
   return { cls:'ok', html: icon('check') + ' В наличии: ' + p.qty + ' шт.' };
 }
 
 /* ============================================================
-   УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО
+   МОДАЛЬНОЕ ОКНО
 ============================================================ */
 let activeModalResolve = null;
 let activeModalType = null;
@@ -1737,17 +1558,10 @@ function closeAppModal(result){
     r(result);
   }
 }
-
 function openAppModal({
-  type = 'info',
-  title = '',
-  text = '',
-  iconName,
-  okText = 'ОК',
-  cancelText = 'Отмена',
-  showCancel = false,
-  input = null,
-  wide = false,
+  type = 'info', title = '', text = '', iconName,
+  okText = 'ОК', cancelText = 'Отмена', showCancel = false,
+  input = null, wide = false,
 } = {}){
   if(activeModalResolve){
     const r = activeModalResolve;
@@ -1819,17 +1633,11 @@ function openAppModal({
 
   appModal.classList.add('open');
   syncBodyLock();
-
   return new Promise(resolve => { activeModalResolve = resolve; });
 }
-
 function uiAlert(title, text, opts = {}){
-  return openAppModal({
-    type: opts.type || 'info',
-    title, text,
-    okText: opts.okText || 'ОК',
-    showCancel: false,
-  });
+  return openAppModal({ type: opts.type || 'info', title, text,
+    okText: opts.okText || 'ОК', showCancel: false });
 }
 function uiConfirm(title, text, opts = {}){
   return openAppModal({
@@ -1842,9 +1650,7 @@ function uiConfirm(title, text, opts = {}){
 }
 function uiPrompt(title, opts = {}){
   return openAppModal({
-    type: 'prompt',
-    title,
-    text: opts.text || '',
+    type: 'prompt', title, text: opts.text || '',
     input: {
       value: opts.value || '',
       placeholder: opts.placeholder || '',
@@ -1862,9 +1668,7 @@ appModal.addEventListener('click', e => {
   if(e.target === appModal) closeAppModal(null);
 });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape' && appModal.classList.contains('open')){
-    closeAppModal(null);
-  }
+  if(e.key === 'Escape' && appModal.classList.contains('open')) closeAppModal(null);
   if(e.key === 'Enter' && appModal.classList.contains('open')){
     if(activeModalType === 'prompt' && document.activeElement === appModalInput){
       e.preventDefault();
@@ -1875,111 +1679,56 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================================
-   МИГРАЦИЯ
+   ХРАНИЛИЩЕ (localStorage — только корзина, избранное, сессия)
 ============================================================ */
-function tryReadKey(key){
-  try { return localStorage.getItem(key); } catch { return null; }
-}
-function migrateKey(newKey, legacyKeys, expectArray = true){
-  if(tryReadKey(newKey)) return;
-  for(const key of legacyKeys){
-    const raw = tryReadKey(key);
-    if(!raw) continue;
-    if(!expectArray){
-      localStorage.setItem(newKey, raw);
-      return;
-    }
-    try {
-      const arr = JSON.parse(raw);
-      if(Array.isArray(arr) && arr.length){
-        localStorage.setItem(newKey, raw);
-        return;
-      }
-    } catch(_) {}
-  }
-}
-function migrateFromLegacy(){
-  migrateKey(KEY_PRODUCTS, LEGACY_PRODUCT_KEYS);
-  migrateKey(KEY_CATEGORIES, LEGACY_CATEGORY_KEYS);
-  migrateKey(KEY_CART, LEGACY_CART_KEYS, false);
-  migrateKey(KEY_LIKES, LEGACY_LIKES_KEYS);
-  migrateKey(KEY_ORDERS, LEGACY_ORDERS_KEYS);
-  migrateKey(KEY_USERS, LEGACY_USERS_KEYS);
-
-  if(!sessionStorage.getItem(KEY_SESSION)){
-    for(const key of LEGACY_SESSION_KEYS){
-      const raw = sessionStorage.getItem(key);
-      if(raw){ sessionStorage.setItem(KEY_SESSION, raw); break; }
-    }
-  }
-  try { localStorage.setItem(KEY_SCHEMA, String(CURRENT_SCHEMA)); } catch(_) {}
-}
-
-function normalizeProduct(p){
-  if(!Array.isArray(p.images)) p.images = p.image ? [p.image] : [];
-  delete p.image;
-  if(!Array.isArray(p.categories)) p.categories = p.category ? [p.category] : [];
-  delete p.category;
-  if(typeof p.hideQty !== 'boolean') p.hideQty = false;
-  return p;
-}
-function productHasCategory(p, cat){
-  return Array.isArray(p.categories) && p.categories.includes(cat);
-}
-
-/* ============================================================
-   ХРАНИЛИЩЕ
-============================================================ */
-function loadAll(){
-  migrateFromLegacy();
-
-  try { products = JSON.parse(localStorage.getItem(KEY_PRODUCTS)) || null; } catch { products = null; }
-  if(!Array.isArray(products) || !products.length){
-    products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
-    saveProducts();
-  } else {
-    products = products.map(normalizeProduct);
-  }
-
-  try { categories = JSON.parse(localStorage.getItem(KEY_CATEGORIES)) || null; } catch { categories = null; }
-  if(!Array.isArray(categories) || !categories.length){
-    const fromProducts = products.flatMap(p => p.categories || []);
-    categories = [...new Set(fromProducts.filter(Boolean))].sort();
-    saveCategories();
-  }
-
+function loadLocal(){
   try { cart  = JSON.parse(localStorage.getItem(KEY_CART))  || {}; } catch { cart = {}; }
   try { likes = JSON.parse(localStorage.getItem(KEY_LIKES)) || []; } catch { likes = []; }
   if(!Array.isArray(likes)) likes = [];
-
-  try { users = JSON.parse(localStorage.getItem(KEY_USERS)) || []; } catch { users = []; }
-  if(!Array.isArray(users)) users = [];
-
-  try { orders = JSON.parse(localStorage.getItem(KEY_ORDERS)) || []; } catch { orders = []; }
-  if(!Array.isArray(orders)) orders = [];
-
-  const sid = sessionStorage.getItem(KEY_SESSION);
-  currentUser = users.find(u => u.id === sid) || null;
+  try { currentUser = JSON.parse(sessionStorage.getItem(KEY_SESSION)) || null; } catch { currentUser = null; }
 }
-function saveProducts(){ try { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); } catch(e){} }
-function saveCategories(){ try { localStorage.setItem(KEY_CATEGORIES, JSON.stringify(categories)); } catch(e){} }
 function saveCart(){ try { localStorage.setItem(KEY_CART, JSON.stringify(cart)); } catch(e){} }
 function saveLikes(){ try { localStorage.setItem(KEY_LIKES, JSON.stringify(likes)); } catch(e){} }
-function saveUsers(){ try { localStorage.setItem(KEY_USERS, JSON.stringify(users)); } catch(e){} }
-function saveOrders(){ try { localStorage.setItem(KEY_ORDERS, JSON.stringify(orders)); } catch(e){} }
+function saveSession(u){
+  if(u) sessionStorage.setItem(KEY_SESSION, JSON.stringify(u));
+  else  sessionStorage.removeItem(KEY_SESSION);
+}
 
-function nextId(){ return products.reduce((m,p) => Math.max(m, p.id), 0) + 1; }
-function nextOrderId(){
-  return orders.reduce((m,o) => Math.max(m, parseInt(o.id, 10) || 0), 0) + 1;
+/* ============================================================
+   SUPABASE — ЗАГРУЗКА ДАННЫХ
+============================================================ */
+async function loadAll(){
+  await Promise.all([loadCategories(), loadProducts()]);
+}
+async function loadCategories(){
+  const { data, error } = await sb.from('categories').select('*').order('name');
+  if(error){ console.error('categories:', error); categories = []; return; }
+  categories = (data || []).map(c => c.name);
+}
+async function loadProducts(){
+  const { data, error } = await sb.from('products').select('*').order('created_at', { ascending: false });
+  if(error){ console.error('products:', error); products = []; return; }
+  products = (data || []).map(p => ({
+    id: p.id,
+    name: p.name,
+    brand: p.brand || '',
+    categories: p.categories || [],
+    price: p.price || 0,
+    qty: p.qty || 0,
+    hide_qty: !!p.hide_qty,
+    desc: p.description || '',
+    images: p.images || [],
+    created_at: p.created_at,
+  }));
 }
 
 /* ============================================================
    АВТОРИЗАЦИЯ
 ============================================================ */
-function isAdmin(){ return sessionStorage.getItem(KEY_AUTH) === '1'; }
+function isAdmin(){ return sessionStorage.getItem('sl_admin') === '1'; }
 function setAdmin(v){
-  if(v) sessionStorage.setItem(KEY_AUTH, '1');
-  else  sessionStorage.removeItem(KEY_AUTH);
+  if(v) sessionStorage.setItem('sl_admin', '1');
+  else  sessionStorage.removeItem('sl_admin');
 }
 function isLoggedIn(){ return !!currentUser; }
 
@@ -2003,7 +1752,6 @@ function show(name){
   updateBottomNavActive(name);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
-
 function updateBottomNavActive(name){
   bottomNav.querySelectorAll('.bottom-nav__item').forEach(item => {
     const nav = item.dataset.nav;
@@ -2018,7 +1766,7 @@ function updateBottomNavActive(name){
 }
 
 /* ============================================================
-   СЧЁТЧИКИ
+   СЧЁТЧИКИ / UI
 ============================================================ */
 function updateBadges(){
   const cartCount  = Object.values(cart).reduce((s, n) => s + n, 0);
@@ -2030,7 +1778,6 @@ function updateBadges(){
   [cartBadge, navCartBadge].forEach(b => b.classList.toggle('badge--empty', cartCount === 0));
   [likesBadge, navLikesBadge].forEach(b => b.classList.toggle('badge--empty', likesCount === 0));
 }
-
 function updateAuthUI(){
   if(isAdmin()){
     loginBtnLabel.textContent = 'Кабинет';
@@ -2062,8 +1809,7 @@ function addToCart(id, qty = 1){
     return;
   }
   cart[id] = Math.min(current + qty, p.qty);
-  saveCart();
-  updateBadges();
+  saveCart(); updateBadges();
   if(!views.shop.hidden) renderGrid();
   if(!views.product.hidden && currentProductId === id) renderProductDetail();
   if(!views.cart.hidden) renderCart();
@@ -2073,19 +1819,15 @@ function setCartQty(id, qty){
   if(!p) return;
   if(qty <= 0) delete cart[id];
   else cart[id] = Math.min(qty, p.qty);
-  saveCart();
-  updateBadges();
-  renderCart();
+  saveCart(); updateBadges(); renderCart();
 }
 function removeFromCart(id){ delete cart[id]; saveCart(); updateBadges(); renderCart(); }
 function clearCart(){ cart = {}; saveCart(); updateBadges(); }
-
 function toggleLike(id){
   const i = likes.indexOf(id);
   if(i >= 0) likes.splice(i, 1);
   else       likes.push(id);
-  saveLikes();
-  updateBadges();
+  saveLikes(); updateBadges();
   if(!views.shop.hidden) renderGrid();
   if(!views.product.hidden && currentProductId === id) renderProductDetail();
   if(!views.likes.hidden) renderLikes();
@@ -2111,29 +1853,21 @@ function thumbHTML(p){
 }
 
 /* ============================================================
-   ВИТРИНА — карточка с перелистыванием фото по движению мыши
+   ВИТРИНА
 ============================================================ */
 function cardMediaStackHTML(p){
   const images = Array.isArray(p.images) ? p.images : [];
-  if(!images.length){
-    return `<span class="media-placeholder">${icon('image')}</span>`;
-  }
+  if(!images.length) return `<span class="media-placeholder">${icon('image')}</span>`;
   const imgs = images.map((src, i) =>
-    `<img src="${esc(src)}" alt="${esc(p.name)}"
-          class="${i === 0 ? 'active' : ''}"
-          data-index="${i}"
-          loading="lazy">`
+    `<img src="${esc(src)}" alt="${esc(p.name)}" class="${i === 0 ? 'active' : ''}" data-index="${i}" loading="lazy">`
   ).join('');
   const dots = images.length > 1
     ? `<span class="card__dots">${
-        images.map((_, i) =>
-          `<span class="${i === 0 ? 'active' : ''}" data-dot="${i}"></span>`
-        ).join('')
+        images.map((_, i) => `<span class="${i === 0 ? 'active' : ''}" data-dot="${i}"></span>`).join('')
       }</span>`
     : '';
   return `<span class="card__media-stack">${imgs}</span>${dots}`;
 }
-
 function cardHTML(p){
   const out   = p.qty <= 0;
   const liked = likes.includes(p.id);
@@ -2153,9 +1887,7 @@ function cardHTML(p){
         <h3 class="card__name">${esc(p.name)}</h3>
         <div class="card__meta">
           <span class="price">${fmt(p.price)}</span>
-          <span class="stock ${out ? 'stock--out' : ''}">
-            ${stockTextPublic(p)}
-          </span>
+          <span class="stock ${out ? 'stock--out' : ''}">${stockTextPublic(p)}</span>
         </div>
         <button class="btn btn--primary" data-buy="${p.id}" ${out ? 'disabled' : ''}>
           ${out ? 'Нет в наличии' : 'В корзину'}
@@ -2163,36 +1895,31 @@ function cardHTML(p){
       </div>
     </article>`;
 }
-
 function renderGrid(){
   const q   = searchInput.value.trim().toLowerCase();
   const cat = categorySel.value;
   const onlyStock = inStockChk.checked;
-
   const list = products.filter(p => {
     if(onlyStock && p.qty <= 0) return false;
-    if(cat && !productHasCategory(p, cat)) return false;
+    if(cat && !p.categories.includes(cat)) return false;
     if(q){
       const hay = (p.name + ' ' + p.brand + ' ' + (p.desc||'') + ' ' + (p.categories||[]).join(' ')).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
   });
-
   grid.innerHTML = list.map(cardHTML).join('');
   emptyEl.hidden = list.length > 0;
   resultCount.textContent = `Найдено: ${list.length}`;
 }
-
 function refreshCategories(){
   const cur = categorySel.value;
   categorySel.innerHTML = '<option value="">Все категории</option>' +
     categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
   if(categories.includes(cur)) categorySel.value = cur;
   renderCatCheckboxes();
-
   catalogList.innerHTML = categories.map(c => {
-    const count = products.filter(p => productHasCategory(p, c)).length;
+    const count = products.filter(p => p.categories.includes(c)).length;
     return `<li><button data-cat="${esc(c)}">
       <span>${esc(c)}</span><span class="cat-count">${count}</span>
     </button></li>`;
@@ -2200,7 +1927,6 @@ function refreshCategories(){
     <span>Все товары</span><span class="cat-count">${products.length}</span>
   </button></li>`;
 }
-
 function renderCatCheckboxes(){
   if(!categories.length){ catCheckboxes.innerHTML = ''; return; }
   catCheckboxes.innerHTML = categories.map(c => {
@@ -2232,13 +1958,11 @@ function renderProductDetail(){
   const mainMedia = images.length
     ? `<img src="${esc(images[galleryIndex])}" alt="${esc(p.name)}">`
     : `<span class="media-placeholder">${icon('image')}</span>`;
-
   const nav = images.length > 1 ? `
     <button class="gallery__nav gallery__nav--prev" data-gallery-prev title="Назад">${icon('chevron-left')}</button>
     <button class="gallery__nav gallery__nav--next" data-gallery-next title="Вперёд">${icon('chevron-right')}</button>
     <span class="gallery__counter">${galleryIndex + 1} / ${images.length}</span>
   ` : '';
-
   const thumbs = images.length > 1 ? `
     <div class="gallery__thumbs">
       ${images.map((src, i) => `
@@ -2249,7 +1973,6 @@ function renderProductDetail(){
       `).join('')}
     </div>
   ` : '';
-
   const catTags = cats.length
     ? `<div class="pd__brands">${cats.map(c => `<span class="cat-tag">${esc(c)}</span>`).join('')}</div>`
     : '';
@@ -2280,7 +2003,7 @@ function renderProductDetail(){
           <div class="spec-row"><span>Бренд</span><span>${esc(p.brand)}</span></div>
           <div class="spec-row"><span>Категории</span><span>${cats.length ? esc(cats.join(', ')) : '—'}</span></div>
           <div class="spec-row"><span>Артикул</span><span>SL-${String(p.id).padStart(5,'0')}</span></div>
-          <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : (p.hideQty ? 'Есть' : p.qty + ' шт.')}</span></div>
+          <div class="spec-row"><span>Наличие</span><span>${out ? 'Нет' : (p.hide_qty ? 'Есть' : p.qty + ' шт.')}</span></div>
           <div class="spec-row"><span>Гарантия</span><span>12 месяцев</span></div>
         </div>
       </div>
@@ -2312,7 +2035,6 @@ function renderProductDetail(){
 ============================================================ */
 function renderCart(){
   const ids = Object.keys(cart).filter(id => products.some(p => p.id === +id));
-
   if(!ids.length){
     cartContent.innerHTML = `
       <div class="empty">
@@ -2323,7 +2045,6 @@ function renderCart(){
     $('#goShop').addEventListener('click', () => show('shop'));
     return;
   }
-
   let total = 0;
   const rows = ids.map(id => {
     const p = products.find(x => x.id === +id);
@@ -2335,7 +2056,7 @@ function renderCart(){
         <div class="cart-item__media">${mediaHTML(p)}</div>
         <div>
           <p class="cart-item__name">${esc(p.name)}</p>
-          <p class="cart-item__brand">${esc(p.brand)}${p.categories?.length ? ' · ' + esc(p.categories.join(', ')) : ''}</p>
+          <p class="cart-item__brand">${esc(p.brand)}${p.categories.length ? ' · ' + esc(p.categories.join(', ')) : ''}</p>
           <p class="cart-item__price">${fmt(p.price)} за шт.</p>
         </div>
         <div class="qty-ctrl">
@@ -2388,19 +2109,14 @@ function renderCart(){
   cartContent.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
     removeFromCart(+b.dataset.del);
   }));
-
   const cartLoginBtn = cartContent.querySelector('#cartLoginBtn');
   if(cartLoginBtn) cartLoginBtn.addEventListener('click', openUserModal);
 
   $('#cartClear').addEventListener('click', async () => {
-    const ok = await uiConfirm(
-      'Очистить корзину?',
-      'Все товары будут удалены из корзины. Это действие нельзя отменить.',
-      { danger: true, okText: 'Очистить', cancelText: 'Отмена' }
-    );
+    const ok = await uiConfirm('Очистить корзину?', 'Все товары будут удалены из корзины. Это действие нельзя отменить.',
+      { danger: true, okText: 'Очистить', cancelText: 'Отмена' });
     if(ok){ clearCart(); renderCart(); }
   });
-
   $('#cartCheckout').addEventListener('click', () => {
     if(!isLoggedIn()){ openUserModal(); return; }
     checkout();
@@ -2416,13 +2132,9 @@ async function checkout(){
       return;
     }
   }
-
   const items = Object.keys(cart).map(id => {
     const p = products.find(x => x.id === +id);
-    return {
-      productId: p.id, name: p.name, brand: p.brand,
-      price: p.price, qty: cart[id], image: firstImage(p),
-    };
+    return { productId: p.id, name: p.name, brand: p.brand, price: p.price, qty: cart[id], image: firstImage(p) };
   });
   const total = items.reduce((s, it) => s + it.price * it.qty, 0);
   const itemsCount = items.reduce((s, it) => s + it.qty, 0);
@@ -2430,47 +2142,51 @@ async function checkout(){
   const ok = await uiConfirm(
     'Оформить заказ?',
     `Товаров: <b>${itemsCount}</b>, на сумму <b>${fmt(total)}</b>.<br><br>
-     Заказ будет привязан к вашему аккаунту <b>${esc(currentUser.email)}</b>.<br>
-     После подтверждения вы сможете отслеживать статус в разделе «Заказы».`,
+     Заказ будет привязан к вашему аккаунту <b>${esc(currentUser.email)}</b>.`,
     { okText: 'Оформить заказ', cancelText: 'Отмена' }
   );
   if(!ok) return;
 
+  // Списываем товары со склада + создаём заказ
+  const history = [{ status: 'created', at: new Date().toISOString() }];
+
   for(const id in cart){
     const p = products.find(x => x.id === +id);
     if(!p) continue;
-    p.qty -= cart[id];
-    if(p.qty < 0) p.qty = 0;
+    const newQty = Math.max(0, p.qty - cart[id]);
+    const { error } = await sb.from('products').update({ qty: newQty }).eq('id', p.id);
+    if(error){ console.error('update qty:', error); }
+    p.qty = newQty;
   }
 
-  const order = {
-    id: String(nextOrderId()),
-    userId: currentUser.id,
-    userEmail: currentUser.email,
-    userName: currentUser.name || '',
-    items, total,
+  const { data: orderData, error: orderErr } = await sb.from('orders').insert({
+    user_id: currentUser.id,
+    user_email: currentUser.email,
+    user_name: currentUser.name || '',
+    items: items,
+    total: total,
     status: 'created',
-    createdAt: new Date().toISOString(),
-    statusHistory: [{ status: 'created', at: new Date().toISOString() }],
-  };
-  orders.unshift(order);
-  saveOrders();
-  saveProducts();
+    status_history: history,
+  }).select().single();
+
+  if(orderErr){
+    console.error('order insert:', orderErr);
+    await uiAlert('Ошибка', 'Не удалось сохранить заказ: ' + orderErr.message, { type: 'danger' });
+    return;
+  }
 
   clearCart();
   updateBadges();
-  refreshCategories();
   renderGrid();
   renderCart();
 
   await uiAlert(
     'Заказ оформлен!',
-    `Номер заказа: <b>№${order.id}</b><br>
+    `Номер заказа: <b>№${orderData.id}</b><br>
      Сумма: <b>${fmt(total)}</b><br><br>
      Отслеживать статус можно в разделе «<b>Заказы</b>».`,
     { type: 'success', okText: 'Перейти к заказам' }
   );
-
   show('orders');
 }
 
@@ -2479,7 +2195,6 @@ async function checkout(){
 ============================================================ */
 function renderLikes(){
   const likedProducts = products.filter(p => likes.includes(p.id));
-
   if(!likedProducts.length){
     likesContent.innerHTML = `
       <div class="empty">
@@ -2491,7 +2206,6 @@ function renderLikes(){
     $('#goShopLikes').addEventListener('click', () => show('shop'));
     return;
   }
-
   likesContent.innerHTML = `<div class="grid">${likedProducts.map(cardHTML).join('')}</div>`;
   likesContent.querySelectorAll('[data-like]').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation(); toggleLike(+b.dataset.like);
@@ -2510,17 +2224,12 @@ function renderLikes(){
 /* ============================================================
    ЗАКАЗЫ
 ============================================================ */
-function statusIndex(id){
-  return ORDER_STATUSES.findIndex(s => s.id === id);
-}
-function statusInfo(id){
-  return ORDER_STATUSES.find(s => s.id === id) || ORDER_STATUSES[0];
-}
+function statusInfo(id){ return ORDER_STATUSES.find(s => s.id === id) || ORDER_STATUSES[0]; }
+function statusIndex(id){ return ORDER_STATUSES.findIndex(s => s.id === id); }
 
 function orderCardHTML(o){
   const sInfo = statusInfo(o.status);
   const curIdx = statusIndex(o.status);
-
   const steps = ORDER_STATUSES.map((s, i) => {
     let cls = '';
     if(i < curIdx) cls = 'done';
@@ -2531,8 +2240,7 @@ function orderCardHTML(o){
         <div class="order-step__label">${s.label}</div>
       </div>`;
   }).join('');
-
-  const itemsHTML = o.items.map(it => `
+  const itemsHTML = (o.items || []).map(it => `
     <div class="order-item">
       <div class="order-item__media">
         ${it.image ? `<img src="${esc(it.image)}" alt="">` : icon('image')}
@@ -2542,13 +2250,12 @@ function orderCardHTML(o){
       <div class="order-item__price">${fmt(it.price * it.qty)}</div>
     </div>
   `).join('');
-
   return `
     <div class="order-card">
       <div class="order-card__head">
         <div>
           <div class="order-card__num">Заказ №${esc(o.id)}</div>
-          <div class="order-card__date">${formatDate(o.createdAt)}</div>
+          <div class="order-card__date">${formatDate(o.created_at)}</div>
         </div>
         <div style="text-align:right">
           <span class="order-status ${sInfo.cls}">
@@ -2562,7 +2269,7 @@ function orderCardHTML(o){
     </div>`;
 }
 
-function renderOrders(){
+async function renderOrders(){
   if(!isLoggedIn()){
     ordersContent.innerHTML = `
       <div class="empty">
@@ -2576,8 +2283,20 @@ function renderOrders(){
     return;
   }
 
-  const myOrders = orders.filter(o => o.userId === currentUser.id);
-  if(!myOrders.length){
+  ordersContent.innerHTML = `<div class="loading"><div class="loading__spinner"></div>Загрузка заказов…</div>`;
+
+  const { data, error } = await sb.from('orders')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+
+  if(error){
+    console.error('orders:', error);
+    ordersContent.innerHTML = `<div class="empty">Ошибка загрузки заказов.</div>`;
+    return;
+  }
+  const list = data || [];
+  if(!list.length){
     ordersContent.innerHTML = `
       <div class="empty">
         <span class="empty__icon">${icon('box')}</span>
@@ -2587,8 +2306,7 @@ function renderOrders(){
     $('#ordersShopBtn').addEventListener('click', () => show('shop'));
     return;
   }
-
-  ordersContent.innerHTML = `<div class="orders-list">${myOrders.map(orderCardHTML).join('')}</div>`;
+  ordersContent.innerHTML = `<div class="orders-list">${list.map(orderCardHTML).join('')}</div>`;
 }
 
 /* ============================================================
@@ -2609,8 +2327,6 @@ function renderAccount(){
     $('#accLoginBtn').addEventListener('click', openUserModal);
     return;
   }
-
-  const myOrders = orders.filter(o => o.userId === currentUser.id);
   accountContent.innerHTML = `
     <div class="account">
       <aside class="account__sidebar">
@@ -2627,14 +2343,10 @@ function renderAccount(){
         <h3>${icon('user')} Профиль</h3>
         <div class="spec-row"><span>Имя</span><span>${esc(currentUser.name || '—')}</span></div>
         <div class="spec-row"><span>Email</span><span>${esc(currentUser.email)}</span></div>
-        <div class="spec-row"><span>Дата регистрации</span><span>${formatDate(currentUser.createdAt)}</span></div>
-        <div class="spec-row"><span>Всего заказов</span><span>${myOrders.length}</span></div>
       </div>
     </div>`;
-
   const main = accountContent.querySelector('#accountMain');
   const buttons = accountContent.querySelectorAll('[data-acc-tab]');
-
   function activate(tab){
     buttons.forEach(b => b.classList.toggle('active', b.dataset.accTab === tab));
     if(tab === 'profile'){
@@ -2642,27 +2354,17 @@ function renderAccount(){
         <h3>${icon('user')} Профиль</h3>
         <div class="spec-row"><span>Имя</span><span>${esc(currentUser.name || '—')}</span></div>
         <div class="spec-row"><span>Email</span><span>${esc(currentUser.email)}</span></div>
-        <div class="spec-row"><span>Дата регистрации</span><span>${formatDate(currentUser.createdAt)}</span></div>
-        <div class="spec-row"><span>Всего заказов</span><span>${myOrders.length}</span></div>
       `;
     } else if(tab === 'orders'){
-      if(!myOrders.length){
-        main.innerHTML = `
-          <h3>${icon('box')} Мои заказы</h3>
-          <p class="muted">У вас пока нет заказов.</p>
-          <button class="btn btn--primary" id="accToShop" style="margin-top:12px">Перейти в каталог</button>`;
-        main.querySelector('#accToShop').addEventListener('click', () => show('shop'));
-      } else {
-        main.innerHTML = `<h3>${icon('box')} Мои заказы</h3>
-          <div class="orders-list">${myOrders.map(orderCardHTML).join('')}</div>`;
-      }
+      main.innerHTML = `<h3>${icon('box')} Мои заказы</h3><p class="muted">Загружаем…</p>`;
+      renderOrdersIn(main);
     }
   }
-
   buttons.forEach(b => b.addEventListener('click', async () => {
     const tab = b.dataset.accTab;
     if(tab === 'logout'){
-      const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина. Корзина сохранится.', { okText:'Выйти', cancelText:'Остаться' });
+      const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина. Корзина сохранится.',
+        { okText:'Выйти', cancelText:'Остаться' });
       if(ok) logoutUser();
       return;
     }
@@ -2670,42 +2372,44 @@ function renderAccount(){
   }));
 }
 
+async function renderOrdersIn(main){
+  const { data, error } = await sb.from('orders')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+  if(error){ main.innerHTML = `<h3>${icon('box')} Мои заказы</h3><p class="muted">Ошибка загрузки.</p>`; return; }
+  const list = data || [];
+  if(!list.length){
+    main.innerHTML = `<h3>${icon('box')} Мои заказы</h3>
+      <p class="muted">У вас пока нет заказов.</p>
+      <button class="btn btn--primary" id="accToShop" style="margin-top:12px">Перейти в каталог</button>`;
+    main.querySelector('#accToShop').addEventListener('click', () => show('shop'));
+    return;
+  }
+  main.innerHTML = `<h3>${icon('box')} Мои заказы</h3>
+    <div class="orders-list">${list.map(orderCardHTML).join('')}</div>`;
+}
+
 /* ============================================================
    ВЫБОР РОЛИ
 ============================================================ */
-function openRoleModal(){
-  roleModal.classList.add('open');
-  syncBodyLock();
-}
-function closeRoleModalFn(){
-  roleModal.classList.remove('open');
-  syncBodyLock();
-}
+function openRoleModal(){ roleModal.classList.add('open'); syncBodyLock(); }
+function closeRoleModalFn(){ roleModal.classList.remove('open'); syncBodyLock(); }
 
 closeRoleModal.addEventListener('click', closeRoleModalFn);
-roleModal.addEventListener('click', e => {
-  if(e.target === roleModal) closeRoleModalFn();
-});
+roleModal.addEventListener('click', e => { if(e.target === roleModal) closeRoleModalFn(); });
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape' && roleModal.classList.contains('open')) closeRoleModalFn();
 });
-
-roleUserBtn.addEventListener('click', () => {
-  closeRoleModalFn();
-  setTimeout(openUserModal, 60);
-});
-roleAdminBtn.addEventListener('click', () => {
-  closeRoleModalFn();
-  setTimeout(openAdminLoginModal, 60);
-});
+roleUserBtn.addEventListener('click', () => { closeRoleModalFn(); setTimeout(openUserModal, 60); });
+roleAdminBtn.addEventListener('click', () => { closeRoleModalFn(); setTimeout(openAdminLoginModal, 60); });
 
 /* ============================================================
    МОДАЛКА АДМИНА
 ============================================================ */
 function openAdminLoginModal(){
   loginForm.reset();
-  loginModal.classList.add('open');
-  syncBodyLock();
+  loginModal.classList.add('open'); syncBodyLock();
   setTimeout(() => loginForm.login.focus(), 100);
 }
 function closeAdminLoginModal(backToRole){
@@ -2714,13 +2418,10 @@ function closeAdminLoginModal(backToRole){
   else syncBodyLock();
 }
 closeLogin.addEventListener('click', () => closeAdminLoginModal(true));
-loginModal.addEventListener('click', e => {
-  if(e.target === loginModal) closeAdminLoginModal(true);
-});
+loginModal.addEventListener('click', e => { if(e.target === loginModal) closeAdminLoginModal(true); });
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape' && loginModal.classList.contains('open')) closeAdminLoginModal(true);
 });
-
 loginForm.addEventListener('submit', async e => {
   e.preventDefault();
   const l = loginForm.login.value.trim();
@@ -2736,9 +2437,9 @@ loginForm.addEventListener('submit', async e => {
     await uiAlert('Неверный логин или пароль', 'Проверьте данные и попробуйте снова.', { type: 'danger' });
   }
 });
-
 logoutBtn.addEventListener('click', async () => {
-  const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина.', { okText:'Выйти', cancelText:'Остаться' });
+  const ok = await uiConfirm('Выйти из аккаунта?', 'Вы вернётесь на витрину магазина.',
+    { okText:'Выйти', cancelText:'Остаться' });
   if(!ok) return;
   setAdmin(false);
   resetForm();
@@ -2747,10 +2448,9 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 /* ============================================================
-   РЕГИСТРАЦИЯ / ВХОД
+   РЕГИСТРАЦИЯ / ВХОД ПОКУПАТЕЛЯ
 ============================================================ */
 let userFormMode = 'login';
-
 function setUserFormMode(mode){
   userFormMode = mode;
   userModalTitle.textContent = mode === 'login' ? 'Вход в аккаунт' : 'Регистрация';
@@ -2758,39 +2458,28 @@ function setUserFormMode(mode){
   ufName.hidden = (mode === 'login');
   userForm.querySelector('input[name="name"]').required = (mode === 'register');
   userForm.querySelector('input[name="password"]').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
-  userTabs.querySelectorAll('.modal__tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.utab === mode);
-  });
+  userTabs.querySelectorAll('.modal__tab').forEach(t => t.classList.toggle('active', t.dataset.utab === mode));
 }
-
 function openUserModal(){
   userForm.reset();
   setUserFormMode('login');
-  userModal.classList.add('open');
-  syncBodyLock();
+  userModal.classList.add('open'); syncBodyLock();
   setTimeout(() => userForm.querySelector('input[name="email"]').focus(), 100);
 }
-
 function closeUserModalFn(backToRole){
   userModal.classList.remove('open');
   if(backToRole) setTimeout(openRoleModal, 60);
   else syncBodyLock();
 }
-
 closeUserModal.addEventListener('click', () => closeUserModalFn(true));
-userModal.addEventListener('click', e => {
-  if(e.target === userModal) closeUserModalFn(true);
-});
+userModal.addEventListener('click', e => { if(e.target === userModal) closeUserModalFn(true); });
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape' && userModal.classList.contains('open')) closeUserModalFn(true);
 });
-
 switchToAdmin.addEventListener('click', () => {
-  userModal.classList.remove('open');
-  syncBodyLock();
+  userModal.classList.remove('open'); syncBodyLock();
   setTimeout(openAdminLoginModal, 60);
 });
-
 userTabs.querySelectorAll('.modal__tab').forEach(t => {
   t.addEventListener('click', () => setUserFormMode(t.dataset.utab));
 });
@@ -2811,41 +2500,37 @@ userForm.addEventListener('submit', async e => {
     return;
   }
 
-  const exists = users.find(u => u.email === email);
-
   if(userFormMode === 'register'){
-    if(exists){
-      await uiAlert('Email уже используется', 'Пользователь с таким email уже зарегистрирован. Войдите или используйте другой адрес.', { type: 'danger' });
-      return;
-    }
-    const user = {
-      id: 'u_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+    const { data: exists, error: checkErr } = await sb.from('users').select('id').eq('email', email).maybeSingle();
+    if(checkErr){ await uiAlert('Ошибка', checkErr.message, { type:'danger' }); return; }
+    if(exists){ await uiAlert('Email уже используется', 'Пользователь с таким email уже зарегистрирован.', { type: 'danger' }); return; }
+
+    const { data: user, error } = await sb.from('users').insert({
       name: name || email.split('@')[0],
       email,
-      passwordHash: simpleHash(password),
-      createdAt: new Date().toISOString(),
-    };
-    users.push(user);
-    saveUsers();
-    currentUser = user;
-    sessionStorage.setItem(KEY_SESSION, user.id);
+      password_hash: simpleHash(password),
+    }).select().single();
+
+    if(error){ await uiAlert('Ошибка регистрации', error.message, { type: 'danger' }); return; }
+
+    currentUser = { id: user.id, name: user.name, email: user.email };
+    saveSession(currentUser);
     closeUserModalFn(false);
     updateAuthUI();
-    await uiAlert('Регистрация успешна', `Добро пожаловать, <b>${esc(user.name)}</b>!<br>Теперь вы можете оформлять заказы.`, { type: 'success' });
+    await uiAlert('Регистрация успешна', `Добро пожаловать, <b>${esc(user.name)}</b>!`, { type: 'success' });
     if(currentView === 'orders') renderOrders();
     if(currentView === 'account') renderAccount();
     if(currentView === 'cart') renderCart();
   } else {
-    if(!exists){
-      await uiAlert('Пользователь не найден', 'Проверьте email или зарегистрируйтесь.', { type: 'danger' });
-      return;
-    }
-    if(exists.passwordHash !== simpleHash(password)){
+    const { data: user, error } = await sb.from('users').select('*').eq('email', email).maybeSingle();
+    if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
+    if(!user){ await uiAlert('Пользователь не найден', 'Проверьте email или зарегистрируйтесь.', { type: 'danger' }); return; }
+    if(user.password_hash !== simpleHash(password)){
       await uiAlert('Неверный пароль', 'Проверьте пароль и попробуйте ещё раз.', { type: 'danger' });
       return;
     }
-    currentUser = exists;
-    sessionStorage.setItem(KEY_SESSION, exists.id);
+    currentUser = { id: user.id, name: user.name, email: user.email };
+    saveSession(currentUser);
     closeUserModalFn(false);
     updateAuthUI();
     if(currentView === 'orders') renderOrders();
@@ -2856,13 +2541,13 @@ userForm.addEventListener('submit', async e => {
 
 async function logoutUser(){
   currentUser = null;
-  sessionStorage.removeItem(KEY_SESSION);
+  saveSession(null);
   updateAuthUI();
   show('shop');
 }
 
 /* ============================================================
-   АДМИНКА
+   АДМИНКА — товары
 ============================================================ */
 function renderAdmin(){
   countEl.textContent = products.length;
@@ -2871,7 +2556,7 @@ function renderAdmin(){
     const cats = (p.categories || []).map(c => `<span class="table-cat">${esc(c)}</span>`).join('');
     const qtyCell = out
       ? `<span class="qty-badge qty-badge--out">Нет</span>`
-      : (p.hideQty
+      : (p.hide_qty
           ? `<span class="qty-badge qty-badge--hidden" title="Точное количество скрыто от покупателей">
                ${icon('eye-off')} ${p.qty}
              </span>`
@@ -2893,24 +2578,29 @@ function renderAdmin(){
       </tr>`;
   }).join('') || '<tr><td colspan="7" style="text-align:center;color:#6b7280;padding:24px">Товаров нет</td></tr>';
 
-  if(adminOrdersList){
-    adminOrdersList.innerHTML = orders.length
-      ? `<div class="orders-list">${orders.map(adminOrderCardHTML).join('')}</div>`
-      : '<p class="muted">Заказов пока нет.</p>';
-  }
+  if(adminOrdersList) renderAdminOrders();
+}
+
+async function renderAdminOrders(){
+  if(!adminOrdersList) return;
+  adminOrdersList.innerHTML = `<div class="loading"><div class="loading__spinner"></div>Загрузка…</div>`;
+  const { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+  if(error){ adminOrdersList.innerHTML = `<p class="muted">Ошибка: ${esc(error.message)}</p>`; return; }
+  const list = data || [];
+  if(!list.length){ adminOrdersList.innerHTML = '<p class="muted">Заказов пока нет.</p>'; return; }
+  adminOrdersList.innerHTML = `<div class="orders-list">${list.map(adminOrderCardHTML).join('')}</div>`;
 }
 
 function adminOrderCardHTML(o){
   const sInfo = statusInfo(o.status);
-  const itemsShort = o.items.map(it => `${esc(it.name)} × ${it.qty}`).join(', ');
+  const itemsShort = (o.items || []).map(it => `${esc(it.name)} × ${it.qty}`).join(', ');
   const nextStatuses = ORDER_STATUSES.filter(s => statusIndex(s.id) > statusIndex(o.status));
-
   return `
     <div class="order-card">
       <div class="order-card__head">
         <div>
-          <div class="order-card__num">Заказ №${esc(o.id)} · ${esc(o.userEmail)}</div>
-          <div class="order-card__date">${formatDate(o.createdAt)}</div>
+          <div class="order-card__num">Заказ №${esc(o.id)} · ${esc(o.user_email)}</div>
+          <div class="order-card__date">${formatDate(o.created_at)}</div>
         </div>
         <div style="text-align:right">
           <span class="order-status ${sInfo.cls}">${icon(sInfo.icon)} ${sInfo.label}</span>
@@ -2934,21 +2624,33 @@ adminOrdersList && adminOrdersList.addEventListener('click', async e => {
   if(!btn) return;
   const orderId = btn.dataset.orderStatus;
   const newStatus = btn.dataset.status;
-  const order = orders.find(o => o.id === orderId);
-  if(!order) return;
   const sInfo = statusInfo(newStatus);
-  const ok = await uiConfirm(
-    'Изменить статус заказа?',
-    `Заказ <b>№${esc(order.id)}</b> → <b>${sInfo.label}</b>`,
-    { okText: 'Подтвердить' }
-  );
+  const ok = await uiConfirm('Изменить статус заказа?',
+    `Заказ <b>№${esc(orderId)}</b> → <b>${sInfo.label}</b>`, { okText: 'Подтвердить' });
   if(!ok) return;
-  order.status = newStatus;
-  order.statusHistory = order.statusHistory || [];
-  order.statusHistory.push({ status: newStatus, at: new Date().toISOString() });
-  saveOrders();
-  renderAdmin();
+  const { data: cur } = await sb.from('orders').select('status_history').eq('id', orderId).maybeSingle();
+  const history = (cur && cur.status_history) || [];
+  history.push({ status: newStatus, at: new Date().toISOString() });
+  const { error } = await sb.from('orders').update({ status: newStatus, status_history: history }).eq('id', orderId);
+  if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
+  renderAdminOrders();
 });
+
+function resetForm(){
+  productForm.reset();
+  editingId = null;
+  currentImages = [];
+  currentCategories = [];
+  formTitle.innerHTML = `${icon('plus')} Добавить товар`;
+  submitBtn.innerHTML = `${icon('plus')} Добавить товар`;
+  cancelEdit.hidden = true;
+  imageUrl.value = '';
+  hideQtyChk.checked = false;
+  updateHideQtyLabel();
+  renderPhotosGrid();
+  renderCatCheckboxes();
+  if(growDesc) growDesc();
+}
 
 /* ============================================================
    АВТО-РАСШИРЕНИЕ ОПИСАНИЯ
@@ -2968,37 +2670,15 @@ const growDesc = autoGrowTextarea(descInput);
 /* ============================================================
    СКРЫТИЕ КОЛИЧЕСТВА
 ============================================================ */
-function updateHideQtyLabel(){
-  hideQtyLabel.classList.toggle('on', hideQtyChk.checked);
-}
+function updateHideQtyLabel(){ hideQtyLabel.classList.toggle('on', hideQtyChk.checked); }
 hideQtyChk.addEventListener('change', updateHideQtyLabel);
 
 /* ============================================================
-   ФОРМА — СБРОС
-============================================================ */
-function resetForm(){
-  productForm.reset();
-  editingId = null;
-  currentImages = [];
-  currentCategories = [];
-  formTitle.innerHTML = `${icon('plus')} Добавить товар`;
-  submitBtn.innerHTML = `${icon('plus')} Добавить товар`;
-  cancelEdit.hidden = true;
-  imageUrl.value = '';
-  hideQtyChk.checked = false;
-  updateHideQtyLabel();
-  renderPhotosGrid();
-  renderCatCheckboxes();
-  if(growDesc) growDesc();
-}
-
-/* ============================================================
-   ФОТО
+   ФОТО — загрузка в Supabase Storage
 ============================================================ */
 function renderPhotosGrid(){
   const n = currentImages.length;
   photoCounter.textContent = n ? `(${n} / ${MAX_PHOTOS})` : '';
-
   if(!n){
     photosGrid.innerHTML = `<div class="photos-empty" style="grid-column:1/-1">
       ${icon('image')}
@@ -3006,7 +2686,6 @@ function renderPhotosGrid(){
     </div>`;
     return;
   }
-
   photosGrid.innerHTML = currentImages.map((src, i) => `
     <div class="photo-tile" draggable="true" data-photo-index="${i}">
       <img src="${esc(src)}" alt="">
@@ -3027,7 +2706,6 @@ function renderPhotosGrid(){
       </div>
     </div>
   `).join('');
-
   bindPhotoDragAndDrop();
 }
 
@@ -3087,8 +2765,10 @@ function resizeImage(file, maxSide = MAX_SIDE, quality = JPEG_QUALITY){
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
-        try { resolve(canvas.toDataURL('image/jpeg', quality)); }
-        catch(err){ reject(err); }
+        canvas.toBlob(blob => {
+          if(blob) resolve(blob);
+          else reject(new Error('Не удалось сжать изображение'));
+        }, 'image/jpeg', quality);
       };
       img.onerror = reject;
       img.src = e.target.result;
@@ -3096,6 +2776,17 @@ function resizeImage(file, maxSide = MAX_SIDE, quality = JPEG_QUALITY){
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+async function uploadToSupabase(blob){
+  const fileName = `product-${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+  const { error } = await sb.storage.from(BUCKET).upload(fileName, blob, {
+    contentType: 'image/jpeg',
+    upsert: false,
+  });
+  if(error) throw error;
+  const { data: { publicUrl } } = sb.storage.from(BUCKET).getPublicUrl(fileName);
+  return publicUrl;
 }
 
 async function handleFilesUpload(fileList){
@@ -3106,24 +2797,27 @@ async function handleFilesUpload(fileList){
     await uiAlert('Лимит фото', `Максимум ${MAX_PHOTOS} фото на товар.`, { type: 'danger' });
     return;
   }
-  let toAdd = files.slice(0, room);
+  const toAdd = files.slice(0, room);
 
   uploadPhotosBtn.disabled = true;
   const oldLabel = uploadPhotosBtn.innerHTML;
-  uploadPhotosBtn.innerHTML = `${icon('upload')} Обработка ${toAdd.length}...`;
+  uploadPhotosBtn.innerHTML = `${icon('upload')} Загрузка ${toAdd.length}...`;
 
   let added = 0;
   for(const f of toAdd){
     if(!f.type.startsWith('image/')) continue;
-    if(f.size > 12 * 1024 * 1024) continue;
+    if(f.size > 15 * 1024 * 1024) continue;
     try {
-      const dataUrl = await resizeImage(f);
-      currentImages.push(dataUrl);
+      const blob = await resizeImage(f);
+      const url = await uploadToSupabase(blob);
+      currentImages.push(url);
       added++;
       renderPhotosGrid();
-    } catch(err){ console.error(err); }
+    } catch(err){
+      console.error('upload:', err);
+      await uiAlert('Ошибка загрузки', `Не удалось загрузить «${f.name}»: ${err.message || ''}`, { type: 'danger' });
+    }
   }
-
   uploadPhotosBtn.disabled = false;
   uploadPhotosBtn.innerHTML = oldLabel;
   imageFiles.value = '';
@@ -3135,7 +2829,7 @@ async function handleFilesUpload(fileList){
 function renderCategoriesTab(){
   countCategories.textContent = categories.length;
   categoriesList.innerHTML = categories.map(c => {
-    const count = products.filter(p => productHasCategory(p, c)).length;
+    const count = products.filter(p => p.categories.includes(c)).length;
     return `
       <li class="cat-row" data-cat="${esc(c)}">
         <span class="cat-row__name">${esc(c)}</span>
@@ -3145,7 +2839,7 @@ function renderCategoriesTab(){
           <button class="btn btn--danger-outline btn--sm" data-del-cat>${icon('trash')}</button>
         </div>
       </li>`;
-  }).join('') || '<li class="muted" style="padding:12px">Категорий пока нет. Добавьте первую.</li>';
+  }).join('') || '<li class="muted" style="padding:12px">Категорий пока нет.</li>';
 }
 
 function startEditCategory(li){
@@ -3163,17 +2857,23 @@ function startEditCategory(li){
     const newName = input.value.trim();
     if(!newName || newName === oldName){ renderCategoriesTab(); return; }
     if(categories.includes(newName)){
-      await uiAlert('Уже существует', `Категория «${esc(newName)}» уже есть в списке.`, { type: 'danger' });
+      await uiAlert('Уже существует', `Категория «${esc(newName)}» уже есть.`, { type: 'danger' });
       return;
     }
-    products.forEach(p => {
-      if(Array.isArray(p.categories)) p.categories = p.categories.map(c => c === oldName ? newName : c);
-    });
-    categories = categories.map(c => c === oldName ? newName : c);
-    saveProducts(); saveCategories();
+    // Обновить в таблице categories
+    const { error } = await sb.from('categories').update({ name: newName }).eq('name', oldName);
+    if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
+    // Обновить категории во всех товарах
+    for(const p of products){
+      if(p.categories.includes(oldName)){
+        const newCats = p.categories.map(c => c === oldName ? newName : c);
+        await sb.from('products').update({ categories: newCats }).eq('id', p.id);
+        p.categories = newCats;
+      }
+    }
+    await loadCategories();
     refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
   };
-
   li.querySelector('[data-save-cat]').addEventListener('click', save);
   li.querySelector('[data-cancel-cat]').addEventListener('click', renderCategoriesTab);
   input.addEventListener('keydown', e => {
@@ -3183,180 +2883,47 @@ function startEditCategory(li){
 }
 
 async function deleteCategory(name){
-  const used = products.filter(p => productHasCategory(p, name)).length;
+  const used = products.filter(p => p.categories.includes(name)).length;
   const text = used > 0
     ? `В категории «<b>${esc(name)}</b>» — <b>${used}</b> ${plural(used, 'товар','товара','товаров')}.<br>Категория будет убрана из всех товаров.`
     : `Удалить категорию «<b>${esc(name)}</b>»?`;
   const ok = await uiConfirm('Удалить категорию?', text, { danger: true, okText: 'Удалить' });
   if(!ok) return;
 
-  products.forEach(p => {
-    if(Array.isArray(p.categories)) p.categories = p.categories.filter(c => c !== name);
-  });
-  categories = categories.filter(c => c !== name);
+  // Обновить товары
+  for(const p of products){
+    if(p.categories.includes(name)){
+      const newCats = p.categories.filter(c => c !== name);
+      await sb.from('products').update({ categories: newCats }).eq('id', p.id);
+      p.categories = newCats;
+    }
+  }
+  await sb.from('categories').delete().eq('name', name);
+  await loadCategories();
   currentCategories = currentCategories.filter(c => c !== name);
-  saveProducts(); saveCategories();
   refreshCategories(); renderCategoriesTab(); renderAdmin(); renderGrid();
 }
 
-function addCategory(name){
+async function addCategory(name){
   const n = name.trim();
   if(!n) return false;
   if(categories.includes(n)) return false;
-  categories.push(n);
-  categories.sort((a,b) => a.localeCompare(b, 'ru'));
-  saveCategories();
+  const { error } = await sb.from('categories').insert({ name: n });
+  if(error){
+    console.error(error);
+    return false;
+  }
+  await loadCategories();
   refreshCategories(); renderCategoriesTab();
   return true;
 }
 
 /* ============================================================
-   РЕЗЕРВНЫЕ КОПИИ
+   ПЕРЕЛИСТЫВАНИЕ ФОТО МЫШЬЮ
 ============================================================ */
-function updateBackupStats(){
-  const size = (() => {
-    try { return (localStorage.getItem(KEY_PRODUCTS) || '').length
-             + (localStorage.getItem(KEY_CATEGORIES) || '').length
-             + (localStorage.getItem(KEY_CART) || '').length
-             + (localStorage.getItem(KEY_LIKES) || '').length
-             + (localStorage.getItem(KEY_ORDERS) || '').length
-             + (localStorage.getItem(KEY_USERS) || '').length;
-    } catch { return 0; }
-  })();
-  backupStats.textContent = `Товаров: ${products.length} · Категорий: ${categories.length} · Заказов: ${orders.length} · Пользователей: ${users.length} · Объём: ${formatBytes(size)}`;
-}
-
-async function downloadBackup(){
-  const data = {
-    app: 'SoundLeader',
-    schema: CURRENT_SCHEMA,
-    exportedAt: new Date().toISOString(),
-    products, categories, cart, likes, orders, users,
-  };
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
-  a.href = url;
-  a.download = `soundleader-backup-${stamp}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  await uiAlert('Резервная копия', 'Файл сохранён в папку загрузок.', { type: 'success' });
-}
-
-async function uploadBackup(file){
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = async e => {
-    let data;
-    try { data = JSON.parse(e.target.result); }
-    catch(err){
-      await uiAlert('Ошибка загрузки', 'Не удалось прочитать файл.', { type: 'danger' });
-      backupFileInput.value = '';
-      return;
-    }
-    try {
-      if(!data || typeof data !== 'object') throw new Error('Неверный формат файла');
-      const newProducts = Array.isArray(data.products) ? data.products.map(normalizeProduct) : null;
-      if(!newProducts) throw new Error('В файле нет товаров');
-
-      const ok = await uiConfirm(
-        'Заменить текущие данные?',
-        `В файле: <b>${newProducts.length}</b> товаров, <b>${(data.orders||[]).length}</b> заказов.<br>Текущие данные будут заменены.`,
-        { danger: true, okText: 'Загрузить' }
-      );
-      if(!ok){ backupFileInput.value = ''; return; }
-
-      products = newProducts;
-      categories = Array.isArray(data.categories) ? data.categories.slice() :
-        [...new Set(products.flatMap(p => p.categories || []).filter(Boolean))];
-      cart  = (data.cart && typeof data.cart === 'object') ? data.cart : {};
-      likes = Array.isArray(data.likes) ? data.likes : [];
-      orders = Array.isArray(data.orders) ? data.orders : [];
-      users  = Array.isArray(data.users) ? data.users : [];
-
-      saveProducts(); saveCategories(); saveCart(); saveLikes(); saveOrders(); saveUsers();
-      refreshCategories(); updateBadges(); renderAdmin(); renderGrid(); renderCategoriesTab();
-      updateBackupStats();
-      await uiAlert('Импорт завершён', `Загружено: <b>${products.length}</b> товаров, <b>${orders.length}</b> заказов, <b>${users.length}</b> пользователей.`, { type: 'success' });
-    } catch(err){
-      console.error(err);
-      await uiAlert('Ошибка загрузки', esc(err.message), { type: 'danger' });
-    } finally {
-      backupFileInput.value = '';
-    }
-  };
-  reader.onerror = async () => {
-    await uiAlert('Ошибка чтения', 'Не удалось прочитать файл.', { type: 'danger' });
-  };
-  reader.readAsText(file, 'utf-8');
-}
-
-async function resetAll(){
-  const ok1 = await uiConfirm(
-    'Сбросить все данные?',
-    'Все товары, категории, корзина, избранное, заказы и пользователи будут удалены и заменены на демонстрационный набор.',
-    { danger: true, okText: 'Продолжить' }
-  );
-  if(!ok1) return;
-  const ok2 = await uiConfirm(
-    'Точно сбросить?',
-    'Это действие <b>нельзя отменить</b>. Рекомендуем сначала скачать резервную копию.',
-    { danger: true, okText: 'Да, сбросить' }
-  );
-  if(!ok2) return;
-
-  products = SEED_PRODUCTS.map(p => normalizeProduct({...p, images: [], categories: [...(p.categories||[])]}));
-  categories = [...new Set(products.flatMap(p => p.categories || []))].sort();
-  cart = {}; likes = []; orders = []; users = [];
-  currentUser = null;
-  sessionStorage.removeItem(KEY_SESSION);
-
-  saveProducts(); saveCategories(); saveCart(); saveLikes(); saveOrders(); saveUsers();
-  refreshCategories(); updateBadges(); updateAuthUI(); renderAdmin(); renderGrid(); renderCategoriesTab();
-  updateBackupStats();
-  await uiAlert('Сброс выполнен', 'Данные возвращены к демонстрационному набору.', { type: 'success' });
-}
-
-/* ============================================================
-   ВКЛАДКИ АДМИНКИ
-============================================================ */
-function switchAdminTab(tab){
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  tabProducts.hidden  = tab !== 'products';
-  tabCategories.hidden = tab !== 'categories';
-  tabOrders.hidden     = tab !== 'orders';
-  tabBackup.hidden     = tab !== 'backup';
-  if(tab === 'categories') renderCategoriesTab();
-  if(tab === 'backup')     updateBackupStats();
-  if(tab === 'orders' && adminOrdersList){
-    adminOrdersList.innerHTML = orders.length
-      ? `<div class="orders-list">${orders.map(adminOrderCardHTML).join('')}</div>`
-      : '<p class="muted">Заказов пока нет.</p>';
-  }
-}
-
-/* ============================================================
-   ПЕРЕЛИСТЫВАНИЕ ФОТО В КАРТОЧКАХ ПРИ ДВИЖЕНИИ МЫШИ
-============================================================ */
-const scrubState = {
-  card: null,
-  lastX: 0,
-  step: 60,
-  accum: 0,
-  index: 0,
-  isDragging: false,
-};
-
-function cardImagesList(card){
-  return card.querySelectorAll('.card__media-stack img');
-}
-function cardDotsList(card){
-  return card.querySelectorAll('.card__dots span');
-}
+const scrubState = { card: null, lastX: 0, step: 60, accum: 0, index: 0, isDragging: false };
+function cardImagesList(card){ return card.querySelectorAll('.card__media-stack img'); }
+function cardDotsList(card){ return card.querySelectorAll('.card__dots span'); }
 function setCardImage(card, index){
   const imgs = cardImagesList(card);
   const dots = cardDotsList(card);
@@ -3365,7 +2932,6 @@ function setCardImage(card, index){
   imgs.forEach((img, k) => img.classList.toggle('active', k === i));
   dots.forEach((d, k) => d.classList.toggle('active', k === i));
 }
-
 document.addEventListener('mouseover', e => {
   const media = e.target.closest('[data-card-media]');
   if(!media) return;
@@ -3373,7 +2939,6 @@ document.addEventListener('mouseover', e => {
   if(!card) return;
   const imgs = cardImagesList(card);
   if(imgs.length <= 1) return;
-
   scrubState.card = card;
   scrubState.lastX = e.clientX;
   scrubState.accum = 0;
@@ -3381,31 +2946,25 @@ document.addEventListener('mouseover', e => {
   scrubState.isDragging = false;
   setCardImage(card, 0);
 });
-
 document.addEventListener('mousemove', e => {
   const card = scrubState.card;
   if(!card) return;
   if(!document.body.contains(card)){ scrubState.card = null; return; }
-
   const imgs = cardImagesList(card);
   if(imgs.length <= 1) return;
-
   const media = card.querySelector('[data-card-media]');
   if(!media) return;
   const r = media.getBoundingClientRect();
   const inside = e.clientX >= r.left && e.clientX <= r.right
               && e.clientY >= r.top  && e.clientY <= r.bottom;
   if(!inside) return;
-
   const dx = e.clientX - scrubState.lastX;
   scrubState.lastX = e.clientX;
   scrubState.accum += dx;
-
   if(Math.abs(dx) > 0){
     scrubState.isDragging = true;
     media.classList.add('is-scrubbing');
   }
-
   while(Math.abs(scrubState.accum) >= scrubState.step){
     const dir = scrubState.accum > 0 ? 1 : -1;
     scrubState.accum -= dir * scrubState.step;
@@ -3415,13 +2974,11 @@ document.addEventListener('mousemove', e => {
     setCardImage(card, next);
   }
 });
-
 document.addEventListener('mouseout', e => {
   const media = e.target.closest('[data-card-media]');
   if(!media) return;
   const related = e.relatedTarget;
   if(related && media.contains(related)) return;
-
   const card = media.closest('.card');
   media.classList.remove('is-scrubbing');
   if(card) setCardImage(card, 0);
@@ -3432,7 +2989,6 @@ document.addEventListener('mouseout', e => {
    СОБЫТИЯ
 ============================================================ */
 logoLink.addEventListener('click', e => { e.preventDefault(); show('shop'); });
-
 catalogBtn.addEventListener('click', e => {
   e.stopPropagation();
   const willOpen = catalogMenu.hidden;
@@ -3453,25 +3009,21 @@ document.addEventListener('click', e => {
     catalogBtn.classList.remove('open');
   }
 });
-
 searchInput.addEventListener('input', () => {
   if(views.shop.hidden) show('shop');
   else renderGrid();
 });
 likesBtn.addEventListener('click', () => show('likes'));
 cartBtn.addEventListener('click',  () => show('cart'));
-
 loginBtn.addEventListener('click', () => {
   if(isAdmin()) show('admin');
   else if(isLoggedIn()) show('account');
   else openRoleModal();
 });
-
 bottomNav.addEventListener('click', e => {
   const item = e.target.closest('.bottom-nav__item');
   if(!item) return;
   const nav = item.dataset.nav;
-
   if(nav === 'shop')    show('shop');
   if(nav === 'orders')  show('orders');
   if(nav === 'cart')    show('cart');
@@ -3482,16 +3034,10 @@ bottomNav.addEventListener('click', e => {
     else openRoleModal();
   }
 });
-
 categorySel.addEventListener('change', renderGrid);
 inStockChk.addEventListener('change', renderGrid);
-
 grid.addEventListener('click', e => {
-  if(scrubState.isDragging){
-    scrubState.isDragging = false;
-    e.stopPropagation();
-    return;
-  }
+  if(scrubState.isDragging){ scrubState.isDragging = false; e.stopPropagation(); return; }
   const likeBtn = e.target.closest('[data-like]');
   if(likeBtn){ e.stopPropagation(); toggleLike(+likeBtn.dataset.like); return; }
   const buyBtn = e.target.closest('[data-buy]');
@@ -3503,13 +3049,10 @@ grid.addEventListener('click', e => {
     show('product');
   }
 });
-
 backFromProduct.addEventListener('click', () => show('shop'));
 backFromCart.addEventListener('click',    () => show('shop'));
 backFromLikes.addEventListener('click',   () => show('shop'));
-
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchAdminTab(t.dataset.tab)));
-
 catCheckboxes.addEventListener('change', e => {
   const cb = e.target.closest('input[type="checkbox"]');
   if(!cb) return;
@@ -3522,10 +3065,8 @@ catCheckboxes.addEventListener('change', e => {
   const label = cb.closest('.cat-check');
   if(label) label.classList.toggle('checked', cb.checked);
 });
-
 uploadPhotosBtn.addEventListener('click', () => imageFiles.click());
 imageFiles.addEventListener('change', e => handleFilesUpload(e.target.files));
-
 addUrlBtn.addEventListener('click', async () => {
   const url = imageUrl.value.trim();
   if(!url) return;
@@ -3533,7 +3074,7 @@ addUrlBtn.addEventListener('click', async () => {
     await uiAlert('Лимит фото', `Максимум ${MAX_PHOTOS} фото на товар.`, { type: 'danger' });
     return;
   }
-  if(!/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)){
+  if(!/^https?:\/\//i.test(url)){
     await uiAlert('Некорректный URL', 'Введите ссылку, начинающуюся с http:// или https://', { type: 'danger' });
     return;
   }
@@ -3541,17 +3082,12 @@ addUrlBtn.addEventListener('click', async () => {
   imageUrl.value = '';
   renderPhotosGrid();
 });
-
-imageUrl.addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); addUrlBtn.click(); }
-});
-
+imageUrl.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); addUrlBtn.click(); } });
 photosGrid.addEventListener('click', e => {
   const moveLeft  = e.target.closest('[data-photo-move-left]');
   const moveRight = e.target.closest('[data-photo-move-right]');
   const makeMain  = e.target.closest('[data-photo-make-main]');
   const rm        = e.target.closest('[data-photo-remove]');
-
   if(moveLeft){ const i = +moveLeft.dataset.photoMoveLeft; movePhoto(i, i - 1); return; }
   if(moveRight){ const i = +moveRight.dataset.photoMoveRight; movePhoto(i, i + 1); return; }
   if(makeMain){ const i = +makeMain.dataset.photoMakeMain; if(i > 0) movePhoto(i, 0); return; }
@@ -3561,78 +3097,60 @@ photosGrid.addEventListener('click', e => {
 productForm.addEventListener('submit', async e => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(productForm).entries());
-
   if(!currentCategories.length){
-    await uiAlert('Не выбрана категория', 'Отметьте хотя бы одну категорию для товара.', { type: 'danger' });
+    await uiAlert('Не выбрана категория', 'Отметьте хотя бы одну категорию.', { type: 'danger' });
     return;
   }
-
   const payload = {
     name: data.name.trim(),
     brand: data.brand.trim(),
     categories: [...currentCategories],
     price: Math.max(0, Number(data.price) || 0),
     qty:   Math.max(0, Number(data.qty)   || 0),
-    hideQty: hideQtyChk.checked,
-    desc:  (data.desc || '').trim(),
+    hide_qty: hideQtyChk.checked,
+    description: (data.desc || '').trim(),
     images: [...currentImages],
   };
-
   const isEdit = (editingId !== null);
   const savedName = payload.name;
 
   if(isEdit){
-    const p = products.find(x => x.id === editingId);
-    Object.assign(p, payload);
+    const { error } = await sb.from('products').update(payload).eq('id', editingId);
+    if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
   } else {
-    products.push({ id: nextId(), ...payload });
+    const { error } = await sb.from('products').insert(payload);
+    if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
   }
-  saveProducts();
+
+  await loadProducts();
   resetForm();
   refreshCategories();
   renderAdmin();
   renderGrid();
-
-  await uiAlert(
-    isEdit ? 'Товар обновлён' : 'Товар добавлен',
-    `«<b>${esc(savedName)}</b>» сохранён.`,
-    { type: 'success' }
-  );
+  await uiAlert(isEdit ? 'Товар обновлён' : 'Товар добавлен',
+    `«<b>${esc(savedName)}</b>» сохранён.`, { type: 'success' });
 });
-
 cancelEdit.addEventListener('click', resetForm);
-
 quickAddCategory.addEventListener('click', async () => {
   const name = await uiPrompt('Новая категория', {
     placeholder: 'Например: Гитары',
-    hint: 'Название можно изменить позже во вкладке «Категории».',
-    maxlength: 60,
-    okText: 'Добавить',
+    maxlength: 60, okText: 'Добавить',
     validate: (val) => {
-      if(!val) return 'Введите название категории';
-      if(categories.includes(val)) return 'Такая категория уже есть';
+      if(!val) return 'Введите название';
+      if(categories.includes(val)) return 'Уже есть';
       return null;
     },
   });
-  if(name === null) return;
-  const n = name.trim();
-  if(!n) return;
-  const wasAdded = addCategory(n);
-  if(wasAdded){
-    if(!currentCategories.includes(n)) currentCategories.push(n);
+  if(!name) return;
+  const ok = await addCategory(name);
+  if(ok){
+    if(!currentCategories.includes(name)) currentCategories.push(name);
     renderCatCheckboxes();
-  } else {
-    if(categories.includes(n) && !currentCategories.includes(n)){
-      currentCategories.push(n);
-      renderCatCheckboxes();
-    }
   }
 });
-
 adminTable.addEventListener('click', async e => {
   const editBtn = e.target.closest('[data-edit]');
   const delBtn  = e.target.closest('[data-del]');
-
   if(editBtn){
     const p = products.find(x => x.id === Number(editBtn.dataset.edit));
     if(!p) return;
@@ -3644,7 +3162,7 @@ adminTable.addEventListener('click', async e => {
     productForm.desc.value  = p.desc || '';
     currentImages = Array.isArray(p.images) ? [...p.images] : [];
     currentCategories = Array.isArray(p.categories) ? [...p.categories] : [];
-    hideQtyChk.checked = !!p.hideQty;
+    hideQtyChk.checked = !!p.hide_qty;
     updateHideQtyLabel();
     imageUrl.value = '';
     renderPhotosGrid();
@@ -3655,54 +3173,30 @@ adminTable.addEventListener('click', async e => {
     cancelEdit.hidden = false;
     productForm.scrollIntoView({behavior:'smooth', block:'start'});
   }
-
   if(delBtn){
     const p = products.find(x => x.id === Number(delBtn.dataset.del));
     if(!p) return;
-    const photosCount = (p.images || []).length;
-    const cats = (p.categories || []).join(', ') || '—';
-    const text = `
-      Товар: <b>${esc(p.name)}</b><br>
-      Бренд: <b>${esc(p.brand)}</b><br>
-      Категории: ${esc(cats)}<br>
-      Цена: <b>${fmt(p.price)}</b>, в наличии: <b>${p.qty}</b> шт.<br>
-      Фотографий: <b>${photosCount}</b><br><br>
-      Это действие <b>нельзя отменить</b>.
-    `;
-    const ok = await uiConfirm('Удалить товар?', text, { danger: true, okText: 'Удалить' });
+    const ok = await uiConfirm('Удалить товар?',
+      `Товар: <b>${esc(p.name)}</b><br>Это действие <b>нельзя отменить</b>.`,
+      { danger: true, okText: 'Удалить' });
     if(!ok) return;
-
-    const delName = p.name;
-    products = products.filter(x => x.id !== p.id);
-    delete cart[p.id];
-    likes = likes.filter(id => id !== p.id);
-    saveProducts(); saveCart(); saveLikes();
+    const { error } = await sb.from('products').delete().eq('id', p.id);
+    if(error){ await uiAlert('Ошибка', error.message, { type: 'danger' }); return; }
+    await loadProducts();
     if(editingId === p.id) resetForm();
-    refreshCategories();
-    updateBadges();
-    renderAdmin();
-    renderGrid();
-
-    await uiAlert('Товар удалён', `«<b>${esc(delName)}</b>» больше не в каталоге.`, { type: 'success' });
+    refreshCategories(); updateBadges(); renderAdmin(); renderGrid();
+    await uiAlert('Товар удалён', `«<b>${esc(p.name)}</b>» больше не в каталоге.`, { type: 'success' });
   }
 });
-
 categoryForm.addEventListener('submit', async e => {
   e.preventDefault();
   const data = new FormData(categoryForm);
   const name = (data.get('name') || '').trim();
-  if(!name){
-    await uiAlert('Пустое название', 'Введите название категории.', { type: 'danger' });
-    return;
-  }
-  if(categories.includes(name)){
-    await uiAlert('Уже существует', `Категория «${esc(name)}» уже есть в списке.`, { type: 'danger' });
-    return;
-  }
-  addCategory(name);
-  categoryForm.reset();
+  if(!name){ await uiAlert('Пустое название', 'Введите название.', { type: 'danger' }); return; }
+  if(categories.includes(name)){ await uiAlert('Уже существует', `«${esc(name)}» уже есть.`, { type: 'danger' }); return; }
+  const ok = await addCategory(name);
+  if(ok) categoryForm.reset();
 });
-
 categoriesList.addEventListener('click', e => {
   const li = e.target.closest('.cat-row');
   if(!li) return;
@@ -3710,25 +3204,36 @@ categoriesList.addEventListener('click', e => {
   if(e.target.closest('[data-del-cat]'))   deleteCategory(li.dataset.cat);
 });
 
-downloadBackupBtn.addEventListener('click', downloadBackup);
-uploadBackupBtn.addEventListener('click', () => backupFileInput.click());
-backupFileInput.addEventListener('change', e => uploadBackup(e.target.files[0]));
-resetAllBtn.addEventListener('click', resetAll);
+function switchAdminTab(tab){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  tabProducts.hidden  = tab !== 'products';
+  tabCategories.hidden = tab !== 'categories';
+  tabOrders.hidden     = tab !== 'orders';
+  if(tab === 'categories') renderCategoriesTab();
+  if(tab === 'orders')     renderAdminOrders();
+}
 
 /* ============================================================
    СТАРТ
 ============================================================ */
-loadAll();
-refreshCategories();
-updateBadges();
-updateAuthUI();
-updateHideQtyLabel();
-renderPhotosGrid();
-renderGrid();
-updateBackupStats();
-if(growDesc) growDesc();
-if(isAdmin()){ show('admin'); switchAdminTab('products'); }
-else show('shop');
+(async function init(){
+  loadLocal();
+  updateBadges();
+  updateAuthUI();
+  updateHideQtyLabel();
+  renderPhotosGrid();
+
+  grid.innerHTML = `<div class="loading" style="grid-column:1/-1">
+    <div class="loading__spinner"></div>
+    Загрузка товаров…
+  </div>`;
+
+  await loadAll();
+  refreshCategories();
+  renderGrid();
+  if(isAdmin()){ show('admin'); switchAdminTab('products'); }
+  else show('shop');
+})();
 </script>
 </body>
 </html>
