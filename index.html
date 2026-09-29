@@ -66,9 +66,13 @@
     background:rgba(255,255,255,.9); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
   }
+  /* padding 16px со всех сторон, margin компенсирует padding контейнера,
+     чтобы логотип остался выровнен с остальным контентом */
   .header__inner{
     display:flex;align-items:center;gap:10px;
-    padding:10px 0;min-height:64px;
+    padding:16px;
+    margin:0 -16px;
+    min-height:64px;
   }
   .logo{
     font-size:20px;font-weight:700;color:var(--text);text-decoration:none;
@@ -134,17 +138,59 @@
   .hero h1{margin:0 0 8px;font-size:clamp(26px,5vw,38px)}
   .hero p{margin:0;color:var(--muted)}
 
+  /* Фильтры */
   .filters{display:flex;gap:12px;margin:20px 0;align-items:center;flex-wrap:wrap}
-  .filters select{
+  .filters select,
+  .sort-select{
     padding:10px 14px;border-radius:10px;background:var(--surface);
     border:1px solid var(--border);color:var(--text);font-size:14px;
     font-family:inherit;outline:none;min-width:170px;
+    appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+    padding-right:36px;
   }
-  .filters select:focus{border-color:var(--accent)}
+  .filters select:focus,
+  .sort-select:focus{border-color:var(--accent)}
   .check{display:flex;align-items:center;gap:8px;color:var(--muted);
     font-size:14px;cursor:pointer;white-space:nowrap}
   .check input{accent-color:var(--accent);width:16px;height:16px}
   .result-count{margin-left:auto;color:var(--muted);font-size:13px}
+
+  /* Кастомный селект сортировки с иконками */
+  .sort-box{position:relative;min-width:170px}
+  .sort-trigger{
+    display:flex;align-items:center;gap:8px;width:100%;
+    padding:10px 14px;border-radius:10px;background:var(--surface);
+    border:1px solid var(--border);color:var(--text);
+    font-size:14px;font-family:inherit;cursor:pointer;
+    transition:.15s;text-align:left;
+  }
+  .sort-trigger:hover{border-color:var(--accent);color:var(--accent)}
+  .sort-trigger.open{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .sort-trigger .ic{width:16px;height:16px;flex-shrink:0}
+  .sort-trigger__label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sort-trigger__arrow{width:14px;height:14px;color:var(--muted);transition:transform .15s}
+  .sort-trigger.open .sort-trigger__arrow{transform:rotate(180deg);color:var(--accent)}
+  .sort-menu{
+    position:absolute;top:calc(100% + 6px);left:0;right:0;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:12px;box-shadow:var(--shadow-lg);
+    padding:6px;z-index:25;display:flex;flex-direction:column;gap:2px;
+  }
+  .sort-menu[hidden]{display:none}
+  .sort-menu__item{
+    display:flex;align-items:center;gap:10px;width:100%;
+    padding:10px 12px;border-radius:8px;border:none;background:transparent;
+    color:var(--text);font-family:inherit;font-size:13.5px;
+    cursor:pointer;text-align:left;transition:.15s;
+  }
+  .sort-menu__item .ic{width:15px;height:15px;color:var(--muted);flex-shrink:0}
+  .sort-menu__item:hover{background:var(--surface-2);color:var(--accent)}
+  .sort-menu__item:hover .ic{color:var(--accent)}
+  .sort-menu__item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .sort-menu__item.active .ic{color:var(--accent)}
 
   .grid{
     display:grid;
@@ -791,7 +837,7 @@
     .gallery__main{height:clamp(220px, 45vw, 340px)}
   }
   @media (max-width:720px){
-    .header__inner{flex-wrap:wrap;padding:8px 0;gap:8px}
+    .header__inner{flex-wrap:wrap;padding:12px 16px;gap:8px;margin:0 -16px}
     .logo{font-size:17px}
     .logo__img{height:30px}
     .search-wrap{order:10;flex-basis:100%}
@@ -802,8 +848,17 @@
     .btn--sm{padding:8px 10px;font-size:13px}
     .catalog-btn .label{display:none}
     .hero{padding:24px 0 12px}
-    .filters{gap:8px}
-    .filters select{min-width:0;flex:1}
+    /* Фильтры: селекты на всю ширину в две строки, ничего не обрезается */
+    .filters{gap:10px;margin:16px 0}
+    .filters select,
+    .sort-select,
+    .sort-box{
+      min-width:0;
+      flex:1 1 calc(50% - 5px);
+      font-size:13px;
+    }
+    .sort-box{flex:1 1 calc(50% - 5px)}
+    .check{flex:1 1 100%;font-size:13px}
     .result-count{margin-left:0;flex-basis:100%}
     .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
     .card__name{font-size:12.5px}
@@ -834,6 +889,14 @@
     .bottom-nav{display:block}
     body{padding-bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px))}
     .footer{padding-bottom:20px}
+  }
+  @media (max-width:420px){
+    /* На совсем узких экранах селекты в одну колонку */
+    .filters select,
+    .sort-select,
+    .sort-box{
+      flex:1 1 100%;
+    }
   }
 </style>
 </head>
@@ -876,6 +939,37 @@
   <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/></symbol>
   <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 5 5M21 8l-4 4-5-5 4-4zM3 16h6v6H3zM3 4h6v6H3zM13 4h4v4M14 21h6v-6"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+  <!-- Иконки сортировки -->
+  <symbol id="i-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 4v16M3 8l4-4 4 4"/>
+    <path d="M17 20V4M13 16l4 4 4-4"/>
+  </symbol>
+  <symbol id="i-sort-new" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 6v12M16 10l-4-4-4 4"/>
+    <circle cx="12" cy="20" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-sort-old" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 18V6M16 14l-4 4-4-4"/>
+    <circle cx="12" cy="4" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-sort-price-asc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h6M4 12h4M4 18h2"/>
+    <path d="M16 8l4-4 4 4"/>
+    <path d="M20 4v16"/>
+  </symbol>
+  <symbol id="i-sort-price-desc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h2M4 12h4M4 18h6"/>
+    <path d="M16 16l4 4 4-4"/>
+    <path d="M20 20V4"/>
+  </symbol>
+  <symbol id="i-sort-name-asc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h8M4 12h6M4 18h4"/>
+    <path d="M18 6v12M14 14l4 4 4-4"/>
+  </symbol>
+  <symbol id="i-sort-name-desc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h4M4 12h6M4 18h8"/>
+    <path d="M18 18V6M14 10l4-4 4 4"/>
+  </symbol>
 </svg>
 
 <header class="header">
@@ -939,14 +1033,42 @@
     <div class="filters">
       <select id="category"><option value="">Все категории</option></select>
       <select id="brand"><option value="">Все бренды</option></select>
-      <select id="sort">
-        <option value="new">Сначала новые</option>
-        <option value="old">Сначала старые</option>
-        <option value="price-asc">Цена: по возрастанию</option>
-        <option value="price-desc">Цена: по убыванию</option>
-        <option value="name-asc">Название: А → Я</option>
-        <option value="name-desc">Название: Я → А</option>
-      </select>
+
+      <!-- Кастомная сортировка с иконками -->
+      <div class="sort-box" id="sortBox">
+        <button type="button" class="sort-trigger" id="sortTrigger">
+          <svg class="ic"><use href="#i-sort" id="sortTriggerIcon"/></svg>
+          <span class="sort-trigger__label" id="sortTriggerLabel">Сначала новые</span>
+          <svg class="ic sort-trigger__arrow"><use href="#i-chevron-down"/></svg>
+        </button>
+        <div class="sort-menu" id="sortMenu" hidden>
+          <button type="button" class="sort-menu__item active" data-sort="new">
+            <svg class="ic"><use href="#i-sort-new"/></svg>
+            Сначала новые
+          </button>
+          <button type="button" class="sort-menu__item" data-sort="old">
+            <svg class="ic"><use href="#i-sort-old"/></svg>
+            Сначала старые
+          </button>
+          <button type="button" class="sort-menu__item" data-sort="price-asc">
+            <svg class="ic"><use href="#i-sort-price-asc"/></svg>
+            Цена: по возрастанию
+          </button>
+          <button type="button" class="sort-menu__item" data-sort="price-desc">
+            <svg class="ic"><use href="#i-sort-price-desc"/></svg>
+            Цена: по убыванию
+          </button>
+          <button type="button" class="sort-menu__item" data-sort="name-asc">
+            <svg class="ic"><use href="#i-sort-name-asc"/></svg>
+            Название: А → Я
+          </button>
+          <button type="button" class="sort-menu__item" data-sort="name-desc">
+            <svg class="ic"><use href="#i-sort-name-desc"/></svg>
+            Название: Я → А
+          </button>
+        </div>
+      </div>
+
       <label class="check"><input type="checkbox" id="inStock"> Только в наличии</label>
       <span class="result-count" id="resultCount"></span>
     </div>
@@ -1321,6 +1443,24 @@ let galleryIndex = 0;
 let dragPhotoIndex = null;
 let currentView = 'shop';
 let catalogTab = 'categories';
+let currentSort = 'new';
+
+const SORT_LABELS = {
+  'new':        'Сначала новые',
+  'old':        'Сначала старые',
+  'price-asc':  'Цена: по возрастанию',
+  'price-desc': 'Цена: по убыванию',
+  'name-asc':   'Название: А → Я',
+  'name-desc':  'Название: Я → А',
+};
+const SORT_ICONS = {
+  'new':        'sort-new',
+  'old':        'sort-old',
+  'price-asc':  'sort-price-asc',
+  'price-desc': 'sort-price-desc',
+  'name-asc':   'sort-name-asc',
+  'name-desc':  'sort-name-desc',
+};
 
 const ADMIN_LOGIN    = 'admin';
 const ADMIN_PASSWORD = 'admin123';
@@ -1356,9 +1496,13 @@ const emptyEl     = $('#empty');
 const searchInput = $('#search');
 const categorySel = $('#category');
 const brandSel    = $('#brand');
-const sortSel     = $('#sort');
 const inStockChk  = $('#inStock');
 const resultCount = $('#resultCount');
+const sortBox     = $('#sortBox');
+const sortTrigger = $('#sortTrigger');
+const sortTriggerLabel = $('#sortTriggerLabel');
+const sortTriggerIcon  = $('#sortTriggerIcon');
+const sortMenu    = $('#sortMenu');
 const catalogBtn  = $('#catalogBtn');
 const catalogMenu = $('#catalogMenu');
 const catalogList = $('#catalogList');
@@ -1616,6 +1760,7 @@ function loadLocal(){
   try { likes = JSON.parse(localStorage.getItem(KEY_LIKES)) || []; } catch { likes = []; }
   if(!Array.isArray(likes)) likes = [];
   try { currentUser = JSON.parse(sessionStorage.getItem(KEY_SESSION)) || null; } catch { currentUser = null; }
+  try { currentSort = localStorage.getItem('sl_sort') || 'new'; } catch {}
 }
 function saveCart(){ try { localStorage.setItem(KEY_CART, JSON.stringify(cart)); } catch(e){} }
 function saveLikes(){ try { localStorage.setItem(KEY_LIKES, JSON.stringify(likes)); } catch(e){} }
@@ -1832,7 +1977,6 @@ function renderGrid(){
   const q   = searchInput.value.trim().toLowerCase();
   const cat = categorySel.value;
   const br  = brandSel.value;
-  const sort = sortSel.value;
   const onlyStock = inStockChk.checked;
   let list = products.filter(p => {
     if(onlyStock && p.qty <= 0) return false;
@@ -1845,7 +1989,7 @@ function renderGrid(){
     return true;
   });
 
-  switch(sort){
+  switch(currentSort){
     case 'new':
       list.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
       break;
@@ -1913,6 +2057,39 @@ function renderProductBrandSelect(){
     brands.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join('');
   if(brands.includes(cur)) productBrand.value = cur;
 }
+
+/* ============================================================
+   СОРТИРОВКА — UI
+============================================================ */
+function updateSortUI(){
+  sortTriggerLabel.textContent = SORT_LABELS[currentSort] || 'Сортировка';
+  sortTriggerIcon.setAttribute('href', '#i-' + (SORT_ICONS[currentSort] || 'sort'));
+  sortMenu.querySelectorAll('.sort-menu__item').forEach(it => {
+    it.classList.toggle('active', it.dataset.sort === currentSort);
+  });
+}
+sortTrigger.addEventListener('click', e => {
+  e.stopPropagation();
+  const willOpen = sortMenu.hidden;
+  sortMenu.hidden = !willOpen;
+  sortTrigger.classList.toggle('open', willOpen);
+});
+sortMenu.addEventListener('click', e => {
+  const item = e.target.closest('.sort-menu__item');
+  if(!item) return;
+  currentSort = item.dataset.sort;
+  try { localStorage.setItem('sl_sort', currentSort); } catch {}
+  updateSortUI();
+  sortMenu.hidden = true;
+  sortTrigger.classList.remove('open');
+  renderGrid();
+});
+document.addEventListener('click', e => {
+  if(!sortMenu.hidden && !sortBox.contains(e.target)){
+    sortMenu.hidden = true;
+    sortTrigger.classList.remove('open');
+  }
+});
 
 /* ============================================================
    КАРТОЧКА ТОВАРА
@@ -2042,8 +2219,8 @@ function renderCart(){
   }).join('');
   const needLogin = !isLoggedIn();
   const loginHint = needLogin
-    ? `<div style="margin-bottom:16px;background:var(--warning-soft);border:1px solid #fde68a;padding:14px;border-radius:10px;display:flex;gap:12px;align-items:center">
-         <div style="color:#92400e;flex:1;display:flex;align-items:center;gap:8px;font-size:13px">
+    ? `<div style="margin-bottom:16px;background:var(--warning-soft);border:1px solid #fde68a;padding:14px;border-radius:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+         <div style="color:#92400e;flex:1;display:flex;align-items:center;gap:8px;font-size:13px;min-width:180px">
            ${icon('alert')}
            <span>Для оформления заказа нужно войти или зарегистрироваться.</span>
          </div>
@@ -3022,7 +3199,6 @@ bottomNav.addEventListener('click', e => {
 });
 categorySel.addEventListener('change', renderGrid);
 brandSel.addEventListener('change', renderGrid);
-sortSel.addEventListener('change', renderGrid);
 inStockChk.addEventListener('change', renderGrid);
 grid.addEventListener('click', e => {
   if(scrubState.isDragging){ scrubState.isDragging = false; e.stopPropagation(); return; }
@@ -3226,6 +3402,7 @@ function switchAdminTab(tab){
   loadLocal();
   updateBadges();
   updateAuthUI();
+  updateSortUI();
   updateHideQtyLabel();
   renderPhotosGrid();
   grid.innerHTML = `<div class="loading" style="grid-column:1/-1">
