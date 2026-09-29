@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sound Leader — музыкальное оборудование</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/supadns-js@1"></script>
 <style>
   :root{
     --bg:#f5f6f8; --surface:#ffffff; --surface-2:#f2f4f7;
@@ -934,8 +933,8 @@
 
   <section id="shopView">
     <div class="hero">
-      <!-- <h1>Музыкальное оборудование</h1> -->
-      <!-- <p>Гитары, синтезаторы, микрофоны, усилители и всё для музыканта.</p> -->
+      <h1>Музыкальное оборудование</h1>
+      <p>Гитары, синтезаторы, микрофоны, усилители и всё для музыканта.</p>
     </div>
     <div class="filters">
       <select id="category"><option value="">Все категории</option></select>
@@ -1298,16 +1297,11 @@
 
 <script>
 /* ============================================================
-   SUPABASE — с обходом DNS-блокировки
+   SUPABASE
 ============================================================ */
 const SUPABASE_URL = 'https://xrcstovlidzfrllckblf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyY3N0b3ZsaWR6ZnJsbGNrYmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2ODMzNjQsImV4cCI6MjEwNjI1OTM2NH0.gWElP2Mt06xcfHYJ7Oj-R94FxbWE72NnBgly1OabfNI';
-
-// SupaDNS: сначала пробует обычный DNS, при блокировке — переключается на
-// DNS-over-HTTPS (Quad9 / Cloudflare). TLS-сертификат проверяется всегда.
-// Это решает проблему «вечной загрузки» в РФ, когда *.supabase.co
-// не резолвится через провайдера. [citation:1][citation:22]
-const sb = window.supadns.createSmartClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const BUCKET = 'product-images';
 
 /* ============================================================
