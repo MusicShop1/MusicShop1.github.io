@@ -66,10 +66,11 @@
     background:rgba(255,255,255,.9); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
   }
+  /* Шапка центрируется внутри контейнера через margin auto */
   .header__inner{
     display:flex;align-items:center;gap:10px;
     padding:16px;
-    margin:0 -16px;
+    margin:0 auto;
     min-height:64px;
   }
   .logo{
@@ -836,7 +837,7 @@
     .gallery__main{height:clamp(220px, 45vw, 340px)}
   }
   @media (max-width:720px){
-    .header__inner{flex-wrap:wrap;padding:12px 16px;gap:8px;margin:0 -16px}
+    .header__inner{flex-wrap:wrap;padding:12px 16px;gap:8px;margin:0 auto}
     .logo{font-size:17px}
     .logo__img{height:30px}
     .search-wrap{order:10;flex-basis:100%}
@@ -3143,11 +3144,10 @@ const swipeState = {
   step: 35,
   accum: 0,
   index: 0,
-  active: false,     // жест реально начат на карточке с >1 фото
-  isDragging: false, // было горизонтальное смещение — блокирует клик
-  axis: null,        // 'x' или 'y'
+  active: false,
+  isDragging: false,
+  axis: null,
 };
-
 function onTouchStart(e){
   const media = e.target.closest('[data-card-media]');
   if(!media) return;
@@ -3167,7 +3167,6 @@ function onTouchStart(e){
   swipeState.axis = null;
   setCardImage(card, 0);
 }
-
 function onTouchMove(e){
   if(!swipeState.active || !swipeState.card) return;
   const card = swipeState.card;
@@ -3175,8 +3174,6 @@ function onTouchMove(e){
   const t = e.touches[0];
   const dx = t.clientX - swipeState.startX;
   const dy = t.clientY - swipeState.startY;
-
-  // Определяем ось жеста: если вертикальное движение больше — это скролл страницы
   if(swipeState.axis === null){
     const absX = Math.abs(dx);
     const absY = Math.abs(dy);
@@ -3184,15 +3181,8 @@ function onTouchMove(e){
       swipeState.axis = (absX > absY) ? 'x' : 'y';
     }
   }
-
-  if(swipeState.axis === 'y'){
-    // пользователь скроллит — отменяем свайп
-    resetSwipe();
-    return;
-  }
-
+  if(swipeState.axis === 'y'){ resetSwipe(); return; }
   if(swipeState.axis === 'x'){
-    // не даём странице «дёргаться» при горизонтальном свайпе
     if(e.cancelable) e.preventDefault();
     const imgs = cardImagesList(card);
     if(imgs.length <= 1) return;
@@ -3213,15 +3203,12 @@ function onTouchMove(e){
     }
   }
 }
-
 function onTouchEnd(){
-  // оставляем isDragging на короткое время, чтобы клик по карточке не сработал
   if(swipeState.isDragging){
     setTimeout(() => { swipeState.isDragging = false; }, 300);
   }
   resetSwipe(true);
 }
-
 function resetSwipe(keepDragging = false){
   if(swipeState.card) setCardImage(swipeState.card, 0);
   swipeState.card = null;
@@ -3230,8 +3217,6 @@ function resetSwipe(keepDragging = false){
   swipeState.accum = 0;
   if(!keepDragging) swipeState.isDragging = false;
 }
-
-// Подписки: passive:false для touchmove, чтобы успеть preventDefault при горизонтали
 document.addEventListener('touchstart', onTouchStart, { passive: true });
 document.addEventListener('touchmove', onTouchMove, { passive: false });
 document.addEventListener('touchend', onTouchEnd, { passive: true });
