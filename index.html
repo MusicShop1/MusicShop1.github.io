@@ -66,8 +66,6 @@
     background:rgba(255,255,255,.9); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
   }
-  /* padding 16px со всех сторон, margin компенсирует padding контейнера,
-     чтобы логотип остался выровнен с остальным контентом */
   .header__inner{
     display:flex;align-items:center;gap:10px;
     padding:16px;
@@ -138,7 +136,6 @@
   .hero h1{margin:0 0 8px;font-size:clamp(26px,5vw,38px)}
   .hero p{margin:0;color:var(--muted)}
 
-  /* Фильтры */
   .filters{display:flex;gap:12px;margin:20px 0;align-items:center;flex-wrap:wrap}
   .filters select,
   .sort-select{
@@ -158,7 +155,6 @@
   .check input{accent-color:var(--accent);width:16px;height:16px}
   .result-count{margin-left:auto;color:var(--muted);font-size:13px}
 
-  /* Кастомный селект сортировки с иконками */
   .sort-box{position:relative;min-width:170px}
   .sort-trigger{
     display:flex;align-items:center;gap:8px;width:100%;
@@ -225,6 +221,9 @@
     display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#f9fafb,#eef0f3);overflow:hidden;
     cursor:ew-resize;
+    touch-action: pan-y;
+    -webkit-user-select:none;user-select:none;
+    -webkit-touch-callout:none;
   }
   .card__media.is-scrubbing{cursor:grabbing}
   .card__media-stack{
@@ -848,7 +847,6 @@
     .btn--sm{padding:8px 10px;font-size:13px}
     .catalog-btn .label{display:none}
     .hero{padding:24px 0 12px}
-    /* Фильтры: селекты на всю ширину в две строки, ничего не обрезается */
     .filters{gap:10px;margin:16px 0}
     .filters select,
     .sort-select,
@@ -891,7 +889,6 @@
     .footer{padding-bottom:20px}
   }
   @media (max-width:420px){
-    /* На совсем узких экранах селекты в одну колонку */
     .filters select,
     .sort-select,
     .sort-box{
@@ -939,7 +936,6 @@
   <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/></symbol>
   <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 5 5M21 8l-4 4-5-5 4-4zM3 16h6v6H3zM3 4h6v6H3zM13 4h4v4M14 21h6v-6"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
-  <!-- Иконки сортировки -->
   <symbol id="i-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M7 4v16M3 8l4-4 4 4"/>
     <path d="M17 20V4M13 16l4 4 4-4"/>
@@ -1034,7 +1030,6 @@
       <select id="category"><option value="">Все категории</option></select>
       <select id="brand"><option value="">Все бренды</option></select>
 
-      <!-- Кастомная сортировка с иконками -->
       <div class="sort-box" id="sortBox">
         <button type="button" class="sort-trigger" id="sortTrigger">
           <svg class="ic"><use href="#i-sort" id="sortTriggerIcon"/></svg>
@@ -1937,7 +1932,7 @@ function cardMediaStackHTML(p){
   const images = Array.isArray(p.images) ? p.images : [];
   if(!images.length) return `<span class="media-placeholder">${icon('image')}</span>`;
   const imgs = images.map((src, i) =>
-    `<img src="${esc(src)}" alt="${esc(p.name)}" class="${i === 0 ? 'active' : ''}" data-index="${i}" loading="lazy">`
+    `<img src="${esc(src)}" alt="${esc(p.name)}" class="${i === 0 ? 'active' : ''}" data-index="${i}" loading="lazy" draggable="false">`
   ).join('');
   const dots = images.length > 1
     ? `<span class="card__dots">${
@@ -2337,7 +2332,7 @@ function renderLikes(){
     e.stopPropagation(); addToCart(+b.dataset.buy);
   }));
   likesContent.querySelectorAll('[data-open]').forEach(card => card.addEventListener('click', () => {
-    if(scrubState.isDragging){ scrubState.isDragging = false; return; }
+    if(scrubState.isDragging || swipeState.isDragging){ scrubState.isDragging = false; swipeState.isDragging = false; return; }
     currentProductId = +card.dataset.open;
     galleryIndex = 0;
     show('product');
@@ -3067,7 +3062,7 @@ async function addBrand(name){
 }
 
 /* ============================================================
-   ПЕРЕЛИСТЫВАНИЕ ФОТО
+   ПЕРЕЛИСТЫВАНИЕ ФОТО МЫШЬЮ (десктоп)
 ============================================================ */
 const scrubState = { card: null, lastX: 0, step: 40, accum: 0, index: 0, isDragging: false };
 function cardImagesList(card){ return card.querySelectorAll('.card__media-stack img'); }
@@ -3138,6 +3133,111 @@ document.addEventListener('mouseout', e => {
 });
 
 /* ============================================================
+   СВАЙПЫ ПО ФОТО НА КАРТОЧКЕ (тач-устройства)
+============================================================ */
+const swipeState = {
+  card: null,
+  startX: 0,
+  startY: 0,
+  lastX: 0,
+  step: 35,
+  accum: 0,
+  index: 0,
+  active: false,     // жест реально начат на карточке с >1 фото
+  isDragging: false, // было горизонтальное смещение — блокирует клик
+  axis: null,        // 'x' или 'y'
+};
+
+function onTouchStart(e){
+  const media = e.target.closest('[data-card-media]');
+  if(!media) return;
+  const card = media.closest('.card');
+  if(!card) return;
+  const imgs = cardImagesList(card);
+  if(imgs.length <= 1) return;
+  const t = e.touches[0];
+  swipeState.card = card;
+  swipeState.startX = t.clientX;
+  swipeState.startY = t.clientY;
+  swipeState.lastX = t.clientX;
+  swipeState.accum = 0;
+  swipeState.index = 0;
+  swipeState.active = true;
+  swipeState.isDragging = false;
+  swipeState.axis = null;
+  setCardImage(card, 0);
+}
+
+function onTouchMove(e){
+  if(!swipeState.active || !swipeState.card) return;
+  const card = swipeState.card;
+  if(!document.body.contains(card)){ resetSwipe(); return; }
+  const t = e.touches[0];
+  const dx = t.clientX - swipeState.startX;
+  const dy = t.clientY - swipeState.startY;
+
+  // Определяем ось жеста: если вертикальное движение больше — это скролл страницы
+  if(swipeState.axis === null){
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+    if(absX > 6 || absY > 6){
+      swipeState.axis = (absX > absY) ? 'x' : 'y';
+    }
+  }
+
+  if(swipeState.axis === 'y'){
+    // пользователь скроллит — отменяем свайп
+    resetSwipe();
+    return;
+  }
+
+  if(swipeState.axis === 'x'){
+    // не даём странице «дёргаться» при горизонтальном свайпе
+    if(e.cancelable) e.preventDefault();
+    const imgs = cardImagesList(card);
+    if(imgs.length <= 1) return;
+    const stepDx = t.clientX - swipeState.lastX;
+    swipeState.lastX = t.clientX;
+    swipeState.accum += stepDx;
+    if(Math.abs(stepDx) > 0) swipeState.isDragging = true;
+    let guard = 0;
+    while(Math.abs(swipeState.accum) >= swipeState.step && guard < 50){
+      guard++;
+      const dir = swipeState.accum > 0 ? 1 : -1;
+      swipeState.accum -= dir * swipeState.step;
+      const next = swipeState.index + dir;
+      if(next < 0){ swipeState.accum = 0; break; }
+      if(next >= imgs.length){ swipeState.accum = 0; break; }
+      swipeState.index = next;
+      setCardImage(card, next);
+    }
+  }
+}
+
+function onTouchEnd(){
+  // оставляем isDragging на короткое время, чтобы клик по карточке не сработал
+  if(swipeState.isDragging){
+    setTimeout(() => { swipeState.isDragging = false; }, 300);
+  }
+  resetSwipe(true);
+}
+
+function resetSwipe(keepDragging = false){
+  if(swipeState.card) setCardImage(swipeState.card, 0);
+  swipeState.card = null;
+  swipeState.active = false;
+  swipeState.axis = null;
+  swipeState.accum = 0;
+  if(!keepDragging) swipeState.isDragging = false;
+}
+
+// Подписки: passive:false для touchmove, чтобы успеть preventDefault при горизонтали
+document.addEventListener('touchstart', onTouchStart, { passive: true });
+document.addEventListener('touchmove', onTouchMove, { passive: false });
+document.addEventListener('touchend', onTouchEnd, { passive: true });
+document.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+/* ============================================================
    СОБЫТИЯ
 ============================================================ */
 logoLink.addEventListener('click', e => { e.preventDefault(); show('shop'); });
@@ -3201,7 +3301,11 @@ categorySel.addEventListener('change', renderGrid);
 brandSel.addEventListener('change', renderGrid);
 inStockChk.addEventListener('change', renderGrid);
 grid.addEventListener('click', e => {
-  if(scrubState.isDragging){ scrubState.isDragging = false; e.stopPropagation(); return; }
+  if(scrubState.isDragging || swipeState.isDragging){
+    scrubState.isDragging = false;
+    e.stopPropagation();
+    return;
+  }
   const likeBtn = e.target.closest('[data-like]');
   if(likeBtn){ e.stopPropagation(); toggleLike(+likeBtn.dataset.like); return; }
   const buyBtn = e.target.closest('[data-buy]');
